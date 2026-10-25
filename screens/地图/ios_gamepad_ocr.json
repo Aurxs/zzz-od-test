@@ -1,0 +1,1554 @@
+{
+  "ios_map_initial": [
+    {
+      "text": "RS",
+      "x": 1867,
+      "y": 38,
+      "width": 30,
+      "height": 19
+    },
+    {
+      "text": "Hat!",
+      "x": 1340,
+      "y": 183,
+      "width": 44,
+      "height": 21
+    },
+    {
+      "text": "热望仓",
+      "x": 1330,
+      "y": 195,
+      "width": 199,
+      "height": 74
+    },
+    {
+      "text": "REVERB ARENA",
+      "x": 1380,
+      "y": 266,
+      "width": 116,
+      "height": 21
+    },
+    {
+      "text": "维尔乌姆城区",
+      "x": 404,
+      "y": 311,
+      "width": 173,
+      "height": 36
+    },
+    {
+      "text": "[空洞]航天城",
+      "x": 1078,
+      "y": 312,
+      "width": 173,
+      "height": 34
+    },
+    {
+      "text": "热望角",
+      "x": 1795,
+      "y": 311,
+      "width": 93,
+      "height": 36
+    },
+    {
+      "text": "坚毅勇敢",
+      "x": 1606,
+      "y": 382,
+      "width": 77,
+      "height": 43
+    },
+    {
+      "text": "NEW!",
+      "x": 661,
+      "y": 398,
+      "width": 75,
+      "height": 31
+    },
+    {
+      "text": "O.R.S.",
+      "x": 134,
+      "y": 438,
+      "width": 47,
+      "height": 19
+    },
+    {
+      "text": "Random",
+      "x": 732,
+      "y": 476,
+      "width": 124,
+      "height": 44
+    },
+    {
+      "text": "HIA",
+      "x": 1353,
+      "y": 482,
+      "width": 154,
+      "height": 54
+    },
+    {
+      "text": "oPlay",
+      "x": 755,
+      "y": 499,
+      "width": 105,
+      "height": 47
+    },
+    {
+      "text": "HOLLOW INVESTIGATIVE",
+      "x": 1384,
+      "y": 534,
+      "width": 88,
+      "height": 13
+    },
+    {
+      "text": "ASSOCIATION",
+      "x": 1408,
+      "y": 543,
+      "width": 47,
+      "height": 11
+    },
+    {
+      "text": "奥蒙德研究站",
+      "x": 441,
+      "y": 591,
+      "width": 175,
+      "height": 33
+    },
+    {
+      "text": "录像店",
+      "x": 1160,
+      "y": 589,
+      "width": 92,
+      "height": 36
+    },
+    {
+      "text": "HIA俱乐部",
+      "x": 1741,
+      "y": 590,
+      "width": 146,
+      "height": 34
+    },
+    {
+      "text": "BAKEKY",
+      "x": 251,
+      "y": 664,
+      "width": 46,
+      "height": 14
+    },
+    {
+      "text": "如意",
+      "x": 91,
+      "y": 677,
+      "width": 75,
+      "height": 42
+    },
+    {
+      "text": "饮料公司",
+      "x": 167,
+      "y": 689,
+      "width": 64,
+      "height": 21
+    },
+    {
+      "text": "樂",
+      "x": 296,
+      "y": 686,
+      "width": 40,
+      "height": 35
+    },
+    {
+      "text": "CODFING",
+      "x": 983,
+      "y": 726,
+      "width": 83,
+      "height": 40
+    },
+    {
+      "text": "澄辉坪",
+      "x": 65,
+      "y": 758,
+      "width": 186,
+      "height": 76
+    },
+    {
+      "text": "六分街",
+      "x": 704,
+      "y": 745,
+      "width": 177,
+      "height": 90
+    },
+    {
+      "text": "SCOTT",
+      "x": 1339,
+      "y": 767,
+      "width": 180,
+      "height": 38
+    },
+    {
+      "text": "OUTPOST",
+      "x": 1380,
+      "y": 802,
+      "width": 104,
+      "height": 20
+    },
+    {
+      "text": "SITH SI",
+      "x": 693,
+      "y": 800,
+      "width": 91,
+      "height": 50
+    },
+    {
+      "text": "NEWERIDU<",
+      "x": 796,
+      "y": 828,
+      "width": 79,
+      "height": 17
+    },
+    {
+      "text": "澄辉坪",
+      "x": 522,
+      "y": 865,
+      "width": 94,
+      "height": 40
+    },
+    {
+      "text": "A",
+      "x": 678,
+      "y": 870,
+      "width": 24,
+      "height": 24
+    },
+    {
+      "text": "六分街",
+      "x": 1158,
+      "y": 866,
+      "width": 95,
+      "height": 39
+    },
+    {
+      "text": "斯科特哨站",
+      "x": 1740,
+      "y": 868,
+      "width": 148,
+      "height": 34
+    },
+    {
+      "text": "瀑汤谷",
+      "x": 1590,
+      "y": 936,
+      "width": 241,
+      "height": 98
+    },
+    {
+      "text": "HOAL'S",
+      "x": 395,
+      "y": 951,
+      "width": 239,
+      "height": 82
+    },
+    {
+      "text": "EXO",
+      "x": 710,
+      "y": 954,
+      "width": 205,
+      "height": 59
+    },
+    {
+      "text": "BARDIC",
+      "x": 1037,
+      "y": 951,
+      "width": 156,
+      "height": 46
+    },
+    {
+      "text": "COFFCAFE",
+      "x": 93,
+      "y": 961,
+      "width": 240,
+      "height": 42
+    },
+    {
+      "text": "GOD",
+      "x": 1313,
+      "y": 962,
+      "width": 93,
+      "height": 36
+    },
+    {
+      "text": "NCCDIC",
+      "x": 1037,
+      "y": 981,
+      "width": 152,
+      "height": 38
+    },
+    {
+      "text": "FINGER",
+      "x": 1317,
+      "y": 990,
+      "width": 174,
+      "height": 36
+    },
+    {
+      "text": "★",
+      "x": 102,
+      "y": 1005,
+      "width": 8,
+      "height": 8
+    },
+    {
+      "text": "★",
+      "x": 142,
+      "y": 1005,
+      "width": 11,
+      "height": 7
+    },
+    {
+      "text": "MADEBYTINMASTER",
+      "x": 171,
+      "y": 1002,
+      "width": 158,
+      "height": 13
+    },
+    {
+      "text": "咖啡店",
+      "x": 183,
+      "y": 1030,
+      "width": 62,
+      "height": 25
+    },
+    {
+      "text": "报刊亭",
+      "x": 482,
+      "y": 1031,
+      "width": 63,
+      "height": 26
+    },
+    {
+      "text": "改装店",
+      "x": 782,
+      "y": 1031,
+      "width": 62,
+      "height": 26
+    },
+    {
+      "text": "音像店",
+      "x": 1081,
+      "y": 1029,
+      "width": 63,
+      "height": 29
+    },
+    {
+      "text": "电玩店",
+      "x": 1381,
+      "y": 1031,
+      "width": 62,
+      "height": 26
+    },
+    {
+      "text": "垃面店",
+      "x": 1680,
+      "y": 1032,
+      "width": 61,
+      "height": 17
+    }
+  ],
+  "ios_map_chenghui": [
+    {
+      "text": "RS",
+      "x": 1867,
+      "y": 38,
+      "width": 29,
+      "height": 19
+    },
+    {
+      "text": "Hat!",
+      "x": 1341,
+      "y": 184,
+      "width": 42,
+      "height": 18
+    },
+    {
+      "text": "热望仓",
+      "x": 1330,
+      "y": 195,
+      "width": 198,
+      "height": 74
+    },
+    {
+      "text": "REVERB ARENA",
+      "x": 1380,
+      "y": 266,
+      "width": 116,
+      "height": 21
+    },
+    {
+      "text": "维尔乌姆城区",
+      "x": 404,
+      "y": 311,
+      "width": 173,
+      "height": 36
+    },
+    {
+      "text": "[空洞]航天城",
+      "x": 1078,
+      "y": 312,
+      "width": 173,
+      "height": 34
+    },
+    {
+      "text": "热望角",
+      "x": 1796,
+      "y": 311,
+      "width": 92,
+      "height": 36
+    },
+    {
+      "text": "坚毅勇敢",
+      "x": 1605,
+      "y": 381,
+      "width": 79,
+      "height": 44
+    },
+    {
+      "text": "NEW!",
+      "x": 663,
+      "y": 404,
+      "width": 73,
+      "height": 26
+    },
+    {
+      "text": "O.R.S.",
+      "x": 134,
+      "y": 438,
+      "width": 47,
+      "height": 19
+    },
+    {
+      "text": "Random",
+      "x": 732,
+      "y": 476,
+      "width": 124,
+      "height": 44
+    },
+    {
+      "text": "HIA",
+      "x": 1353,
+      "y": 483,
+      "width": 154,
+      "height": 53
+    },
+    {
+      "text": "oPlay",
+      "x": 755,
+      "y": 500,
+      "width": 105,
+      "height": 45
+    },
+    {
+      "text": "HOLLOW INVESTIGATIVE",
+      "x": 1384,
+      "y": 534,
+      "width": 88,
+      "height": 13
+    },
+    {
+      "text": "ASSOCIATION",
+      "x": 1408,
+      "y": 543,
+      "width": 47,
+      "height": 11
+    },
+    {
+      "text": "奧蒙德研究站",
+      "x": 440,
+      "y": 589,
+      "width": 176,
+      "height": 37
+    },
+    {
+      "text": "录像店",
+      "x": 1159,
+      "y": 589,
+      "width": 93,
+      "height": 36
+    },
+    {
+      "text": "HIA俱乐部",
+      "x": 1741,
+      "y": 590,
+      "width": 146,
+      "height": 34
+    },
+    {
+      "text": "BAKEEM",
+      "x": 255,
+      "y": 669,
+      "width": 38,
+      "height": 7
+    },
+    {
+      "text": "如意",
+      "x": 92,
+      "y": 679,
+      "width": 73,
+      "height": 39
+    },
+    {
+      "text": "饮料公司",
+      "x": 167,
+      "y": 689,
+      "width": 66,
+      "height": 21
+    },
+    {
+      "text": "CODFING",
+      "x": 984,
+      "y": 726,
+      "width": 81,
+      "height": 42
+    },
+    {
+      "text": "澄辉坪",
+      "x": 65,
+      "y": 758,
+      "width": 186,
+      "height": 76
+    },
+    {
+      "text": "六分街",
+      "x": 704,
+      "y": 746,
+      "width": 177,
+      "height": 90
+    },
+    {
+      "text": "SCOTT",
+      "x": 1339,
+      "y": 767,
+      "width": 179,
+      "height": 38
+    },
+    {
+      "text": "OUTPOST",
+      "x": 1380,
+      "y": 802,
+      "width": 104,
+      "height": 20
+    },
+    {
+      "text": "SITH ST",
+      "x": 693,
+      "y": 800,
+      "width": 90,
+      "height": 50
+    },
+    {
+      "text": "NEW ERIDU <",
+      "x": 796,
+      "y": 828,
+      "width": 79,
+      "height": 17
+    },
+    {
+      "text": "澄辉坪",
+      "x": 524,
+      "y": 868,
+      "width": 92,
+      "height": 36
+    },
+    {
+      "text": "六分街",
+      "x": 1158,
+      "y": 866,
+      "width": 95,
+      "height": 39
+    },
+    {
+      "text": "斯科特哨站",
+      "x": 1740,
+      "y": 868,
+      "width": 148,
+      "height": 34
+    },
+    {
+      "text": "易問机",
+      "x": 362,
+      "y": 938,
+      "width": 303,
+      "height": 99
+    },
+    {
+      "text": "觀便随",
+      "x": 107,
+      "y": 954,
+      "width": 204,
+      "height": 62
+    },
+    {
+      "text": "饮荣机",
+      "x": 1294,
+      "y": 949,
+      "width": 226,
+      "height": 70
+    },
+    {
+      "text": "COFF CAFE",
+      "x": 691,
+      "y": 960,
+      "width": 240,
+      "height": 44
+    },
+    {
+      "text": "Random Plãy",
+      "x": 989,
+      "y": 963,
+      "width": 248,
+      "height": 55
+    },
+    {
+      "text": "THRESHOLD",
+      "x": 1594,
+      "y": 960,
+      "width": 237,
+      "height": 27
+    },
+    {
+      "text": "SIMULATION",
+      "x": 1677,
+      "y": 988,
+      "width": 69,
+      "height": 10
+    },
+    {
+      "text": "★",
+      "x": 700,
+      "y": 1005,
+      "width": 9,
+      "height": 7
+    },
+    {
+      "text": "MADEBYTINMASTER",
+      "x": 771,
+      "y": 1002,
+      "width": 157,
+      "height": 13
+    },
+    {
+      "text": "随便观",
+      "x": 182,
+      "y": 1031,
+      "width": 64,
+      "height": 26
+    },
+    {
+      "text": "阿朔",
+      "x": 489,
+      "y": 1029,
+      "width": 47,
+      "height": 30
+    },
+    {
+      "text": "汀曼咖啡",
+      "x": 773,
+      "y": 1031,
+      "width": 81,
+      "height": 25
+    },
+    {
+      "text": "录像店营业点",
+      "x": 1055,
+      "y": 1032,
+      "width": 116,
+      "height": 24
+    },
+    {
+      "text": "饮茶仙",
+      "x": 1381,
+      "y": 1031,
+      "width": 62,
+      "height": 26
+    },
+    {
+      "text": "临界推演",
+      "x": 1672,
+      "y": 1034,
+      "width": 77,
+      "height": 14
+    }
+  ],
+  "ios_map_point_focus": [
+    {
+      "text": "RS",
+      "x": 1867,
+      "y": 38,
+      "width": 29,
+      "height": 19
+    },
+    {
+      "text": "Hat!",
+      "x": 1341,
+      "y": 184,
+      "width": 42,
+      "height": 18
+    },
+    {
+      "text": "热望仓",
+      "x": 1330,
+      "y": 195,
+      "width": 198,
+      "height": 74
+    },
+    {
+      "text": "REVERB ARENA",
+      "x": 1380,
+      "y": 266,
+      "width": 116,
+      "height": 21
+    },
+    {
+      "text": "V4",
+      "x": 109,
+      "y": 295,
+      "width": 35,
+      "height": 15
+    },
+    {
+      "text": "维尔乌姆城区",
+      "x": 404,
+      "y": 311,
+      "width": 173,
+      "height": 36
+    },
+    {
+      "text": "[空洞]航天城",
+      "x": 1078,
+      "y": 312,
+      "width": 173,
+      "height": 34
+    },
+    {
+      "text": "热望角",
+      "x": 1796,
+      "y": 311,
+      "width": 92,
+      "height": 36
+    },
+    {
+      "text": "坚毅勇敢",
+      "x": 1606,
+      "y": 382,
+      "width": 77,
+      "height": 43
+    },
+    {
+      "text": "NEW!",
+      "x": 663,
+      "y": 401,
+      "width": 73,
+      "height": 26
+    },
+    {
+      "text": "O.R.S.",
+      "x": 134,
+      "y": 438,
+      "width": 47,
+      "height": 19
+    },
+    {
+      "text": "Random",
+      "x": 732,
+      "y": 476,
+      "width": 124,
+      "height": 44
+    },
+    {
+      "text": "HIA",
+      "x": 1353,
+      "y": 483,
+      "width": 154,
+      "height": 53
+    },
+    {
+      "text": "oPlay",
+      "x": 757,
+      "y": 502,
+      "width": 102,
+      "height": 43
+    },
+    {
+      "text": "HOLLOW INVESTIGATIVE",
+      "x": 1384,
+      "y": 534,
+      "width": 88,
+      "height": 13
+    },
+    {
+      "text": "ASSOCIATION",
+      "x": 1408,
+      "y": 543,
+      "width": 47,
+      "height": 11
+    },
+    {
+      "text": "奧蒙德研究站",
+      "x": 440,
+      "y": 589,
+      "width": 176,
+      "height": 37
+    },
+    {
+      "text": "录像店",
+      "x": 1159,
+      "y": 589,
+      "width": 93,
+      "height": 36
+    },
+    {
+      "text": "HIA俱乐部",
+      "x": 1741,
+      "y": 590,
+      "width": 146,
+      "height": 34
+    },
+    {
+      "text": "BAKERY",
+      "x": 254,
+      "y": 667,
+      "width": 40,
+      "height": 10
+    },
+    {
+      "text": "如意",
+      "x": 92,
+      "y": 679,
+      "width": 73,
+      "height": 39
+    },
+    {
+      "text": "钦料公司",
+      "x": 166,
+      "y": 688,
+      "width": 65,
+      "height": 21
+    },
+    {
+      "text": "樂",
+      "x": 297,
+      "y": 687,
+      "width": 43,
+      "height": 34
+    },
+    {
+      "text": "C",
+      "x": 329,
+      "y": 682,
+      "width": 82,
+      "height": 33
+    },
+    {
+      "text": "CODFING",
+      "x": 983,
+      "y": 726,
+      "width": 82,
+      "height": 42
+    },
+    {
+      "text": "澄辉坪",
+      "x": 65,
+      "y": 758,
+      "width": 186,
+      "height": 76
+    },
+    {
+      "text": "六分街",
+      "x": 704,
+      "y": 746,
+      "width": 177,
+      "height": 90
+    },
+    {
+      "text": "SCOTT",
+      "x": 1339,
+      "y": 767,
+      "width": 179,
+      "height": 38
+    },
+    {
+      "text": "OUTPOST",
+      "x": 1380,
+      "y": 802,
+      "width": 104,
+      "height": 20
+    },
+    {
+      "text": "SITH ST",
+      "x": 693,
+      "y": 800,
+      "width": 90,
+      "height": 50
+    },
+    {
+      "text": "NEW ERIDU<",
+      "x": 796,
+      "y": 828,
+      "width": 79,
+      "height": 17
+    },
+    {
+      "text": "澄辉坪",
+      "x": 524,
+      "y": 868,
+      "width": 92,
+      "height": 36
+    },
+    {
+      "text": "六分街",
+      "x": 1158,
+      "y": 866,
+      "width": 95,
+      "height": 39
+    },
+    {
+      "text": "斯科特哨站",
+      "x": 1740,
+      "y": 868,
+      "width": 148,
+      "height": 34
+    },
+    {
+      "text": "易問机",
+      "x": 363,
+      "y": 938,
+      "width": 302,
+      "height": 99
+    },
+    {
+      "text": "觀便随",
+      "x": 108,
+      "y": 955,
+      "width": 202,
+      "height": 59
+    },
+    {
+      "text": "饮荣机",
+      "x": 1294,
+      "y": 949,
+      "width": 226,
+      "height": 70
+    },
+    {
+      "text": "COFFCAFE",
+      "x": 691,
+      "y": 960,
+      "width": 240,
+      "height": 44
+    },
+    {
+      "text": "Random Plãy",
+      "x": 989,
+      "y": 963,
+      "width": 248,
+      "height": 55
+    },
+    {
+      "text": "THRESHOLD",
+      "x": 1594,
+      "y": 960,
+      "width": 237,
+      "height": 27
+    },
+    {
+      "text": "SIMULATION",
+      "x": 1677,
+      "y": 988,
+      "width": 69,
+      "height": 10
+    },
+    {
+      "text": "★",
+      "x": 700,
+      "y": 1005,
+      "width": 9,
+      "height": 7
+    },
+    {
+      "text": "MADEBYTINMASTER",
+      "x": 771,
+      "y": 1002,
+      "width": 157,
+      "height": 13
+    },
+    {
+      "text": "随便观",
+      "x": 182,
+      "y": 1031,
+      "width": 64,
+      "height": 26
+    },
+    {
+      "text": "阿朔",
+      "x": 490,
+      "y": 1031,
+      "width": 46,
+      "height": 27
+    },
+    {
+      "text": "汀曼咖啡",
+      "x": 773,
+      "y": 1031,
+      "width": 81,
+      "height": 25
+    },
+    {
+      "text": "录像店营业点",
+      "x": 1055,
+      "y": 1032,
+      "width": 116,
+      "height": 24
+    },
+    {
+      "text": "饮茶仙",
+      "x": 1381,
+      "y": 1031,
+      "width": 62,
+      "height": 26
+    },
+    {
+      "text": "临界推演",
+      "x": 1672,
+      "y": 1034,
+      "width": 77,
+      "height": 14
+    }
+  ],
+  "ios_map_ashuo_focus": [
+    {
+      "text": "RS",
+      "x": 1867,
+      "y": 38,
+      "width": 29,
+      "height": 19
+    },
+    {
+      "text": "Hat!",
+      "x": 1341,
+      "y": 184,
+      "width": 42,
+      "height": 18
+    },
+    {
+      "text": "热望仓",
+      "x": 1330,
+      "y": 195,
+      "width": 198,
+      "height": 74
+    },
+    {
+      "text": "REVERB ARENA",
+      "x": 1380,
+      "y": 266,
+      "width": 116,
+      "height": 21
+    },
+    {
+      "text": "V4",
+      "x": 109,
+      "y": 295,
+      "width": 35,
+      "height": 15
+    },
+    {
+      "text": "维尔乌姆城区",
+      "x": 404,
+      "y": 311,
+      "width": 173,
+      "height": 36
+    },
+    {
+      "text": "[空洞]航天城",
+      "x": 1078,
+      "y": 312,
+      "width": 173,
+      "height": 34
+    },
+    {
+      "text": "热望角",
+      "x": 1796,
+      "y": 311,
+      "width": 92,
+      "height": 36
+    },
+    {
+      "text": "坚毅勇敢",
+      "x": 1605,
+      "y": 381,
+      "width": 79,
+      "height": 44
+    },
+    {
+      "text": "NEW!",
+      "x": 663,
+      "y": 401,
+      "width": 73,
+      "height": 26
+    },
+    {
+      "text": "O.R.S.",
+      "x": 135,
+      "y": 438,
+      "width": 46,
+      "height": 19
+    },
+    {
+      "text": "Random",
+      "x": 732,
+      "y": 476,
+      "width": 124,
+      "height": 44
+    },
+    {
+      "text": "HIA",
+      "x": 1353,
+      "y": 483,
+      "width": 154,
+      "height": 53
+    },
+    {
+      "text": "oPlay",
+      "x": 757,
+      "y": 502,
+      "width": 102,
+      "height": 43
+    },
+    {
+      "text": "HOLLOW INVESTIGATIVE",
+      "x": 1384,
+      "y": 534,
+      "width": 88,
+      "height": 13
+    },
+    {
+      "text": "ASSOCIATION",
+      "x": 1408,
+      "y": 543,
+      "width": 47,
+      "height": 11
+    },
+    {
+      "text": "奧蒙德研究站",
+      "x": 440,
+      "y": 589,
+      "width": 176,
+      "height": 37
+    },
+    {
+      "text": "录像店",
+      "x": 1159,
+      "y": 589,
+      "width": 93,
+      "height": 36
+    },
+    {
+      "text": "HIA俱乐部",
+      "x": 1741,
+      "y": 590,
+      "width": 146,
+      "height": 34
+    },
+    {
+      "text": "BAKEEM",
+      "x": 255,
+      "y": 669,
+      "width": 38,
+      "height": 7
+    },
+    {
+      "text": "如意",
+      "x": 92,
+      "y": 679,
+      "width": 73,
+      "height": 39
+    },
+    {
+      "text": "钦料公司",
+      "x": 166,
+      "y": 688,
+      "width": 66,
+      "height": 21
+    },
+    {
+      "text": "樂",
+      "x": 298,
+      "y": 687,
+      "width": 42,
+      "height": 34
+    },
+    {
+      "text": "CODFING",
+      "x": 984,
+      "y": 726,
+      "width": 81,
+      "height": 42
+    },
+    {
+      "text": "澄辉坪",
+      "x": 65,
+      "y": 758,
+      "width": 186,
+      "height": 76
+    },
+    {
+      "text": "六分街",
+      "x": 704,
+      "y": 746,
+      "width": 177,
+      "height": 90
+    },
+    {
+      "text": "SCOTT",
+      "x": 1339,
+      "y": 767,
+      "width": 179,
+      "height": 38
+    },
+    {
+      "text": "OUTPOST",
+      "x": 1380,
+      "y": 802,
+      "width": 104,
+      "height": 20
+    },
+    {
+      "text": "SITH ST",
+      "x": 693,
+      "y": 800,
+      "width": 90,
+      "height": 50
+    },
+    {
+      "text": "NEW ERIDU<",
+      "x": 796,
+      "y": 828,
+      "width": 79,
+      "height": 17
+    },
+    {
+      "text": "澄辉坪",
+      "x": 524,
+      "y": 868,
+      "width": 92,
+      "height": 36
+    },
+    {
+      "text": "六分街",
+      "x": 1158,
+      "y": 866,
+      "width": 95,
+      "height": 39
+    },
+    {
+      "text": "斯科特哨站",
+      "x": 1740,
+      "y": 868,
+      "width": 148,
+      "height": 34
+    },
+    {
+      "text": "A",
+      "x": 499,
+      "y": 925,
+      "width": 29,
+      "height": 29
+    },
+    {
+      "text": "易問机",
+      "x": 363,
+      "y": 935,
+      "width": 297,
+      "height": 103
+    },
+    {
+      "text": "觀便随",
+      "x": 107,
+      "y": 954,
+      "width": 204,
+      "height": 62
+    },
+    {
+      "text": "饮荣机",
+      "x": 1294,
+      "y": 949,
+      "width": 227,
+      "height": 70
+    },
+    {
+      "text": "COFFCAFE",
+      "x": 692,
+      "y": 960,
+      "width": 239,
+      "height": 44
+    },
+    {
+      "text": "Random Plãy",
+      "x": 989,
+      "y": 963,
+      "width": 248,
+      "height": 55
+    },
+    {
+      "text": "THRESHOLD",
+      "x": 1594,
+      "y": 960,
+      "width": 237,
+      "height": 27
+    },
+    {
+      "text": "SIMULATION",
+      "x": 1677,
+      "y": 988,
+      "width": 69,
+      "height": 10
+    },
+    {
+      "text": "MADEBYTINMASTER",
+      "x": 771,
+      "y": 1002,
+      "width": 157,
+      "height": 13
+    },
+    {
+      "text": "随便观",
+      "x": 182,
+      "y": 1031,
+      "width": 64,
+      "height": 26
+    },
+    {
+      "text": "阿朔",
+      "x": 490,
+      "y": 1031,
+      "width": 46,
+      "height": 27
+    },
+    {
+      "text": "汀曼咖啡",
+      "x": 773,
+      "y": 1031,
+      "width": 81,
+      "height": 25
+    },
+    {
+      "text": "录像店营业点",
+      "x": 1055,
+      "y": 1032,
+      "width": 116,
+      "height": 24
+    },
+    {
+      "text": "饮茶仙",
+      "x": 1381,
+      "y": 1031,
+      "width": 62,
+      "height": 26
+    },
+    {
+      "text": "临界推演",
+      "x": 1672,
+      "y": 1034,
+      "width": 77,
+      "height": 14
+    }
+  ],
+  "ios_map_confirm": [
+    {
+      "text": "是否传送至该地点？",
+      "x": 831,
+      "y": 509,
+      "width": 249,
+      "height": 31
+    },
+    {
+      "text": "X",
+      "x": 682,
+      "y": 609,
+      "width": 34,
+      "height": 37
+    },
+    {
+      "text": "取消",
+      "x": 797,
+      "y": 610,
+      "width": 61,
+      "height": 34
+    },
+    {
+      "text": "确认",
+      "x": 1103,
+      "y": 611,
+      "width": 54,
+      "height": 32
+    },
+    {
+      "text": "A",
+      "x": 922,
+      "y": 693,
+      "width": 33,
+      "height": 30
+    },
+    {
+      "text": "选择",
+      "x": 963,
+      "y": 697,
+      "width": 42,
+      "height": 23
+    },
+    {
+      "text": "六分街",
+      "x": 690,
+      "y": 730,
+      "width": 192,
+      "height": 111
+    }
+  ],
+  "ios_ashuo_arrived": [
+    {
+      "text": "觀清幽明道意",
+      "x": 611,
+      "y": 0,
+      "width": 103,
+      "height": 506
+    },
+    {
+      "text": "NEW!",
+      "x": 189,
+      "y": 23,
+      "width": 57,
+      "height": 21
+    },
+    {
+      "text": "日",
+      "x": 1428,
+      "y": 25,
+      "width": 36,
+      "height": 33
+    },
+    {
+      "text": "日",
+      "x": 1525,
+      "y": 28,
+      "width": 28,
+      "height": 30
+    },
+    {
+      "text": "日",
+      "x": 1787,
+      "y": 24,
+      "width": 34,
+      "height": 32
+    },
+    {
+      "text": "星期二",
+      "x": 205,
+      "y": 45,
+      "width": 93,
+      "height": 35
+    },
+    {
+      "text": "PM New Eridu",
+      "x": 208,
+      "y": 80,
+      "width": 99,
+      "height": 20
+    },
+    {
+      "text": "LT",
+      "x": 1810,
+      "y": 116,
+      "width": 28,
+      "height": 24
+    },
+    {
+      "text": "与到访的陌生人聊聊",
+      "x": 109,
+      "y": 139,
+      "width": 169,
+      "height": 21
+    },
+    {
+      "text": "ISTN SSHNHNE",
+      "x": 894,
+      "y": 151,
+      "width": 183,
+      "height": 31
+    },
+    {
+      "text": "LT +",
+      "x": 114,
+      "y": 169,
+      "width": 70,
+      "height": 18
+    },
+    {
+      "text": "前往任务目标",
+      "x": 179,
+      "y": 167,
+      "width": 116,
+      "height": 21
+    },
+    {
+      "text": "阿朔",
+      "x": 1289,
+      "y": 253,
+      "width": 70,
+      "height": 27
+    },
+    {
+      "text": "CHECKIN",
+      "x": 1116,
+      "y": 323,
+      "width": 157,
+      "height": 42
+    },
+    {
+      "text": "商机亭",
+      "x": 1655,
+      "y": 374,
+      "width": 91,
+      "height": 206
+    },
+    {
+      "text": "82.7m",
+      "x": 419,
+      "y": 628,
+      "width": 66,
+      "height": 28
+    },
+    {
+      "text": "质",
+      "x": 1410,
+      "y": 728,
+      "width": 75,
+      "height": 53
+    },
+    {
+      "text": "相机",
+      "x": 106,
+      "y": 1023,
+      "width": 45,
+      "height": 27
+    },
+    {
+      "text": "A",
+      "x": 1447,
+      "y": 1024,
+      "width": 16,
+      "height": 20
+    },
+    {
+      "text": "RT",
+      "x": 1755,
+      "y": 1019,
+      "width": 43,
+      "height": 32
+    }
+  ]
+}
