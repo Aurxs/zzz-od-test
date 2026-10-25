@@ -128,7 +128,7 @@ def test_unsupported_quantity_and_insufficient_charge_send_nothing(
     operation: GamepadCombatSimulation, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """拒绝未支持的卡片数，默认数量仍核对画面的实际一百电量。"""
-    operation.plan.card_num = '1'
+    operation.plan.card_num = '2'
     assert operation.check_plan().is_fail
     operation.plan.card_num = '默认数量'
     set_frame(operation, 'ios_simulation_preset')

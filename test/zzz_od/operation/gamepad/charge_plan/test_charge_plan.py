@@ -42,7 +42,7 @@ def config() -> ChargePlanConfig:
         ('mission_type_name', '代理人晋升'),
         ('mission_name', '音擎专项'),
         ('level', '50'),
-        ('card_num', '1'),
+        ('card_num', '2'),
         ('predefined_team_idx', 0),
     ],
 )
@@ -76,7 +76,7 @@ def test_application_checks_macos_before_bootstrap_only(
     monkeypatch: pytest.MonkeyPatch, config: ChargePlanConfig, platform: str,
 ) -> None:
     """Mac 未支持计划不进入公共启动，Windows 仍委托原应用执行。"""
-    config.plan_list[0].card_num = '1'
+    config.plan_list[0].card_num = '2'
     app = ChargePlanApp.__new__(ChargePlanApp)
     app.config = config
     delegate = Mock(return_value=OperationResult(True, '原应用'))
@@ -136,7 +136,7 @@ def test_saved_plan_repeats_until_its_original_count(
     monkeypatch: pytest.MonkeyPatch, operation: GamepadChargePlan,
 ) -> None:
     """原配置累计两场，逐场复核实际一百，不走 PC 导航或另建计划。"""
-    simulation = Mock()
+    simulation = Mock(expected_charge=100, expected_card_count=5)
     simulation.read_charge.side_effect = [(200, 100), (100, 100)]
 
     def win() -> OperationResult:
@@ -150,9 +150,13 @@ def test_saved_plan_repeats_until_its_original_count(
     transport = Mock()
     transport.return_value.execute.return_value = OperationResult(True)
     monkeypatch.setattr(charge_plan, 'GamepadTransportByCompendium', transport)
+    cards = Mock()
+    cards.return_value.execute.return_value = OperationResult(True)
+    monkeypatch.setattr(charge_plan, 'GamepadConfigureCards', cards)
     for expected_runs in (1, 2):
         assert operation.select_plan().status is None
         assert operation.transport().is_success
+        assert operation.configure_cards().is_success
         assert operation.check_charge().status is None
         assert operation.run_battle().is_success
         assert operation.config.plan_list[0].run_times == expected_runs
@@ -163,6 +167,30 @@ def test_saved_plan_repeats_until_its_original_count(
     }
     assert factory.call_args.kwargs['config'] is operation.config
     assert transport.call_args_list == [call(operation.ctx, '训练', '实战模拟室', '基础材料')] * 2
+    assert cards.call_args_list == [call(operation.ctx, 5)] * 2
+    operation.ctx.controller.btn_tap.assert_not_called()
+
+
+@pytest.mark.parametrize(('card_num', 'num_cards'), [('1', 1), ('5', 5), ('默认数量', 5)])
+def test_card_configuration_uses_original_plan_target(
+    monkeypatch: pytest.MonkeyPatch, operation: GamepadChargePlan,
+    card_num: str, num_cards: int,
+) -> None:
+    """一张按二十核对，默认仍要求五张，旧一张预设不能冒充默认计划。"""
+    operation.config.plan_list[0].card_num = card_num
+    assert validate_macos_charge_plan(operation.config) is None
+    assert operation.select_plan().is_success
+    cards = Mock()
+    cards.return_value.execute.return_value = OperationResult(True)
+    monkeypatch.setattr(charge_plan, 'GamepadConfigureCards', cards)
+    assert operation.configure_cards().is_success
+    cards.assert_called_once_with(operation.ctx, num_cards)
+    monkeypatch.setattr(operation._simulation, 'read_charge', Mock(return_value=(20, 20)))
+    result = operation.check_charge()
+    if num_cards == 1:
+        assert result.is_success and result.status is None
+    else:
+        assert result.is_fail and '目标 100' in result.status
     operation.ctx.controller.btn_tap.assert_not_called()
 
 
@@ -173,7 +201,7 @@ def test_shortage_returns_once_per_known_page_and_preserves_progress(
     """不足一百时不战斗、不补电，未知页不输入，结束仍保留未完成计划。"""
     operation.config.data['skip_plan'] = skip_plan
     operation.config.plan_list[0].run_times = 1
-    simulation = Mock()
+    simulation = Mock(expected_charge=100, expected_card_count=5)
     simulation.read_charge.return_value = (99, 100)
     monkeypatch.setattr(charge_plan, 'GamepadCombatSimulation', Mock(return_value=simulation))
     operation.select_plan()
@@ -219,7 +247,7 @@ def test_failed_or_unrecorded_battle_never_increments_count(
     monkeypatch: pytest.MonkeyPatch, operation: GamepadChargePlan, succeeded: bool,
 ) -> None:
     """失败或缺少胜利记录都停止，不重试战斗或伪造计划进度。"""
-    simulation = Mock()
+    simulation = Mock(expected_charge=100, expected_card_count=5)
     simulation.execute.return_value = OperationResult(succeeded, '未确认胜利')
     monkeypatch.setattr(charge_plan, 'GamepadCombatSimulation', Mock(return_value=simulation))
     operation.select_plan()
@@ -237,7 +265,7 @@ def test_missing_or_unverified_actual_charge_never_starts_battle(
     charge: tuple[int, int] | None,
 ) -> None:
     """识别缺失或实际消耗不为一百时，不使用计划中的默认二十预估。"""
-    simulation = Mock()
+    simulation = Mock(expected_charge=100, expected_card_count=5)
     simulation.read_charge.return_value = charge
     monkeypatch.setattr(charge_plan, 'GamepadCombatSimulation', Mock(return_value=simulation))
     operation.select_plan()

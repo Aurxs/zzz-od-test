@@ -151,6 +151,22 @@ def test_unknown_target_and_missing_confirm_focus_send_no_input(
     operation.ctx.controller.click.assert_not_called()
 
 
+def test_opening_is_not_recorded_when_controller_rejects_input(
+    operation: GamepadTransportByCompendium, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """采集保护临时拒绝动作时不标成已打开，恢复后仍能重试。"""
+    operation.last_screenshot = np.zeros((1080, 1920, 3), dtype=np.uint8)
+    monkeypatch.setattr(operation, 'round_by_find_area', Mock(return_value=operation.round_success()))
+    operation.ctx.controller.click.return_value = False
+    assert not operation.open_compendium().is_success
+    assert not operation._opened
+    operation.ctx.controller.click.return_value = True
+    assert not operation.open_compendium().is_success
+    assert operation._opened
+    assert not operation.open_compendium().is_success
+    assert operation.ctx.controller.click.call_count == 2
+
+
 def test_destination_requires_both_anchors(
     operation: GamepadTransportByCompendium, monkeypatch: pytest.MonkeyPatch
 ) -> None:
