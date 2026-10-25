@@ -13,7 +13,7 @@ import numpy as np
 import pytest
 
 from one_dragon.base.config.game_account_config import GamePlatformEnum
-from one_dragon.base.controller.gamepad_input import GamepadInput
+from one_dragon.base.controller.gamepad_input import GamepadInput, GamepadState
 from one_dragon.base.controller.macos.macos_game_launcher import MacGameLauncher
 from one_dragon.base.controller.macos.macos_window_capture import (
     MacWindow,
@@ -188,6 +188,27 @@ def test_frame_monitor_stops_on_pause_and_cleanup(
     controller.pause_input()
     assert not thread.is_alive()
     assert controller._monitor_thread is None
+
+
+@pytest.mark.parametrize('holding', [False, True])
+def test_monitor_transient_gap_only_latches_pause_for_held_input(
+    controller: zzz_macos_controller.ZMacController, holding: bool,
+) -> None:
+    """空闲回调抖动不锁死菜单，持杆时仍立即归零；过期新动作仍拒绝。"""
+    controller._input_paused = False
+    controller.gamepad.state = GamepadState(right_stick=(1.0, 0.0)) if holding else GamepadState()
+    controller.window_capture.latest_frame.return_value = None
+    stop = Mock(spec=threading.Event)
+    stop.wait.side_effect = [False, True]
+    controller._monitor_frames(stop)
+    assert controller._input_paused is holding
+    if holding:
+        controller.gamepad.suspend.assert_called_once_with()
+    else:
+        controller.gamepad.suspend.assert_not_called()
+        with pytest.raises(RuntimeError, match='没有有效'):
+            controller.btn_tap('south')
+        controller.gamepad.tap.assert_not_called()
     controller.cleanup_after_app_shutdown()
     controller.cleanup_after_app_shutdown()
     assert controller._monitor_thread is None
