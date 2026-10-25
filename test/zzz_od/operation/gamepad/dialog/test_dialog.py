@@ -28,12 +28,13 @@ def operation(monkeypatch: pytest.MonkeyPatch) -> GamepadChooseDialogOption:
         matches = results.setdefault(item['text'], MatchResultList())
         matches.append(MatchResult(1, item['x'], item['y'], item['width'], item['height']))
     ctx = SimpleNamespace(
-        controller=Mock(spec=['btn_tap']), run_context=Mock(), ocr=Mock(),
+        controller=Mock(spec=['btn_tap']), run_context=Mock(), ocr=Mock(), tm=Mock(),
         screen_loader=SimpleNamespace(get_area=lambda screen, name: SimpleNamespace(
             rect=Rect(1340, 490, 1920, 815),
         )),
     )
     ctx.ocr.crop_and_run_ocr.return_value = results
+    ctx.tm.match_template.return_value = []
     op = GamepadChooseDialogOption(ctx, '查看经营状况')
     monkeypatch.setattr(op, '_after_round_wait', Mock())
     monkeypatch.setattr(op, '_save', Mock(return_value=True))

@@ -39,6 +39,7 @@ def app(monkeypatch: pytest.MonkeyPatch) -> CoffeeApp:
     )
     result.had_coffee_list = set()
     result.chosen_coffee = None
+    result.resume_from_charge_reward = False
     result.turn_compensator = Mock()
     result._previous_node = None
     result._previous_round_result = None
@@ -156,7 +157,8 @@ def test_coffee_uses_visible_extra_before_tinmaster(
         extra.coffee_name: extra, regular.coffee_name: regular,
     }
     app.ctx.ocr.crop_and_run_ocr.return_value = {'请来一杯汀曼特调！': Mock(), '请来一杯额外特调！': Mock()}
-    monkeypatch.setattr(app, 'round_by_find_area', Mock(return_value=app.round_success()))
+    monkeypatch.setattr(app, 'round_by_find_area', lambda image, screen, name: app.round_retry()
+                        if name == '手柄-今日已喝' else app.round_success())
     factory = Mock()
     factory.return_value.execute.return_value = OperationResult(True)
     monkeypatch.setitem(sys.modules, 'zzz_od.operation.gamepad.dialog',
@@ -193,8 +195,9 @@ def test_extra_confirmation_returns_to_dialog_and_empty_selection_cannot_confirm
     assert app.charge_confirm().is_fail
     action.assert_not_called()
     app.chosen_coffee = SimpleNamespace(extra=True)
+    monkeypatch.setattr(app, '_macos_energy_reward_visible', Mock(return_value=True))
     assert app.charge_confirm().status == CoffeeApp.STATUS_MACOS_EXTRA_COFFEE
-    action.assert_called_once_with(app, '咖啡店', '电量确认')
+    app.ctx.controller.btn_tap.assert_called_once_with('south')
 
 
 def test_random_play_skips_running_without_input(
