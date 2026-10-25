@@ -1,0 +1,28 @@
+{
+  "ios_random_play_options": [
+    {
+      "text": "A",
+      "x": 44,
+      "y": 164,
+      "width": 28,
+      "height": 27,
+      "yellow": false
+    },
+    {
+      "text": "查看经营状况",
+      "x": 139,
+      "y": 161,
+      "width": 139,
+      "height": 28,
+      "yellow": true
+    },
+    {
+      "text": "暂时不用",
+      "x": 139,
+      "y": 240,
+      "width": 99,
+      "height": 32,
+      "yellow": false
+    }
+  ]
+}
