@@ -1,0 +1,1101 @@
+{
+  "ios_gamepad_combat": [
+    {
+      "text": "3010/10104",
+      "x": 244,
+      "y": 75,
+      "width": 101,
+      "height": 31
+    },
+    {
+      "text": "5",
+      "x": 566,
+      "y": 93,
+      "width": 11,
+      "height": 10
+    },
+    {
+      "text": "000000",
+      "x": 127,
+      "y": 117,
+      "width": 99,
+      "height": 24
+    },
+    {
+      "text": "RT",
+      "x": 1763,
+      "y": 884,
+      "width": 30,
+      "height": 21
+    },
+    {
+      "text": "x",
+      "x": 1444,
+      "y": 1023,
+      "width": 22,
+      "height": 23
+    },
+    {
+      "text": "A",
+      "x": 1550,
+      "y": 1020,
+      "width": 27,
+      "height": 29
+    },
+    {
+      "text": "RB",
+      "x": 1761,
+      "y": 1022,
+      "width": 34,
+      "height": 24
+    }
+  ],
+  "ios_simulation_result": [
+    {
+      "text": "挑战结果",
+      "x": 720,
+      "y": 160,
+      "width": 478,
+      "height": 122
+    },
+    {
+      "text": "1027",
+      "x": 181,
+      "y": 330,
+      "width": 67,
+      "height": 29
+    },
+    {
+      "text": "124",
+      "x": 370,
+      "y": 328,
+      "width": 57,
+      "height": 33
+    },
+    {
+      "text": "847",
+      "x": 542,
+      "y": 328,
+      "width": 58,
+      "height": 33
+    },
+    {
+      "text": "60",
+      "x": 1330,
+      "y": 322,
+      "width": 123,
+      "height": 91
+    },
+    {
+      "text": "绳网等级",
+      "x": 1458,
+      "y": 332,
+      "width": 111,
+      "height": 34
+    },
+    {
+      "text": "HOLLOW",
+      "x": 1757,
+      "y": 325,
+      "width": 62,
+      "height": 17
+    },
+    {
+      "text": "MAX / MAX",
+      "x": 1458,
+      "y": 370,
+      "width": 167,
+      "height": 36
+    },
+    {
+      "text": "+",
+      "x": 1671,
+      "y": 423,
+      "width": 22,
+      "height": 23
+    },
+    {
+      "text": "566EXP",
+      "x": 1692,
+      "y": 419,
+      "width": 111,
+      "height": 31
+    },
+    {
+      "text": "60",
+      "x": 263,
+      "y": 553,
+      "width": 52,
+      "height": 38
+    },
+    {
+      "text": "AGENT",
+      "x": 183,
+      "y": 571,
+      "width": 61,
+      "height": 18
+    },
+    {
+      "text": "AGENT",
+      "x": 359,
+      "y": 572,
+      "width": 61,
+      "height": 17
+    },
+    {
+      "text": "AGENT",
+      "x": 534,
+      "y": 572,
+      "width": 60,
+      "height": 18
+    },
+    {
+      "text": "总计用时：",
+      "x": 97,
+      "y": 622,
+      "width": 97,
+      "height": 29
+    },
+    {
+      "text": "00:00:13",
+      "x": 459,
+      "y": 623,
+      "width": 139,
+      "height": 28
+    },
+    {
+      "text": "15",
+      "x": 1369,
+      "y": 627,
+      "width": 34,
+      "height": 32
+    },
+    {
+      "text": "15",
+      "x": 1493,
+      "y": 628,
+      "width": 35,
+      "height": 31
+    },
+    {
+      "text": "EMPTY",
+      "x": 1602,
+      "y": 629,
+      "width": 64,
+      "height": 29
+    },
+    {
+      "text": "EMPTY",
+      "x": 1728,
+      "y": 629,
+      "width": 64,
+      "height": 29
+    },
+    {
+      "text": "完成实战模拟",
+      "x": 129,
+      "y": 677,
+      "width": 136,
+      "height": 30
+    },
+    {
+      "text": "1/1",
+      "x": 550,
+      "y": 675,
+      "width": 49,
+      "height": 37
+    },
+    {
+      "text": "通关时长不超过4分钟",
+      "x": 133,
+      "y": 736,
+      "width": 212,
+      "height": 26
+    },
+    {
+      "text": "1/1",
+      "x": 550,
+      "y": 731,
+      "width": 49,
+      "height": 37
+    },
+    {
+      "text": "通关时长不超过2分钟",
+      "x": 132,
+      "y": 793,
+      "width": 212,
+      "height": 24
+    },
+    {
+      "text": "1/1",
+      "x": 549,
+      "y": 787,
+      "width": 51,
+      "height": 37
+    },
+    {
+      "text": "EMPTY",
+      "x": 1352,
+      "y": 787,
+      "width": 65,
+      "height": 29
+    },
+    {
+      "text": "EMPTY",
+      "x": 1477,
+      "y": 787,
+      "width": 64,
+      "height": 29
+    },
+    {
+      "text": "EMPTY",
+      "x": 1601,
+      "y": 786,
+      "width": 66,
+      "height": 31
+    },
+    {
+      "text": "EMPTY",
+      "x": 1728,
+      "y": 787,
+      "width": 64,
+      "height": 29
+    },
+    {
+      "text": "100/100",
+      "x": 1098,
+      "y": 1016,
+      "width": 94,
+      "height": 25
+    },
+    {
+      "text": "x",
+      "x": 1237,
+      "y": 1016,
+      "width": 24,
+      "height": 25
+    },
+    {
+      "text": "再来一次",
+      "x": 1328,
+      "y": 1012,
+      "width": 113,
+      "height": 35
+    },
+    {
+      "text": "B",
+      "x": 1566,
+      "y": 1018,
+      "width": 18,
+      "height": 21
+    },
+    {
+      "text": "完成",
+      "x": 1683,
+      "y": 1011,
+      "width": 64,
+      "height": 38
+    }
+  ],
+  "ios_basic_preset_after_result": [
+    {
+      "text": "NEW!",
+      "x": 1513,
+      "y": 17,
+      "width": 55,
+      "height": 18
+    },
+    {
+      "text": "挑战等级",
+      "x": 1355,
+      "y": 35,
+      "width": 99,
+      "height": 32
+    },
+    {
+      "text": "等级Lv.50",
+      "x": 1541,
+      "y": 36,
+      "width": 124,
+      "height": 31
+    },
+    {
+      "text": "RT",
+      "x": 1881,
+      "y": 39,
+      "width": 31,
+      "height": 24
+    },
+    {
+      "text": "共计『２』轮敌袭",
+      "x": 855,
+      "y": 151,
+      "width": 208,
+      "height": 38
+    },
+    {
+      "text": "RANDOM",
+      "x": 158,
+      "y": 231,
+      "width": 251,
+      "height": 102
+    },
+    {
+      "text": "RANDOM",
+      "x": 494,
+      "y": 227,
+      "width": 255,
+      "height": 109
+    },
+    {
+      "text": "RANDOM",
+      "x": 834,
+      "y": 228,
+      "width": 253,
+      "height": 107
+    },
+    {
+      "text": "RANDOM",
+      "x": 1173,
+      "y": 229,
+      "width": 254,
+      "height": 103
+    },
+    {
+      "text": "RANDOM",
+      "x": 1512,
+      "y": 227,
+      "width": 254,
+      "height": 107
+    },
+    {
+      "text": "NEW!",
+      "x": 1067,
+      "y": 724,
+      "width": 71,
+      "height": 24
+    },
+    {
+      "text": "NEW!",
+      "x": 1409,
+      "y": 723,
+      "width": 71,
+      "height": 24
+    },
+    {
+      "text": "调查专项",
+      "x": 132,
+      "y": 740,
+      "width": 100,
+      "height": 28
+    },
+    {
+      "text": "A",
+      "x": 335,
+      "y": 740,
+      "width": 26,
+      "height": 28
+    },
+    {
+      "text": "音擎专项",
+      "x": 474,
+      "y": 737,
+      "width": 103,
+      "height": 34
+    },
+    {
+      "text": "赏金专项",
+      "x": 817,
+      "y": 736,
+      "width": 102,
+      "height": 36
+    },
+    {
+      "text": "镀剂专项",
+      "x": 1160,
+      "y": 739,
+      "width": 100,
+      "height": 28
+    },
+    {
+      "text": "EMPTY",
+      "x": 1516,
+      "y": 740,
+      "width": 98,
+      "height": 28
+    },
+    {
+      "text": "XXX",
+      "x": 247,
+      "y": 795,
+      "width": 164,
+      "height": 48
+    },
+    {
+      "text": "XXX",
+      "x": 591,
+      "y": 796,
+      "width": 163,
+      "height": 47
+    },
+    {
+      "text": "XXXX",
+      "x": 877,
+      "y": 796,
+      "width": 220,
+      "height": 47
+    },
+    {
+      "text": "OD",
+      "x": 1215,
+      "y": 787,
+      "width": 55,
+      "height": 64
+    },
+    {
+      "text": "XXX",
+      "x": 1277,
+      "y": 797,
+      "width": 165,
+      "height": 45
+    },
+    {
+      "text": "SELECT",
+      "x": 923,
+      "y": 901,
+      "width": 71,
+      "height": 21
+    },
+    {
+      "text": "随机敌人",
+      "x": 123,
+      "y": 1012,
+      "width": 90,
+      "height": 32
+    },
+    {
+      "text": "RS",
+      "x": 82,
+      "y": 1016,
+      "width": 30,
+      "height": 19
+    },
+    {
+      "text": "ON",
+      "x": 265,
+      "y": 1014,
+      "width": 37,
+      "height": 29
+    },
+    {
+      "text": "Y",
+      "x": 889,
+      "y": 1019,
+      "width": 18,
+      "height": 21
+    },
+    {
+      "text": "挑战奖励",
+      "x": 927,
+      "y": 1018,
+      "width": 75,
+      "height": 22
+    },
+    {
+      "text": "0",
+      "x": 1169,
+      "y": 1017,
+      "width": 19,
+      "height": 24
+    },
+    {
+      "text": "x",
+      "x": 1220,
+      "y": 1015,
+      "width": 29,
+      "height": 26
+    },
+    {
+      "text": "自动战斗",
+      "x": 1264,
+      "y": 1012,
+      "width": 110,
+      "height": 32
+    },
+    {
+      "text": "100/100",
+      "x": 1507,
+      "y": 1013,
+      "width": 96,
+      "height": 29
+    },
+    {
+      "text": "下一步",
+      "x": 1694,
+      "y": 1011,
+      "width": 85,
+      "height": 36
+    }
+  ],
+  "ios_material_category": [
+    {
+      "text": "NEW!",
+      "x": 501,
+      "y": 267,
+      "width": 62,
+      "height": 25
+    },
+    {
+      "text": "NEW!",
+      "x": 1233,
+      "y": 267,
+      "width": 61,
+      "height": 22
+    },
+    {
+      "text": "NEW!",
+      "x": 1479,
+      "y": 268,
+      "width": 60,
+      "height": 22
+    },
+    {
+      "text": "BASIC",
+      "x": 441,
+      "y": 492,
+      "width": 61,
+      "height": 22
+    },
+    {
+      "text": "PROMOTION",
+      "x": 658,
+      "y": 492,
+      "width": 115,
+      "height": 21
+    },
+    {
+      "text": "W-ENGINE",
+      "x": 913,
+      "y": 492,
+      "width": 93,
+      "height": 21
+    },
+    {
+      "text": "SKILL",
+      "x": 1176,
+      "y": 490,
+      "width": 55,
+      "height": 25
+    },
+    {
+      "text": "CUSTOM",
+      "x": 1405,
+      "y": 490,
+      "width": 86,
+      "height": 24
+    },
+    {
+      "text": "基础材料",
+      "x": 426,
+      "y": 609,
+      "width": 92,
+      "height": 29
+    },
+    {
+      "text": "代理人晋升",
+      "x": 658,
+      "y": 608,
+      "width": 115,
+      "height": 31
+    },
+    {
+      "text": "音擎改装",
+      "x": 914,
+      "y": 609,
+      "width": 91,
+      "height": 28
+    },
+    {
+      "text": "代理人技能",
+      "x": 1146,
+      "y": 608,
+      "width": 114,
+      "height": 31
+    },
+    {
+      "text": "自定义模板",
+      "x": 1391,
+      "y": 608,
+      "width": 112,
+      "height": 28
+    },
+    {
+      "text": "x",
+      "x": 31,
+      "y": 969,
+      "width": 22,
+      "height": 25
+    },
+    {
+      "text": "选择",
+      "x": 1686,
+      "y": 1016,
+      "width": 42,
+      "height": 24
+    },
+    {
+      "text": "返回",
+      "x": 1820,
+      "y": 1017,
+      "width": 41,
+      "height": 23
+    }
+  ],
+  "ios_hia_world_return": [
+    {
+      "text": "NEW!",
+      "x": 187,
+      "y": 21,
+      "width": 59,
+      "height": 25
+    },
+    {
+      "text": "日",
+      "x": 1431,
+      "y": 27,
+      "width": 33,
+      "height": 31
+    },
+    {
+      "text": "日",
+      "x": 1523,
+      "y": 27,
+      "width": 32,
+      "height": 32
+    },
+    {
+      "text": "0",
+      "x": 1702,
+      "y": 30,
+      "width": 22,
+      "height": 24
+    },
+    {
+      "text": "NE",
+      "x": 102,
+      "y": 52,
+      "width": 55,
+      "height": 41
+    },
+    {
+      "text": "星期二",
+      "x": 203,
+      "y": 41,
+      "width": 97,
+      "height": 43
+    },
+    {
+      "text": "PM New Eridu",
+      "x": 209,
+      "y": 82,
+      "width": 98,
+      "height": 17
+    },
+    {
+      "text": "LT",
+      "x": 1806,
+      "y": 113,
+      "width": 34,
+      "height": 30
+    },
+    {
+      "text": "与到访的陌生人聊聊",
+      "x": 108,
+      "y": 138,
+      "width": 172,
+      "height": 24
+    },
+    {
+      "text": "G+～",
+      "x": 110,
+      "y": 165,
+      "width": 76,
+      "height": 25
+    },
+    {
+      "text": "前往任务目标",
+      "x": 177,
+      "y": 163,
+      "width": 119,
+      "height": 27
+    },
+    {
+      "text": "火热进行中",
+      "x": 89,
+      "y": 184,
+      "width": 188,
+      "height": 68
+    },
+    {
+      "text": "柏莎",
+      "x": 901,
+      "y": 259,
+      "width": 47,
+      "height": 23
+    },
+    {
+      "text": "HIA",
+      "x": 729,
+      "y": 419,
+      "width": 48,
+      "height": 29
+    },
+    {
+      "text": "9.0m",
+      "x": 899,
+      "y": 893,
+      "width": 55,
+      "height": 28
+    },
+    {
+      "text": "相机",
+      "x": 106,
+      "y": 1023,
+      "width": 45,
+      "height": 27
+    },
+    {
+      "text": "RT",
+      "x": 1758,
+      "y": 1021,
+      "width": 39,
+      "height": 29
+    }
+  ],
+  "ios_simulation_preset": [
+    {
+      "text": "NEW!",
+      "x": 1513,
+      "y": 17,
+      "width": 55,
+      "height": 18
+    },
+    {
+      "text": "挑战等级",
+      "x": 1355,
+      "y": 35,
+      "width": 99,
+      "height": 32
+    },
+    {
+      "text": "等级Lv.50",
+      "x": 1541,
+      "y": 36,
+      "width": 124,
+      "height": 31
+    },
+    {
+      "text": "RT",
+      "x": 1881,
+      "y": 39,
+      "width": 31,
+      "height": 24
+    },
+    {
+      "text": "共计「２』轮敌袭",
+      "x": 854,
+      "y": 149,
+      "width": 209,
+      "height": 41
+    },
+    {
+      "text": "RANDOM",
+      "x": 158,
+      "y": 231,
+      "width": 251,
+      "height": 102
+    },
+    {
+      "text": "RANDOM",
+      "x": 494,
+      "y": 227,
+      "width": 255,
+      "height": 109
+    },
+    {
+      "text": "RANDOM",
+      "x": 833,
+      "y": 227,
+      "width": 254,
+      "height": 110
+    },
+    {
+      "text": "RANDOM",
+      "x": 1174,
+      "y": 230,
+      "width": 254,
+      "height": 103
+    },
+    {
+      "text": "RANDOM",
+      "x": 1513,
+      "y": 227,
+      "width": 253,
+      "height": 107
+    },
+    {
+      "text": "NEW!",
+      "x": 1067,
+      "y": 724,
+      "width": 71,
+      "height": 24
+    },
+    {
+      "text": "NEW!",
+      "x": 1409,
+      "y": 723,
+      "width": 71,
+      "height": 24
+    },
+    {
+      "text": "调查专项",
+      "x": 132,
+      "y": 740,
+      "width": 100,
+      "height": 28
+    },
+    {
+      "text": "A",
+      "x": 335,
+      "y": 740,
+      "width": 25,
+      "height": 28
+    },
+    {
+      "text": "音擎专项",
+      "x": 474,
+      "y": 737,
+      "width": 103,
+      "height": 34
+    },
+    {
+      "text": "赏金专项",
+      "x": 817,
+      "y": 736,
+      "width": 102,
+      "height": 35
+    },
+    {
+      "text": "镀剂专项",
+      "x": 1160,
+      "y": 739,
+      "width": 100,
+      "height": 28
+    },
+    {
+      "text": "EMPTY",
+      "x": 1516,
+      "y": 740,
+      "width": 98,
+      "height": 28
+    },
+    {
+      "text": "XXX",
+      "x": 247,
+      "y": 795,
+      "width": 164,
+      "height": 48
+    },
+    {
+      "text": "XXX",
+      "x": 591,
+      "y": 796,
+      "width": 163,
+      "height": 47
+    },
+    {
+      "text": "XXXX",
+      "x": 877,
+      "y": 796,
+      "width": 221,
+      "height": 47
+    },
+    {
+      "text": "XXX",
+      "x": 1277,
+      "y": 797,
+      "width": 165,
+      "height": 45
+    },
+    {
+      "text": "SELECT",
+      "x": 923,
+      "y": 901,
+      "width": 71,
+      "height": 21
+    },
+    {
+      "text": "随机敌人",
+      "x": 123,
+      "y": 1012,
+      "width": 90,
+      "height": 32
+    },
+    {
+      "text": "RS",
+      "x": 82,
+      "y": 1015,
+      "width": 30,
+      "height": 20
+    },
+    {
+      "text": "ON",
+      "x": 265,
+      "y": 1014,
+      "width": 37,
+      "height": 29
+    },
+    {
+      "text": "Y",
+      "x": 889,
+      "y": 1019,
+      "width": 18,
+      "height": 21
+    },
+    {
+      "text": "挑战奖励",
+      "x": 927,
+      "y": 1018,
+      "width": 75,
+      "height": 22
+    },
+    {
+      "text": "0",
+      "x": 1169,
+      "y": 1017,
+      "width": 19,
+      "height": 24
+    },
+    {
+      "text": "x",
+      "x": 1220,
+      "y": 1015,
+      "width": 29,
+      "height": 26
+    },
+    {
+      "text": "自动战斗",
+      "x": 1264,
+      "y": 1012,
+      "width": 110,
+      "height": 32
+    },
+    {
+      "text": "400/100",
+      "x": 1502,
+      "y": 1012,
+      "width": 102,
+      "height": 31
+    },
+    {
+      "text": "下一步",
+      "x": 1694,
+      "y": 1011,
+      "width": 85,
+      "height": 36
+    }
+  ],
+  "ios_deploy_ready": [
+    {
+      "text": "3/3",
+      "x": 1699,
+      "y": 34,
+      "width": 58,
+      "height": 34
+    },
+    {
+      "text": "叶瞬光",
+      "x": 239,
+      "y": 896,
+      "width": 91,
+      "height": 36
+    },
+    {
+      "text": "照",
+      "x": 712,
+      "y": 894,
+      "width": 40,
+      "height": 36
+    },
+    {
+      "text": "千夏",
+      "x": 1188,
+      "y": 893,
+      "width": 64,
+      "height": 38
+    },
+    {
+      "text": "等级60",
+      "x": 235,
+      "y": 931,
+      "width": 84,
+      "height": 32
+    },
+    {
+      "text": "等级60",
+      "x": 708,
+      "y": 934,
+      "width": 85,
+      "height": 32
+    },
+    {
+      "text": "等级60",
+      "x": 1182,
+      "y": 933,
+      "width": 85,
+      "height": 33
+    },
+    {
+      "text": "LS",
+      "x": 80,
+      "y": 1015,
+      "width": 29,
+      "height": 19
+    },
+    {
+      "text": "战斗设置",
+      "x": 162,
+      "y": 1012,
+      "width": 113,
+      "height": 34
+    },
+    {
+      "text": "x",
+      "x": 370,
+      "y": 1017,
+      "width": 23,
+      "height": 24
+    },
+    {
+      "text": "预备编队",
+      "x": 423,
+      "y": 1009,
+      "width": 110,
+      "height": 38
+    },
+    {
+      "text": "400/100",
+      "x": 1483,
+      "y": 1012,
+      "width": 114,
+      "height": 31
+    },
+    {
+      "text": "出战",
+      "x": 1714,
+      "y": 1012,
+      "width": 62,
+      "height": 34
+    }
+  ]
+}
