@@ -4,13 +4,16 @@ import threading
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import replace
-from queue import Queue
+from queue import Empty, Queue
 from types import SimpleNamespace
 from unittest.mock import Mock, call
 
 import pytest
 
-from one_dragon.base.controller.macos import macos_bootstrap_pointer
+from one_dragon.base.controller.macos import (
+    macos_bootstrap_pointer,
+    main_thread_dispatch,
+)
 from one_dragon.base.controller.macos.macos_bootstrap_pointer import (
     MacBootstrapError,
     MacBootstrapPointer,
@@ -178,6 +181,7 @@ def foreground_pointer(monkeypatch: pytest.MonkeyPatch) -> SimpleNamespace:
     """用明确的前台应用和鼠标状态模拟 AppKit / Quartz，不调用系统输入。"""
     previous = Mock()
     previous.processIdentifier.return_value = 77
+    previous.bundleIdentifier.return_value = 'previous.bundle'
     target = Mock()
     target.processIdentifier.return_value = 123
     target.bundleIdentifier.return_value = 'game.bundle'
@@ -189,12 +193,15 @@ def foreground_pointer(monkeypatch: pytest.MonkeyPatch) -> SimpleNamespace:
         return True
 
     target.isActive.side_effect = lambda: state.front is target
+    previous.isActive.side_effect = lambda: state.front is previous
     target.activateWithOptions_.side_effect = lambda options: activate(target)
     previous.activateWithOptions_.side_effect = lambda options: activate(previous)
     appkit = Mock()
     workspace = appkit.NSWorkspace.sharedWorkspace.return_value
     workspace.frontmostApplication.side_effect = lambda: state.front
-    appkit.NSRunningApplication.runningApplicationWithProcessIdentifier_.return_value = target
+    appkit.NSRunningApplication.runningApplicationWithProcessIdentifier_.side_effect = (
+        lambda pid: {123: target, 77: previous}.get(pid)
+    )
     appkit.NSApplicationActivateIgnoringOtherApps = 2
 
     def warp(point: tuple[float, float]) -> int:
@@ -226,7 +233,7 @@ def foreground_pointer(monkeypatch: pytest.MonkeyPatch) -> SimpleNamespace:
     monkeypatch.setattr(pointer, 'resolve_point', resolve)
     return SimpleNamespace(
         pointer=pointer, quartz=quartz, previous=previous, target=target,
-        state=state, resolve=resolve,
+        state=state, resolve=resolve, appkit=appkit, workspace=workspace,
     )
 
 
@@ -239,7 +246,14 @@ def test_foreground_focus_failure_never_clicks_or_moves_cursor(
     fake = foreground_pointer
     fake.target.activateWithOptions_.side_effect = None
     fake.target.activateWithOptions_.return_value = activation_accepted
-    monkeypatch.setattr(macos_bootstrap_pointer.time, 'monotonic', Mock(side_effect=[0, 1.01]))
+    clock = [0.0]
+
+    def monotonic() -> float:
+        """每次查询推进假时钟，使等待有界。"""
+        clock[0] += 0.25
+        return clock[0]
+
+    monkeypatch.setattr(macos_bootstrap_pointer.time, 'monotonic', monotonic)
     with pytest.raises(MacBootstrapError, match='激活游戏|未成为前台'):
         fake.pointer.click(960, 540)
     fake.quartz.CGEventPost.assert_not_called()
@@ -319,9 +333,17 @@ def test_worker_activation_and_restoration_are_dispatched_to_main_thread(
     fake = foreground_pointer
     pending: Queue[Callable[[], None]] = Queue()
     queue = SimpleNamespace(addOperationWithBlock_=pending.put)
-    monkeypatch.setattr(macos_bootstrap_pointer, '_main_operation_queue', lambda: queue)
+    monkeypatch.setattr(main_thread_dispatch, '_main_operation_queue', lambda: queue)
     main_thread = threading.get_ident()
     observed: list[int] = []
+    queries: list[int] = []
+
+    def running_app(pid: int) -> object:
+        """模拟后台读取对象永远拿不到正确动态状态。"""
+        queries.append(threading.get_ident())
+        return {123: fake.target, 77: fake.previous}.get(pid)
+
+    fake.appkit.NSRunningApplication.runningApplicationWithProcessIdentifier_.side_effect = running_app
 
     def activate(app: object) -> bool:
         """记录实际发出激活请求的线程。"""
@@ -333,8 +355,55 @@ def test_worker_activation_and_restoration_are_dispatched_to_main_thread(
     fake.previous.activateWithOptions_.side_effect = lambda options: activate(fake.previous)
     with ThreadPoolExecutor(max_workers=1) as executor:
         future = executor.submit(fake.pointer.click, 960, 540)
-        for _ in range(2):
-            pending.get(timeout=1)()
+        while not future.done():
+            try:
+                pending.get(timeout=0.1)()
+            except Empty:
+                continue
         assert future.result(timeout=1)
     assert observed == [main_thread, main_thread]
+    assert queries and all(thread_id == main_thread for thread_id in queries)
     assert fake.state.front is fake.previous
+
+
+@pytest.mark.parametrize('user_intervenes', [False, True])
+def test_workspace_activation_reuses_bound_pid_and_preserves_user_focus(
+    foreground_pointer: SimpleNamespace, monkeypatch: pytest.MonkeyPatch, user_intervenes: bool,
+) -> None:
+    """直接激活无效时只请求打开同一进程；用户切走则不再请求或点击。"""
+    fake = foreground_pointer
+    fake.target.activateWithOptions_.side_effect = None
+    fake.target.activateWithOptions_.return_value = False
+    clock = [0.0]
+    user_app = Mock()
+    user_app.processIdentifier.return_value = 88
+
+    def sleep(seconds: float) -> None:
+        """推进等待，必要时模拟用户切换到其他应用。"""
+        clock[0] += seconds
+        if user_intervenes:
+            fake.state.front = user_app
+
+    def open_existing(url: object, config: object, completed: Callable[..., None]) -> None:
+        """已有应用变为前台，没有创建新进程。"""
+        fake.state.front = fake.target
+        completed(fake.target, None)
+
+    monkeypatch.setattr(macos_bootstrap_pointer.time, 'monotonic', lambda: clock[0])
+    monkeypatch.setattr(macos_bootstrap_pointer.time, 'sleep', sleep)
+    opener = fake.workspace.openApplicationAtURL_configuration_completionHandler_
+    opener.side_effect = open_existing
+    if user_intervenes:
+        with pytest.raises(MacBootstrapError, match='未成为前台'):
+            fake.pointer.click(960, 540)
+        opener.assert_not_called()
+        fake.quartz.CGEventPost.assert_not_called()
+        assert fake.state.front is user_app
+    else:
+        assert fake.pointer.click(960, 540)
+        opener.assert_called_once()
+        config = fake.appkit.NSWorkspaceOpenConfiguration.configuration.return_value
+        config.setActivates_.assert_called_once_with(True)
+        config.setCreatesNewApplicationInstance_.assert_called_once_with(False)
+        assert fake.quartz.CGEventPost.call_count == 2
+        assert fake.state.front is fake.previous

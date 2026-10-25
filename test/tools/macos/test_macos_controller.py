@@ -14,6 +14,7 @@ import pytest
 
 from one_dragon.base.config.game_account_config import GamePlatformEnum
 from one_dragon.base.controller.gamepad_input import GamepadInput
+from one_dragon.base.controller.macos.macos_game_launcher import MacGameLauncher
 from one_dragon.base.controller.macos.macos_window_capture import (
     MacWindow,
     MacWindowCapture,
@@ -38,8 +39,11 @@ def controller(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> zzz_macos_con
     capture.latest_frame.return_value = CapturedFrame(
         np.full((1080, 1920, 3), 20, dtype=np.uint8), 1, 123.0, 123.0, 1920, 1080,
     )
+    launcher = MacGameLauncher(capture, 'com.miHoYo.Nap', app_path=str(tmp_path / 'missing.app'))
+    monkeypatch.setattr(launcher, '_running_process_ids', Mock(return_value=[]))
     return zzz_macos_controller.ZMacController(
         GameConfig(1), MacOsConfig(1), gamepad=gamepad, window_capture=capture,
+        game_launcher=launcher,
     )
 
 
@@ -95,6 +99,39 @@ def test_semantic_actions_use_xbox_config(
     controller.gamepad.press.assert_called_once_with('xbox_x', 0.2)
     controller.gamepad.release.assert_called_once_with('xbox_x')
     controller.gamepad.tap_combo.assert_called_once_with(['xbox_lt', 'xbox_a'])
+
+
+def test_cold_start_connects_neutral_before_launch_and_only_resumes_after_frame(
+    controller: zzz_macos_controller.ZMacController, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """先建立中立设备，等启动窗口与新帧后才允许输入；失败完整清理。"""
+    launcher = Mock()
+    launcher.started_game = True
+    controller.game_launcher = launcher
+    monkeypatch.setattr(controller, '_start_frame_monitor', Mock())
+    history = Mock()
+    for name, callback in (
+        ('connect', controller.gamepad.connect), ('suspend', controller.gamepad.suspend),
+        ('launch', launcher.ensure_window), ('capture', controller.window_capture.start),
+        ('resume', controller.gamepad.resume),
+    ):
+        history.attach_mock(callback, name)
+
+    def launch() -> MacWindow:
+        """即使假采集已有帧，启动等待中也不允许任何按键。"""
+        with pytest.raises(RuntimeError, match='已暂停'):
+            controller.btn_tap('south')
+        return controller.window_capture.window
+
+    launcher.ensure_window.side_effect = launch
+    assert controller.init_before_context_run()
+    assert [entry[0] for entry in history.mock_calls] == ['connect', 'suspend', 'launch', 'capture', 'resume']
+    assert controller.started_game_this_run
+    controller.gamepad.tap.assert_not_called()
+    launcher.ensure_window.side_effect = RuntimeError('假启动失败')
+    assert not controller.init_before_context_run()
+    assert not controller.started_game_this_run
+    assert controller._input_paused
 
 
 def test_screenshot_preserves_capture_time_mask_and_bounded_history(

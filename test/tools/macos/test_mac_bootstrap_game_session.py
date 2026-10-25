@@ -143,6 +143,23 @@ def test_unknown_screen_and_absent_gamepad_option_fail_without_input(
     session.controller.btn_tap.assert_not_called()
 
 
+def test_cold_start_waits_at_most_sixty_seconds_without_input(session: SimpleNamespace) -> None:
+    """只有本次真实新启动标记允许更久被动等待，超时不点击未知页面。"""
+    session.controller.started_game_this_run = True
+    session.operation.handle_init()
+    for _ in range(9):
+        show(session, 'unknown', {})
+        assert not session.operation.prepare_session().is_fail
+    session.now = 159.9
+    assert not session.operation.prepare_session().is_fail
+    session.now = 160
+    result = session.operation.prepare_session()
+    assert result.is_fail
+    assert '等待60秒' in result.status
+    session.pointer.click.assert_not_called()
+    session.controller.btn_tap.assert_not_called()
+
+
 def test_posted_click_without_ui_change_fails_after_five_seconds(session: SimpleNamespace) -> None:
     """定向投递返回成功不能代替截图确认，也不能重复连点。"""
     show(session, 'world-touch', {})
@@ -261,3 +278,79 @@ def test_real_frames_prepare_gamepad_without_assuming_pc_touch_layout(
     assert session.operation.prepare_session().is_success
     assert not session.operation._area_found('大世界-触屏操作')
     assert not session.operation._area_found('大世界-菜单')
+
+
+@pytest.mark.parametrize('already_gamepad', [True, False])
+def test_real_login_frames_use_gamepad_first_and_enter_saved_account(
+    session: SimpleNamespace, monkeypatch: pytest.MonkeyPatch, already_gamepad: bool,
+) -> None:
+    """两种实拍登录路径都只进入一次；已是手柄时不发送鼠标输入。"""
+    root = Path(__file__).resolve().parents[4]
+    patch = yaml.safe_load((root / (
+        'assets/game_data/platform/ios_gamepad/screen_patches/macos_bootstrap.yml'
+    )).read_text(encoding='utf-8'))
+    screen = ScreenInfo(patch['screen'])
+    world = ScreenInfo(yaml.safe_load(
+        (root / 'assets/game_data/screen_info/normal_world_basic.yml').read_text(encoding='utf-8'),
+    ))
+    areas = {
+        (item.screen_name, area.area_name): area
+        for item in (screen, world) for area in item.area_list
+    }
+    operation = session.operation
+    operation.ctx.screen_loader.get_area.side_effect = lambda name, area: areas.get((name, area))
+    operation.ctx.tm = TemplateMatcher(TemplateLoader())
+    recorded_ocr = RecordedOcr()
+    operation.ctx.ocr = recorded_ocr
+    session.controller.started_game_this_run = True
+    operation.handle_init()
+    for method in ('_has_text', 'round_by_find_area'):
+        monkeypatch.setattr(operation, method, getattr(MacBootstrapGameSession, method).__get__(operation))
+    session.controller.screenshot.side_effect = lambda: (
+        session.now, cv2_utils.read_image(str(SCREENS / f'{recorded_ocr.state}.webp')),
+    )
+    if not already_gamepad:
+        for state, expected_point in (
+            ('ios_login_touch', (1797, 761)),
+            ('ios_login_settings_touch', (263, 375)),
+            ('ios_login_input_touch', (1373, 319)),
+            ('ios_login_input_options_touch', (1543, 495)),
+            ('ios_login_input_gamepad', None),
+        ):
+            recorded_ocr.state = state
+            show(session, state, {})
+            result = operation.prepare_session()
+            assert not result.is_success and not result.is_fail, result.status
+            if expected_point is not None:
+                session.pointer.click.assert_called_with(*expected_point)
+
+    recorded_ocr.state = 'ios_login_gamepad'
+    show(session, recorded_ocr.state, {})
+    assert not operation.prepare_session().is_fail
+    assert not operation.prepare_session().is_fail
+    recorded_ocr.state = 'ios_cold_login_world'
+    show(session, recorded_ocr.state, {})
+    assert operation.prepare_session().is_success
+    assert session.controller.btn_tap.call_args_list == (
+        [call('south')] if already_gamepad else [call('east'), call('south')]
+    )
+    assert session.pointer.click.call_count == (0 if already_gamepad else 4)
+
+
+def test_login_wait_is_bounded_and_credentials_require_paired_prompts(
+    session: SimpleNamespace,
+) -> None:
+    """普通字幕里的单词不会误拦；明确凭据组合零输入停止，加载不重复进入。"""
+    show(session, 'unknown', {'登录-凭据提示': '验证码'})
+    assert not session.operation.prepare_session().is_fail
+    show(session, 'unknown', {'登录-凭据提示': '输入手机号注册/登录 验证码'})
+    assert session.operation.prepare_session().is_fail
+    session.pointer.click.assert_not_called()
+    session.controller.btn_tap.assert_not_called()
+
+    session.texts = {}
+    session.operation._login_wait_until = session.now + 60
+    session.now += 59
+    assert not session.operation.prepare_session().is_fail
+    session.now += 1
+    assert '等待60秒' in session.operation.prepare_session().status
