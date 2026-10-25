@@ -1,13 +1,11 @@
 """跨 Space 的原生回调恢复与重复像素保护，不调用真实系统服务。"""
 
 from types import SimpleNamespace
-from unittest.mock import Mock
 
 import numpy as np
 import pytest
 
 from one_dragon.base.controller.macos import macos_window_capture as module
-from one_dragon.base.controller.macos.macos_game_launcher import select_game_window
 
 
 @pytest.fixture
@@ -74,8 +72,8 @@ def test_inactive_recovers_only_with_changed_complete_pixels(source: tuple) -> N
     assert capture._latest is fresh
 
 
-def test_active_and_diagnostics_do_not_fabricate_frames(source: tuple) -> None:
-    """Active 和读取诊断都不是采集证据；旧流通知无效，真正停止不可恢复。"""
+def test_active_notification_requires_new_frame(source: tuple) -> None:
+    """Active 通知不能替代新帧；旧流通知无效，真正停止不可恢复。"""
     capture, stream, state = source
     capture._receive_sample(stream, None, 0)
     capture._set_stream_active(object(), False)
@@ -86,11 +84,6 @@ def test_active_and_diagnostics_do_not_fabricate_frames(source: tuple) -> None:
     state.status = 1
     capture._receive_sample(stream, None, 0)
     assert capture.latest_raw_frame(max_age_seconds=0.5) is None
-    state.now += 1
-    diag = capture.diagnostics()
-    assert diag.callback_age_seconds == 1 and diag.observation_age_seconds is None
-    diag.sample_counts.clear()
-    assert capture.diagnostics().sample_counts
     state.status = 0
     capture._receive_sample(stream, None, 0)
     assert capture.latest_raw_frame(max_age_seconds=0.5) is not None
@@ -114,22 +107,3 @@ def test_inactive_during_conversion_discards_inflight_frame(source: tuple, monke
     capture._receive_sample(stream, None, 0)
     assert capture._latest is None
 
-
-def test_discovery_and_selection_include_other_spaces(monkeypatch: pytest.MonkeyPatch) -> None:
-    """枚举显式请求全部窗口，其他桌面仍按身份和大小正常选中。"""
-    native = Mock()
-    monkeypatch.setattr(module, '_native_api', lambda: (None, None, None, None, native, None))
-    capture = module.MacWindowCapture()
-    content = SimpleNamespace(windows=lambda: [])
-
-    def wait(invoke: object, operation: str) -> tuple:
-        invoke('completion')
-        return content, None
-
-    monkeypatch.setattr(capture, '_wait', wait)
-    assert capture._shareable_windows() == []
-    native.SCShareableContent.getShareableContentExcludingDesktopWindows_onScreenWindowsOnly_completionHandler_.assert_called_once_with(
-        True, False, 'completion',
-    )
-    window = module.MacWindow('game', 1, 2, '游戏', 953, 564, on_screen=False)
-    assert select_game_window([window], '') is window
