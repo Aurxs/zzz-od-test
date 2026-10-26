@@ -357,3 +357,30 @@ def test_material_category_reaches_card_configuration(operation: GamepadChargePl
     monkeypatch.setattr(charge_plan, 'GamepadConfigureCards', cards)
     assert operation.configure_cards().is_success
     cards.assert_called_once_with(operation.ctx, 3, mission, category)
+
+
+def test_patrol_dispatch_ignores_hidden_simulation_fields(
+    operation: GamepadChargePlan, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """巡防复用原计划计数，不按残留的模拟室卡片配置选择或估算。"""
+    plan = operation.config.plan_list[0]
+    plan.category_name = '区域巡防'
+    plan.mission_type_name = '怪兽二重奏'
+    plan.card_num = '旧卡片字段'
+    assert validate_macos_charge_plan(operation.config) is None
+    patrol = Mock(expected_charge=60)
+    patrol.read_charge.return_value = (60, 60)
+    factory = Mock(return_value=patrol)
+    monkeypatch.setattr(charge_plan, 'GamepadAreaPatrol', factory)
+    cards = Mock()
+    monkeypatch.setattr(charge_plan, 'GamepadConfigureCards', cards)
+    assert operation.select_plan().is_success
+    assert operation.configure_cards().is_success
+    cards.assert_not_called()
+    assert operation.check_charge().is_success
+    factory.assert_called_once_with(operation.ctx, plan, config=operation.config)
+    patrol.read_charge.return_value = (59, 60)
+    assert operation.check_charge().status == operation.STATUS_CHARGE_NOT_ENOUGH
+    assert plan.run_times == 0
+    plan.mission_type_name = '代理人方案培养'
+    assert validate_macos_charge_plan(operation.config) is not None
