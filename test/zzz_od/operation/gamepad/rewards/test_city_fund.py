@@ -115,6 +115,21 @@ def test_unknown_reward_does_not_confirm_or_return(
     operation.ctx.controller.btn_tap.assert_not_called()
 
 
+def test_menu_animation_waits_without_repeating_input(
+    operation: GamepadCityFund, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """菜单已发送后允许角色入场动画，等待超限才保留未知页。"""
+    operation._menu_opened = True
+    monkeypatch.setattr(operation, '_city_visible', lambda: False)
+    monkeypatch.setattr(operation, '_menu_visible', lambda: False)
+    operation.last_screenshot = None
+    assert not operation.open_city().is_fail
+    operation.node_retry_times = 16
+    assert operation.open_city().is_fail
+    operation.ctx.controller.click.assert_not_called()
+    operation.ctx.controller.btn_tap.assert_not_called()
+
+
 def test_actual_claimed_tasks_and_level_reward(operation: GamepadCityFund) -> None:
     """本次生产领取后的实拍：四条已领、等级奖励确认后 X 消失。"""
     set_frame(operation, 'ios_tasks_today_after')
