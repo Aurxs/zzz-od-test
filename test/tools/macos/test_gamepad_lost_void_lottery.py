@@ -22,13 +22,14 @@ def operation_with_count(text: str) -> GamepadLostVoidLottery:
         controller=Mock(), lost_void=SimpleNamespace(in_normal_world=Mock(return_value=False)),
     ))
     operation.last_screenshot = image
+    operation.last_screenshot_time = 100
     operation._read_area = Mock(return_value=(image[880:1010, 760:1165], words))
     operation.check_and_update_current_screen = Mock(return_value='迷失之地-抽奖机')
     operation._after_round_wait = Mock()
     return operation
 
 
-@pytest.mark.parametrize(('text', 'button'), [('开始1/1', 'south'), ('开始0/1', 'east'), ('开始1/2', None), ('开始1000', None)])
+@pytest.mark.parametrize(('text', 'button'), [('开始1/1', 'south'), ('开始0/1', 'east'), ('开始1/2', 'south'), ('开始4/3', None), ('开始1000', None)])
 def test_count_numerator_controls_start_or_return(text: str, button: str | None) -> None:
     operation = operation_with_count(text)
     result = operation.use_remaining()
@@ -59,3 +60,25 @@ def test_start_does_not_repeat_when_same_counter_remains(monkeypatch: pytest.Mon
     now[0] = 109
     assert operation.use_remaining().is_fail
     operation.ctx.controller.btn_tap.assert_called_once_with('south')
+
+
+def test_three_chances_require_each_actual_decrement_and_new_frame(monkeypatch: pytest.MonkeyPatch) -> None:
+    from zzz_od.operation.gamepad import lost_void_lottery as module
+
+    operation = operation_with_count('开始3/3')
+    common = Mock()
+    common.can_handle.return_value = False
+    monkeypatch.setattr(module, 'GamepadLostVoidChooseCommon', lambda ctx: common)
+    operation._known_reward_visible = Mock(return_value=False)
+    assert not operation.use_remaining().is_success
+    operation.ctx.controller.btn_tap.assert_called_once_with('south')
+    assert not operation.use_remaining().is_success
+    operation.ctx.controller.btn_tap.assert_called_once_with('south')
+    for remaining in (2, 1, 0):
+        words = operation_with_count(f'开始{remaining}/3')._read_area.return_value
+        operation._read_area.return_value = words
+        operation.last_screenshot_time += 1
+        assert not operation.use_remaining().is_success
+        assert operation._pending_remaining is None
+        assert not operation.use_remaining().is_success
+    assert [c.args[0] for c in operation.ctx.controller.btn_tap.call_args_list] == ['south', 'south', 'south', 'east']
