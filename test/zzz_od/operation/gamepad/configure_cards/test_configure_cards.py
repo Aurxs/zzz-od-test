@@ -96,3 +96,41 @@ def test_other_material_menu_and_saved_target(op: GamepadConfigureCards) -> None
     assert preset_focused(op.ctx, op.last_screenshot, '音擎专项')
     assert not preset_focused(op.ctx, op.last_screenshot, '调查专项')
     assert read_preset_charge(op.ctx, op.last_screenshot) == (33, 20)
+
+
+def test_editor_transition_does_not_mistake_old_preset_for_wrong_material(op: GamepadConfigureCards, monkeypatch: pytest.MonkeyPatch) -> None:
+    """确认编辑后的过渡帧只等待，不把未稳定的外层文字当作错误材料。"""
+    from zzz_od.operation.gamepad import configure_cards
+    op._menu_confirm_sent = True
+    monkeypatch.setattr(op, '_editor_charge', lambda: None)
+    monkeypatch.setattr(op, '_preset_menu', lambda: (False, None))
+    monkeypatch.setattr(op, '_preset_visible', lambda: True)
+    monkeypatch.setattr(configure_cards, 'preset_focused', lambda *args: False)
+    result = op.configure()
+    assert not result.is_fail and '切换动画' in result.status
+    op.ctx.controller.btn_tap.assert_not_called()
+
+
+def test_material_category_focus_uses_complete_card(op: GamepadConfigureCards) -> None:
+    """分类页按完整黄框确认基础材料，不把其他卡片的 NEW 当焦点。"""
+    from zzz_od.operation.gamepad.simulation_preset import (
+        SIMULATION_TYPES,
+        read_focused_choice,
+    )
+    screen = cv2_utils.read_image(str(SCREENS / 'ios_material_category.webp'))
+    selected, visible = read_focused_choice(op.ctx, screen, '手柄-材料分类列表', (*SIMULATION_TYPES, '自定义模板'))
+    assert selected == '基础材料'
+    assert set(SIMULATION_TYPES) <= visible
+
+
+@pytest.mark.parametrize(('state', 'mission', 'cost'), [('ios_promotion_single', '强攻演练', 20), ('ios_wengine_last_three', '防护音圈试验', 60)])
+def test_material_preset_after_category_or_page_change(op: GamepadConfigureCards, state: str, mission: str, cost: int) -> None:
+    """不同分类和后页焦点使用原专项名，实读单卡和三卡消耗。"""
+    from zzz_od.operation.gamepad.simulation_preset import (
+        preset_focused,
+        read_preset_charge,
+    )
+    screen = cv2_utils.read_image(str(SCREENS / f'{state}.webp'))
+    assert preset_focused(op.ctx, screen, mission)
+    assert not preset_focused(op.ctx, screen, '调查专项')
+    assert read_preset_charge(op.ctx, screen)[1] == cost

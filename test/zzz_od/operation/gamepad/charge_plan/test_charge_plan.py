@@ -42,7 +42,7 @@ def config() -> ChargePlanConfig:
         ('mission_type_name', '代理人晋升'),
         ('mission_name', '未知专项'),
         ('level', '50'),
-        ('card_num', '2'),
+        ('card_num', '6'),
         ('predefined_team_idx', 6),
     ],
 )
@@ -76,7 +76,7 @@ def test_application_checks_macos_before_bootstrap_only(
     monkeypatch: pytest.MonkeyPatch, config: ChargePlanConfig, platform: str,
 ) -> None:
     """Mac 未支持计划不进入公共启动，Windows 仍委托原应用执行。"""
-    config.plan_list[0].card_num = '2'
+    config.plan_list[0].card_num = '6'
     app = ChargePlanApp.__new__(ChargePlanApp)
     app.config = config
     delegate = Mock(return_value=OperationResult(True, '原应用'))
@@ -169,11 +169,11 @@ def test_saved_plan_repeats_until_its_original_count(
     }
     assert factory.call_args.kwargs['config'] is operation.config
     assert transport.call_args_list == [call(operation.ctx, '训练', '实战模拟室', '基础材料')] * 2
-    assert cards.call_args_list == [call(operation.ctx, 5, '调查专项')] * 2
+    assert cards.call_args_list == [call(operation.ctx, 5, '调查专项', '基础材料')] * 2
     operation.ctx.controller.btn_tap.assert_not_called()
 
 
-@pytest.mark.parametrize(('card_num', 'num_cards'), [('1', 1), ('5', 5), ('默认数量', 5)])
+@pytest.mark.parametrize(('card_num', 'num_cards'), [('1', 1), ('2', 2), ('3', 3), ('4', 4), ('5', 5), ('默认数量', 5)])
 def test_card_configuration_uses_original_plan_target(
     monkeypatch: pytest.MonkeyPatch, operation: GamepadChargePlan,
     card_num: str, num_cards: int,
@@ -186,14 +186,14 @@ def test_card_configuration_uses_original_plan_target(
     cards.return_value.execute.return_value = OperationResult(True)
     monkeypatch.setattr(charge_plan, 'GamepadConfigureCards', cards)
     assert operation.configure_cards().is_success
-    cards.assert_called_once_with(operation.ctx, num_cards, operation.current_plan.mission_name)
+    cards.assert_called_once_with(operation.ctx, num_cards, operation.current_plan.mission_name, operation.current_plan.mission_type_name)
     monkeypatch.setattr(operation._simulation, '_preset_selected', Mock(return_value=True))
     monkeypatch.setattr(operation._simulation, 'read_charge', Mock(return_value=(20, 20)))
     result = operation.check_charge()
     if num_cards == 1:
         assert result.is_success and result.status is None
     else:
-        assert result.is_fail and '目标 100' in result.status
+        assert result.is_fail and f'目标 {num_cards * 20}' in result.status
     operation.ctx.controller.btn_tap.assert_not_called()
 
 
@@ -324,7 +324,7 @@ def test_material_reaches_card_configuration(operation: GamepadChargePlan, monke
     cards.return_value.execute.return_value = OperationResult(True)
     monkeypatch.setattr(charge_plan, 'GamepadConfigureCards', cards)
     assert operation.configure_cards().is_success
-    cards.assert_called_once_with(operation.ctx, 1, mission)
+    cards.assert_called_once_with(operation.ctx, 1, mission, '基础材料')
 
 
 def test_shortage_skips_multiple_unaffordable_plans(operation: GamepadChargePlan, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -342,3 +342,18 @@ def test_shortage_skips_multiple_unaffordable_plans(operation: GamepadChargePlan
     assert operation.select_plan().is_success
     assert operation.current_plan is third
     assert all(plan.run_times == 0 for plan in operation.config.plan_list)
+
+
+@pytest.mark.parametrize(('category', 'mission'), [('代理人晋升', '强攻演练'), ('音擎改装', '支援分频试验'), ('代理人技能', '共鸣测试')])
+def test_material_category_reaches_card_configuration(operation: GamepadChargePlan, monkeypatch: pytest.MonkeyPatch, category: str, mission: str) -> None:
+    """分类和专项必须一起传入操作，不能把新分类传成基础材料。"""
+    plan = operation.config.plan_list[0]
+    plan.mission_type_name = category
+    plan.mission_name = mission
+    plan.card_num = '3'
+    assert operation.select_plan().is_success
+    cards = Mock()
+    cards.return_value.execute.return_value = OperationResult(True)
+    monkeypatch.setattr(charge_plan, 'GamepadConfigureCards', cards)
+    assert operation.configure_cards().is_success
+    cards.assert_called_once_with(operation.ctx, 3, mission, category)
