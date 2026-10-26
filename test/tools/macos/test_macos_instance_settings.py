@@ -62,8 +62,27 @@ def settings(
     interface.close()
 
 
+@pytest.fixture
+def game_settings(
+    qapp: QApplication,
+    settings: tuple[zzz_setting_instance_interface.ZSettingInstanceInterface, SimpleNamespace, Path],
+    monkeypatch: pytest.MonkeyPatch,
+) -> Iterator[tuple[setting_game_interface.SettingGameInterface, SimpleNamespace, Path]]:
+    """真实游戏设置页读取与账户页相同的当前账户配置。"""
+    _, ctx, account_path = settings
+    ctx.game_config = GameConfig(1)
+    monkeypatch.setattr(setting_game_interface, 'sys', SimpleNamespace(platform='darwin'))
+    interface = setting_game_interface.SettingGameInterface(ctx)
+    interface.on_interface_shown()
+    for _ in range(3):
+        qapp.processEvents()
+    yield interface, ctx, account_path
+    interface.close()
+
+
 def test_showing_macos_settings_keeps_default_pc_configuration(
     settings: tuple[zzz_setting_instance_interface.ZSettingInstanceInterface, SimpleNamespace, Path],
+    game_settings: tuple[setting_game_interface.SettingGameInterface, SimpleNamespace, Path],
 ) -> None:
     """异步加载控件值后仍保留默认 PC，不创建 Mac 配置或清理连接。"""
     interface, ctx, account_path = settings
@@ -71,12 +90,15 @@ def test_showing_macos_settings_keeps_default_pc_configuration(
         'game_path: C:/games/Zenless.exe\ngame_region: cn_b\naccount: existing\n'
     )
     assert ctx.game_account_config.platform == GamePlatformEnum.PC.value.value
-    assert interface.platform_opt.getValue() == GamePlatformEnum.PC.value.value
-    assert interface.macos_bundle_opt.getValue() == ctx.macos_config.bundle_id
+    runtime = game_settings[0].macos_runtime_settings
+    assert not hasattr(interface, 'platform_opt')
+    assert not hasattr(interface, 'macos_menu_interval_opt')
+    assert runtime.platform_opt.getValue() == GamePlatformEnum.PC.value.value
+    assert runtime.macos_bundle_opt.getValue() == ctx.macos_config.bundle_id
     assert not hasattr(interface, 'macos_ojd_opt')
     assert not hasattr(interface, 'macos_gamepad_settings')
     assert ctx.macos_config.ojd_auto_start is False
-    assert interface.macos_top_inset_opt.spin_box.value() == 0
+    assert runtime.macos_top_inset_opt.spin_box.value() == 0
     assert not (account_path.parent / 'macos.yml').exists()
     assert ctx.ready_for_application is True
     ctx.run_context.stop_running.assert_not_called()
@@ -86,10 +108,11 @@ def test_showing_macos_settings_keeps_default_pc_configuration(
 
 
 def test_user_selecting_macos_saves_platform_and_cleans_old_controller(
-    settings: tuple[zzz_setting_instance_interface.ZSettingInstanceInterface, SimpleNamespace, Path],
+    game_settings: tuple[setting_game_interface.SettingGameInterface, SimpleNamespace, Path],
 ) -> None:
     """通过下拉框主动选 Mac 才落盘，并停用原连接以等待重新启动。"""
-    interface, ctx, _ = settings
+    game_interface, ctx, _ = game_settings
+    interface = game_interface.macos_runtime_settings
     old_controller = ctx.controller
     value = GamePlatformEnum.MACOS_PLAYCOVER.value.value
 
@@ -126,8 +149,9 @@ def test_macos_hides_windows_login_controls_in_developer_mode(
         interface.bilibili_account_name, interface.force_login_opt,
     ):
         assert control.isHidden()
-    assert interface.platform_opt.isVisible()
-    assert interface.macos_bundle_opt.isVisible()
+    assert interface._account_settings_group.isHidden()
+    assert not hasattr(interface, 'platform_opt')
+    assert not hasattr(interface, 'macos_bundle_opt')
 
 
 def test_gamepad_settings_preserve_application_readiness(
@@ -154,11 +178,39 @@ def test_gamepad_settings_preserve_application_readiness(
     interface.close()
 
 
-def test_menu_interval_setting_saves_without_reconnecting(settings) -> None:
+def test_menu_interval_setting_saves_without_reconnecting(
+    game_settings: tuple[setting_game_interface.SettingGameInterface, SimpleNamespace, Path],
+) -> None:
     """界面等待配置即时保存，不断开手柄与采集。"""
-    interface, ctx, _ = settings
+    game_interface, ctx, _ = game_settings
+    interface = game_interface.macos_runtime_settings
     assert interface.macos_menu_interval_opt.spin_box.value() == 500
     interface.macos_menu_interval_opt.spin_box.setValue(800)
     assert MacOsConfig(1).menu_action_interval_ms == 800
     ctx.run_context.stop_running.assert_not_called()
     ctx.controller.cleanup_after_app_shutdown.assert_not_called()
+
+
+def test_runtime_settings_rebind_current_account(
+    game_settings: tuple[setting_game_interface.SettingGameInterface, SimpleNamespace, Path],
+    qapp: QApplication, tmp_path: Path,
+) -> None:
+    """切换账户再打开设置后，控件读取并写入新账户而不是旧适配器。"""
+    interface, ctx, _ = game_settings
+    original = ctx.macos_config
+    replacement = MacOsConfig(2)
+    replacement.file_path = str(tmp_path / 'second-macos.yml')
+    replacement.data = {}
+    replacement.menu_action_interval_ms = 1200
+    replacement.capture_top_inset_pixels = 42
+    ctx.macos_config = replacement
+    interface.on_interface_shown()
+    for _ in range(3):
+        qapp.processEvents()
+    runtime = interface.macos_runtime_settings
+    assert runtime.macos_menu_interval_opt.spin_box.value() == 1200
+    assert runtime.macos_top_inset_opt.spin_box.value() == 42
+    runtime.macos_menu_interval_opt.spin_box.setValue(900)
+    assert replacement.menu_action_interval_ms == 900
+    assert original.menu_action_interval_ms == 500
+    ctx.run_context.stop_running.assert_not_called()
