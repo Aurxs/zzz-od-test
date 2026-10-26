@@ -354,3 +354,30 @@ def test_login_wait_is_bounded_and_credentials_require_paired_prompts(
     assert not session.operation.prepare_session().is_fail
     session.now += 1
     assert '等待60秒' in session.operation.prepare_session().status
+
+
+
+def test_optional_login_event_claims_confirms_then_returns(session: SimpleNamespace, monkeypatch: pytest.MonkeyPatch) -> None:
+    """可选活动依次核对领取页、获得弹窗、返回页，未出现时不发按键。"""
+    monkeypatch.setattr(session.operation, 'save_screenshot', Mock())
+    match = MatchResultList()
+    match.append(MatchResult(1, 30, 40, 60, 30))
+    monkeypatch.setattr(session.operation, '_read_area', lambda name: {'领取×01': match, '确认': match})
+    monkeypatch.setattr('zzz_od.operation.enter_game.mac_bootstrap_game_session.has_filled_highlight', lambda *args: True)
+    session.operation.ctx.screen_loader.get_area.side_effect = lambda *args: SimpleNamespace(
+        rect=Rect(100, 200, 300, 400), x1=100, y1=200, x2=300, y2=400,
+    )
+    show(session, 'unknown', {})
+    session.operation.prepare_session()
+    session.controller.btn_tap.assert_not_called()
+    event = {'登录后-活动说明': '全新放送 累计登录7天', '登录后-活动按键': 'A 选择 B 返回'}
+    for _ in range(2):
+        show(session, 'event', event)
+        session.operation.prepare_session()
+    session.controller.btn_tap.assert_called_once_with('south')
+    show(session, 'reward', {'登录后-获得奖励': '获得 确认 选择'})
+    session.operation.prepare_session()
+    show(session, 'event', event)
+    session.operation.prepare_session()
+    assert session.controller.btn_tap.call_args_list == [call('south'), call('south'), call('east')]
+    session.pointer.click.assert_not_called()
