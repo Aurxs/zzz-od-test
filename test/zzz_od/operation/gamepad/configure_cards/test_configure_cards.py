@@ -134,3 +134,16 @@ def test_material_preset_after_category_or_page_change(op: GamepadConfigureCards
     assert preset_focused(op.ctx, screen, mission)
     assert not preset_focused(op.ctx, screen, '调查专项')
     assert read_preset_charge(op.ctx, screen)[1] == cost
+
+
+@pytest.mark.parametrize(('state', 'mission', 'count'), [('ios_engine_single', '音擎专项', 1), ('ios_wengine_last_three', '防护音圈试验', 3)])
+def test_default_preserves_saved_cards_without_edit(op: GamepadConfigureCards, monkeypatch: pytest.MonkeyPatch, state: str, mission: str, count: int) -> None:
+    """默认数量对真实单卡和三卡均只读取，不打开编辑或重建卡组。"""
+    op.num_cards = None
+    op.mission_name = mission
+    op.last_screenshot = cv2_utils.read_image(str(SCREENS / f'{state}.webp'))
+    monkeypatch.setattr(op, '_preset_visible', Mock(return_value=True))
+    result = op.configure()
+    assert result.is_success and result.data['num_cards'] == count
+    assert result.data['required_charge'] == count * 20
+    op.ctx.controller.btn_tap.assert_not_called()

@@ -81,7 +81,7 @@ def operation(monkeypatch: pytest.MonkeyPatch) -> GamepadCombatSimulation:
     )
     ctx.run_context.get_config.return_value.plan_list = []
     ctx.screen_loader.get_area.side_effect = lambda screen, area: SimpleNamespace(rect=AREAS[area][0])
-    op = GamepadCombatSimulation(ctx, ChargePlanItem(auto_battle_config='Mac全配队通用'))
+    op = GamepadCombatSimulation(ctx, ChargePlanItem(auto_battle_config='Mac全配队通用', card_num='5'))
 
     def find_area(screen: object, screen_name: str, area_name: str) -> object:
         """普通文字按对应局部快照匹配；大世界模板只在实拍大世界帧命中。"""
@@ -289,3 +289,16 @@ def test_battle_recovery_requires_explicit_mode_and_hud(operation: GamepadCombat
     operation.prepare_only = True
     assert operation.prepare_cards().is_fail
     operation.ctx.controller.btn_tap.assert_not_called()
+
+
+@pytest.mark.parametrize('required', [20, 60, 100])
+def test_default_binds_actual_cost_and_rejects_changes(operation: GamepadCombatSimulation, required: int) -> None:
+    """默认数量绑定当前方案，卡数未知或后续变化均不能静默通过。"""
+    operation.plan.card_num = '默认数量'
+    assert operation.expected_charge is None
+    assert not operation.bind_prepared_charge(0)
+    assert operation.bind_prepared_charge(required)
+    assert operation.expected_charge == required
+    assert not operation.bind_prepared_charge(40)
+    operation.handle_init()
+    assert operation.expected_charge is None

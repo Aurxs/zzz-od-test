@@ -173,12 +173,12 @@ def test_saved_plan_repeats_until_its_original_count(
     operation.ctx.controller.btn_tap.assert_not_called()
 
 
-@pytest.mark.parametrize(('card_num', 'num_cards'), [('1', 1), ('2', 2), ('3', 3), ('4', 4), ('5', 5), ('默认数量', 5)])
+@pytest.mark.parametrize(('card_num', 'num_cards'), [('1', 1), ('2', 2), ('3', 3), ('4', 4), ('5', 5), ('默认数量', None)])
 def test_card_configuration_uses_original_plan_target(
     monkeypatch: pytest.MonkeyPatch, operation: GamepadChargePlan,
-    card_num: str, num_cards: int,
+    card_num: str, num_cards: int | None,
 ) -> None:
-    """一张按二十核对，默认仍要求五张，旧一张预设不能冒充默认计划。"""
+    """显式卡数必须匹配；默认不编辑卡片，绑定当前方案实际消耗。"""
     operation.config.plan_list[0].card_num = card_num
     assert validate_macos_charge_plan(operation.config) is None
     assert operation.select_plan().is_success
@@ -190,7 +190,7 @@ def test_card_configuration_uses_original_plan_target(
     monkeypatch.setattr(operation._simulation, '_preset_selected', Mock(return_value=True))
     monkeypatch.setattr(operation._simulation, 'read_charge', Mock(return_value=(20, 20)))
     result = operation.check_charge()
-    if num_cards == 1:
+    if num_cards in (None, 1):
         assert result.is_success and result.status is None
     else:
         assert result.is_fail and f'目标 {num_cards * 20}' in result.status
