@@ -67,6 +67,16 @@ def test_confirmed_upgrade_hands_back_to_store_without_another_a() -> None:
     operation.ctx.controller.btn_tap.assert_not_called()
 
 
+def test_confirmed_gain_hands_back_to_lottery_without_another_a() -> None:
+    operation, _ = make_operation()
+    operation._confirmed = True
+    operation.can_handle.return_value = False
+    operation.check_and_update_current_screen = Mock(return_value='迷失之地-抽奖机')
+    assert operation.choose().is_success
+    assert '迷失之地-抽奖机' in operation.check_and_update_current_screen.call_args.kwargs['screen_name_list']
+    operation.ctx.controller.btn_tap.assert_not_called()
+
+
 def make_gain_operation() -> GamepadLostVoidChooseCommon:
     from one_dragon.base.matcher.match_result import MatchResult,MatchResultList
     operation,_=make_operation()
