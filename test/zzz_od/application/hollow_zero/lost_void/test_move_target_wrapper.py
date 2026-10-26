@@ -128,3 +128,28 @@ def test_merge_dereferences_self_parent() -> None:
     # p 累积了三个名称
     assert len(p.target_name_list) == 3
     assert '挑战-限时' in p.target_name_list
+
+
+def test_reverse_merge_does_not_make_root_its_own_parent() -> None:
+    first=_make_wrapper(100,100,200,200,'战斗-鸣徽')
+    second=_make_wrapper(220,100,320,200,'战斗-武备')
+    assert first.merge_another_target(second)
+    assert not second.merge_another_target(first)
+    assert first.merge_parent is None
+    assert second.merge_parent is first
+    assert first.target_name_list==['战斗-鸣徽','战斗-武备']
+
+
+def test_nested_child_merge_updates_root_bounds_without_cycle() -> None:
+    root=_make_wrapper(100,100,200,200,'入口')
+    middle=_make_wrapper(220,100,320,200,'战斗-鸣徽')
+    child=_make_wrapper(340,100,440,200,'战斗-武备')
+    later=_make_wrapper(460,100,560,200,'挚交会谈')
+    assert middle.merge_another_target(child)
+    assert root.merge_another_target(middle)
+    assert not child.merge_another_target(root)
+    assert child.merge_another_target(later)
+    assert root.merge_parent is None
+    assert later.merge_parent is root
+    assert root.entire_rect==Rect(100,100,560,200)
+    assert len(root.target_name_list)==4
