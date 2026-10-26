@@ -94,3 +94,24 @@ def test_period_rewards_gray_returns_without_claiming() -> None:
     op.ctx.controller.btn_tap.assert_not_called()
     op.claim()
     op.ctx.controller.btn_tap.assert_called_once_with('east')
+
+
+def test_application_keeps_failed_status_after_return(monkeypatch) -> None:
+    """成功返回街区不能覆盖挑战或领奖失败。"""
+    from zzz_od.application.notorious_hunt import notorious_hunt_app
+    from zzz_od.operation.gamepad import notorious_hunt
+
+    monkeypatch.setattr(notorious_hunt_app.sys, 'platform', 'darwin')
+    app = object.__new__(notorious_hunt_app.NotoriousHuntApp)
+    app.ctx = Mock()
+    app._previous_node = None
+    app._previous_round_result = SimpleNamespace(is_success=False, status='领奖未完成')
+    app.round_fail = Mock(return_value='failed')
+    back = Mock()
+    back.execute.return_value = SimpleNamespace(success=True)
+    monkeypatch.setattr(notorious_hunt, 'GamepadHuntBackToWorld', Mock(return_value=back))
+    assert app.back_to_world() == 'failed'
+    app.round_fail.assert_called_once_with('领奖未完成')
+    app.round_fail.reset_mock()
+    assert app.check_left_times() == 'failed'
+    app.round_fail.assert_called_once_with('领奖未完成')
