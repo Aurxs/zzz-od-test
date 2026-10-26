@@ -227,3 +227,25 @@ def test_cli_starts_once_on_main_thread_and_cleans_up_worker_failure(
     assert observed[0] == ('start', main_thread)
     assert observed[1][0] == 'worker' and observed[1][1] != main_thread
     assert observed[2] == ('stop', main_thread)
+
+
+def test_configured_team_is_chosen_before_deployment(
+    operation: GamepadCombatSimulation, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """按计划调用选队，失败阻断出战，成功后不重复选且使用队伍策略。"""
+    from zzz_od.operation.gamepad import predefined_team
+
+    operation.plan.predefined_team_idx = 0
+    operation.ctx.team_config = SimpleNamespace(get_team_by_idx=lambda idx: SimpleNamespace(auto_battle='队伍策略'))
+    assert operation.check_plan().is_success
+    assert operation.prepare_auto_battle().is_success
+    operation.ctx.auto_battle_context.init_auto_op.assert_called_once_with(op_name='队伍策略', sub_dir='auto_battle')
+    selector = Mock()
+    monkeypatch.setattr(predefined_team, 'GamepadChoosePredefinedTeam', selector)
+    selector.return_value.execute.side_effect = [OperationResult(False, '选队失败'), OperationResult(True)]
+    set_frame(operation, 'ios_deploy_ready')
+    assert operation.prepare_deployment().is_fail
+    assert not operation.prepare_deployment().is_success
+    assert operation.prepare_deployment().status == operation.STATUS_DEPLOYMENT_READY
+    assert selector.call_count == 2
+    operation.ctx.controller.btn_tap.assert_not_called()

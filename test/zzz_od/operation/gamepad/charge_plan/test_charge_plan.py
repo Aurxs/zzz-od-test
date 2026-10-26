@@ -43,7 +43,7 @@ def config() -> ChargePlanConfig:
         ('mission_name', '音擎专项'),
         ('level', '50'),
         ('card_num', '2'),
-        ('predefined_team_idx', 0),
+        ('predefined_team_idx', 6),
     ],
 )
 def test_preflight_rejects_later_unsupported_plan(
@@ -301,3 +301,11 @@ def test_plan_can_resume_from_preset_without_reopening_handbook(
     monkeypatch.setattr(operation, '_found', lambda name: True)
     assert operation.transport().is_success
     operation.ctx.controller.btn_tap.assert_not_called()
+
+
+def test_first_page_predefined_teams_are_supported(config: ChargePlanConfig) -> None:
+    """原计划可指定首屏编队，不支持的后续页仍由预检拒绝。"""
+    config.plan_list[0].predefined_team_idx = 0
+    assert validate_macos_charge_plan(config) is None
+    config.plan_list[0].predefined_team_idx = 5
+    assert validate_macos_charge_plan(config) is None
