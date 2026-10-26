@@ -21,7 +21,8 @@ def make_ctx() -> SimpleNamespace:
     return SimpleNamespace(controller=Mock(), lost_void=SimpleNamespace(priority_updated=True))
 
 
-def test_full_price_overrides_truncated_filtered_digits() -> None:
+@pytest.mark.parametrize('price_text',['× 1000','Q×1000','e×1000'])
+def test_full_price_overrides_truncated_filtered_digits(price_text: str) -> None:
     ctx=make_ctx()
     price_area=SimpleNamespace(rect=Rect(90,735,1800,780),left_top=SimpleNamespace(x=90,y=735))
     buy_area=SimpleNamespace(rect=Rect(90,780,1800,840),left_top=SimpleNamespace(x=90,y=780))
@@ -36,7 +37,7 @@ def test_full_price_overrides_truncated_filtered_digits() -> None:
         matches.append(MatchResult(1,645,y,90,28))
         return {text:matches}
     operation.navigation._read_area=Mock(side_effect=lambda screen,name:(None,
-        words('× 1000',7) if name=='区域-价格' else words('购买',12)))
+        words(price_text,7) if name=='区域-价格' else words('购买',12)))
     all_goods,goods=operation._goods()
     assert all_goods==goods==[item]
     assert item.store_price==1000
@@ -44,6 +45,11 @@ def test_full_price_overrides_truncated_filtered_digits() -> None:
         {} if name=='区域-价格' else words('购买',12)))
     assert operation._goods()[1]==[]
     assert item.store_price is None
+
+
+@pytest.mark.parametrize('text',['1600×1000','×1000×600','余额1000'])
+def test_ambiguous_price_is_not_used(text: str) -> None:
+    assert GamepadLostVoidBangbooStore.parse_price(text) is None
 
 
 @pytest.mark.parametrize('balance, accepted', [(800, True), (750, False)])
