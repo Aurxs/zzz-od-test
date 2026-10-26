@@ -101,6 +101,17 @@ def test_semantic_actions_use_xbox_config(
     controller.gamepad.tap_combo.assert_called_once_with(['xbox_lt', 'xbox_a'])
 
 
+def test_camera_pulse_preserves_input_guard(controller: zzz_macos_controller.ZMacController) -> None:
+    """显式镜头动作沿用暂停保护，不能通过新入口绕过已暂停的输入。"""
+    controller._input_paused = False
+    controller.move_camera(0.5, 0, 0.16)
+    controller.gamepad.set_stick.assert_called_once_with('right', 0.5, 0, press_time=0.16)
+    controller._input_paused = True
+    with pytest.raises(RuntimeError, match='输入已暂停'):
+        controller.move_camera(0.5, 0, 0.16)
+    controller.gamepad.set_stick.assert_called_once()
+
+
 def test_cold_start_connects_neutral_before_launch_and_only_resumes_after_frame(
     controller: zzz_macos_controller.ZMacController, monkeypatch: pytest.MonkeyPatch,
 ) -> None:
