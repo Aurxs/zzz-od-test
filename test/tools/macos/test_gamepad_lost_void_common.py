@@ -109,6 +109,18 @@ def test_multi_does_not_repeat_a_without_observed_count_change() -> None:
     operation.ctx.controller.btn_tap.assert_not_called()
 
 
+def test_same_style_label_recovers_selected_card_from_count_and_frame() -> None:
+    operation, _ = make_multi_operation()
+    operation.last_screenshot = cv2_utils.read_image(str(
+        Path(__file__).resolve().parents[3] / 'screens' / '迷失之地-通用选择' / 'ios_multi_same_style.webp',
+    ))
+    operation.parser._get_chosen_count_from_confirm_button.return_value = 1
+    operation._multi_selected_indices.return_value = set()
+    assert not operation.choose().is_success
+    assert operation._multi_verified_selected == {0}
+    operation.ctx.controller.btn_tap.assert_called_once_with('dpad_right')
+
+
 @pytest.mark.parametrize('has_a_prompt', [False, True])
 def test_two_gears_without_selected_badge_require_a_confirm(has_a_prompt: bool) -> None:
     from one_dragon.base.matcher.match_result import MatchResult, MatchResultList
