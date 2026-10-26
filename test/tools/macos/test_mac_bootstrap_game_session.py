@@ -381,3 +381,22 @@ def test_optional_login_event_claims_confirms_then_returns(session: SimpleNamesp
     session.operation.prepare_session()
     assert session.controller.btn_tap.call_args_list == [call('south'), call('south'), call('east')]
     session.pointer.click.assert_not_called()
+
+
+def test_world_lt_template_confirms_without_ocr(session: SimpleNamespace, monkeypatch: pytest.MonkeyPatch) -> None:
+    """小提示 OCR 缺失时，明确 LT 图标和大世界证据一起确认手柄。"""
+    show(session, 'world-gamepad', {})
+    monkeypatch.setattr(session.operation, '_area_found', lambda name: name == '大世界-手柄LT图标')
+    assert session.operation.prepare_session().is_success
+    session.pointer.click.assert_not_called()
+    session.controller.btn_tap.assert_not_called()
+
+
+@pytest.mark.parametrize(('state', 'expected'), [('ios_world_gamepad_lt_small', True), ('ios_world_touch', False)])
+def test_world_lt_template_matches_only_gamepad(state: str, expected: bool) -> None:
+    """实拍手柄提示命中，触屏大世界不误判。"""
+    matcher = TemplateMatcher(TemplateLoader())
+    screen = cv2_utils.read_image(str(SCREENS / f'{state}.webp'))
+    part = cv2_utils.crop_image_only(screen, Rect(1798, 104, 1853, 154))
+    matches = matcher.match_template(part, 'ios_gamepad', 'bootstrap_world_lt', threshold=0.9)
+    assert (matches.max is not None) is expected

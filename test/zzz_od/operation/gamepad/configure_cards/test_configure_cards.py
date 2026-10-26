@@ -81,3 +81,18 @@ def test_empty_charge_preset_keeps_stable_next_label(
     assert result.is_success and result.data['current_charge'] == 0
     assert result.data['required_charge'] == 20
     op.ctx.controller.btn_tap.assert_not_called()
+
+
+def test_other_material_menu_and_saved_target(op: GamepadConfigureCards) -> None:
+    """音擎专项菜单位于不同横向位置，单卡保存仍确认目标和消耗。"""
+    from zzz_od.operation.gamepad.simulation_preset import (
+        preset_focused,
+        read_preset_charge,
+    )
+    op.mission_name = '音擎专项'
+    op.last_screenshot = cv2_utils.read_image(str(SCREENS / 'ios_engine_menu.webp'))
+    assert op._preset_menu() == (True, '开始战斗')
+    op.last_screenshot = cv2_utils.read_image(str(SCREENS / 'ios_engine_single.webp'))
+    assert preset_focused(op.ctx, op.last_screenshot, '音擎专项')
+    assert not preset_focused(op.ctx, op.last_screenshot, '调查专项')
+    assert read_preset_charge(op.ctx, op.last_screenshot) == (33, 20)

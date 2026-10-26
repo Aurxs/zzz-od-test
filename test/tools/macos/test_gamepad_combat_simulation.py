@@ -111,7 +111,7 @@ def test_preparation_uses_actual_preset_and_sends_start_once(
     assert operation.check_plan().is_success
     assert operation.prepare_auto_battle().is_success
     set_frame(operation, 'ios_simulation_preset')
-    assert operation._survey_selected()
+    assert operation._preset_selected()
     assert operation._charge() == (400, 100)
     assert not operation.prepare_deployment().is_success
     assert not operation.prepare_deployment().is_success
@@ -248,4 +248,44 @@ def test_configured_team_is_chosen_before_deployment(
     assert not operation.prepare_deployment().is_success
     assert operation.prepare_deployment().status == operation.STATUS_DEPLOYMENT_READY
     assert selector.call_count == 2
+    operation.ctx.controller.btn_tap.assert_not_called()
+
+
+@pytest.mark.parametrize('mission', ['音擎专项', '赏金专项', '镀剂专项'])
+def test_other_material_cannot_deploy_on_survey_frame(operation: GamepadCombatSimulation, mission: str) -> None:
+    """相同耗电不能替代材料核对，旧调查专项画面不得放行其他材料。"""
+    operation.plan.mission_name = mission
+    assert operation.check_plan().is_success
+    set_frame(operation, 'ios_simulation_preset')
+    assert operation.prepare_deployment().is_fail
+    operation.ctx.controller.btn_tap.assert_not_called()
+
+
+def test_preset_selector_waits_for_changed_focus(operation: GamepadCombatSimulation, monkeypatch: pytest.MonkeyPatch) -> None:
+    """先识别实际焦点，未更新不连发；目标到达即停。"""
+    from zzz_od.operation.gamepad import simulation_preset
+    selector = simulation_preset.GamepadChooseSimulationPreset(operation.ctx, '镀剂专项')
+    monkeypatch.setattr(selector, '_after_round_wait', Mock())
+    monkeypatch.setattr(selector, 'save_screenshot', Mock())
+    monkeypatch.setattr(selector, 'round_by_find_area', lambda *args: selector.round_success())
+    selector.last_screenshot = object()
+    focus = Mock(side_effect=['调查专项', '调查专项', '音擎专项', '赏金专项', '镀剂专项'])
+    monkeypatch.setattr(simulation_preset, 'selected_preset', focus)
+    monkeypatch.setattr(simulation_preset, 'read_preset_area', Mock(return_value=None))
+    for _ in range(4):
+        assert not selector.choose().is_success
+    assert selector.choose().is_success
+    assert operation.ctx.controller.btn_tap.call_args_list == [call('dpad_right')] * 3
+
+
+def test_battle_recovery_requires_explicit_mode_and_hud(operation: GamepadCombatSimulation, monkeypatch: pytest.MonkeyPatch) -> None:
+    """中断恢复必须确认战斗 HUD，准备模式不得误启动恢复战斗。"""
+    operation.resume_from_battle = True
+    operation.last_screenshot = object()
+    operation.ctx.auto_battle_context.is_normal_attack_btn_available.return_value = False
+    assert operation.prepare_cards().is_fail
+    operation.ctx.auto_battle_context.is_normal_attack_btn_available.return_value = True
+    assert operation.prepare_cards().status == '恢复已确认战斗'
+    operation.prepare_only = True
+    assert operation.prepare_cards().is_fail
     operation.ctx.controller.btn_tap.assert_not_called()

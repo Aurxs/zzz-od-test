@@ -40,7 +40,7 @@ def config() -> ChargePlanConfig:
         ('tab_name', '作战'),
         ('category_name', '专业挑战室'),
         ('mission_type_name', '代理人晋升'),
-        ('mission_name', '音擎专项'),
+        ('mission_name', '未知专项'),
         ('level', '50'),
         ('card_num', '2'),
         ('predefined_team_idx', 6),
@@ -155,7 +155,9 @@ def test_saved_plan_repeats_until_its_original_count(
     monkeypatch.setattr(charge_plan, 'GamepadConfigureCards', cards)
     for expected_runs in (1, 2):
         assert operation.select_plan().status is None
+        monkeypatch.setattr(operation, '_found', Mock(return_value=False))
         assert operation.transport().is_success
+        monkeypatch.setattr(operation, '_found', Mock(return_value=True))
         assert operation.configure_cards().is_success
         assert operation.check_charge().status is None
         assert operation.run_battle().is_success
@@ -167,7 +169,7 @@ def test_saved_plan_repeats_until_its_original_count(
     }
     assert factory.call_args.kwargs['config'] is operation.config
     assert transport.call_args_list == [call(operation.ctx, '训练', '实战模拟室', '基础材料')] * 2
-    assert cards.call_args_list == [call(operation.ctx, 5)] * 2
+    assert cards.call_args_list == [call(operation.ctx, 5, '调查专项')] * 2
     operation.ctx.controller.btn_tap.assert_not_called()
 
 
@@ -184,7 +186,8 @@ def test_card_configuration_uses_original_plan_target(
     cards.return_value.execute.return_value = OperationResult(True)
     monkeypatch.setattr(charge_plan, 'GamepadConfigureCards', cards)
     assert operation.configure_cards().is_success
-    cards.assert_called_once_with(operation.ctx, num_cards)
+    cards.assert_called_once_with(operation.ctx, num_cards, operation.current_plan.mission_name)
+    monkeypatch.setattr(operation._simulation, '_preset_selected', Mock(return_value=True))
     monkeypatch.setattr(operation._simulation, 'read_charge', Mock(return_value=(20, 20)))
     result = operation.check_charge()
     if num_cards == 1:
@@ -309,3 +312,33 @@ def test_first_page_predefined_teams_are_supported(config: ChargePlanConfig) -> 
     assert validate_macos_charge_plan(config) is None
     config.plan_list[0].predefined_team_idx = 5
     assert validate_macos_charge_plan(config) is None
+
+
+@pytest.mark.parametrize('mission', ['调查专项', '音擎专项', '赏金专项', '镀剂专项'])
+def test_material_reaches_card_configuration(operation: GamepadChargePlan, monkeypatch: pytest.MonkeyPatch, mission: str) -> None:
+    """四种材料都保留原配置目标，传给实际卡片准备操作。"""
+    operation.config.plan_list[0].mission_name = mission
+    operation.config.plan_list[0].card_num = '1'
+    assert operation.select_plan().is_success
+    cards = Mock()
+    cards.return_value.execute.return_value = OperationResult(True)
+    monkeypatch.setattr(charge_plan, 'GamepadConfigureCards', cards)
+    assert operation.configure_cards().is_success
+    cards.assert_called_once_with(operation.ctx, 1, mission)
+
+
+def test_shortage_skips_multiple_unaffordable_plans(operation: GamepadChargePlan, monkeypatch: pytest.MonkeyPatch) -> None:
+    """中间高耗电项不能挡住后面的单卡计划。"""
+    first = operation.config.plan_list[0]
+    second = ChargePlanItem(mission_name='音擎专项', card_num='5')
+    third = ChargePlanItem(mission_name='赏金专项', card_num='1')
+    operation.config.plan_list.extend([second, third])
+    operation.config.data['skip_plan'] = True
+    operation.current_plan = first
+    operation.current_charge = 20
+    monkeypatch.setattr(operation, 'round_by_find_area', lambda *args: operation.round_success())
+    assert operation.return_after_shortage().status == operation.STATUS_TRY_NEXT_PLAN
+    assert first.skipped and second.skipped
+    assert operation.select_plan().is_success
+    assert operation.current_plan is third
+    assert all(plan.run_times == 0 for plan in operation.config.plan_list)
