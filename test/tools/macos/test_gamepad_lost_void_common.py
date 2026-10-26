@@ -32,6 +32,7 @@ def make_operation() -> tuple[GamepadLostVoidChooseCommon, list[LostVoidArtifact
     operation.last_screenshot=cv2_utils.read_image(str(Path(__file__).resolve().parents[3]/'screens'/'迷失之地-通用选择'/'ios_single_initial.webp'))
     operation._after_round_wait=Mock()
     operation.can_handle=Mock(return_value=True)
+    operation.round_by_find_area=Mock(return_value=SimpleNamespace(is_success=False))
     candidates[0].chosen=True
     candidates[0].can_choose=False
     ctx.lost_void.get_artifact_pos=Mock(return_value=candidates)
@@ -247,3 +248,37 @@ def test_two_gears_without_selected_badge_require_a_confirm(has_a_prompt: bool) 
         operation.ctx.controller.btn_tap.assert_called_once_with('south')
     else:
         operation.ctx.controller.btn_tap.assert_not_called()
+
+
+def test_gear_with_detectable_namebars_still_uses_gear_confirmation() -> None:
+    from one_dragon.base.matcher.match_result import MatchResult, MatchResultList
+    from one_dragon.base.matcher.template_matcher import TemplateMatcher
+    from one_dragon.base.screen.template_loader import TemplateLoader
+
+    operation, _ = make_operation()
+    frame = cv2_utils.read_image(str(Path(__file__).resolve().parents[3] / 'screens' / '迷失之地-通用选择' / 'ios_two_gears_namebars.webp'))
+    operation.last_screenshot = frame
+    matcher = TemplateMatcher(TemplateLoader())
+    marker = matcher.match_template(frame[730:830, 80:1910], 'lost_void', 'common_choose_gear', threshold=0.7)
+    assert marker.max is not None
+    operation.round_by_find_area = Mock(return_value=SimpleNamespace(is_success=True))
+    areas = {'手柄-名称栏搜索': Rect(80, 440, 1898, 650), '区域-武备名称': Rect(82, 415, 1898, 475)}
+    operation.ctx.screen_loader.get_area.side_effect = lambda screen, name: SimpleNamespace(rect=areas[name])
+    rects = operation.name_rects()
+    assert len(rects) == 1 and rects[0] == areas['区域-武备名称'] and operation._gear_layout
+    candidates = [
+        LostVoidArtifactPos(LostVoidArtifact('异常·击破', '混元丹', 'S'), Rect(640, 430, 870, 470)),
+        LostVoidArtifactPos(LostVoidArtifact('携游', '救令玄幡', 'S'), Rect(1050, 430, 1300, 470)),
+    ]
+    assert not any(item.chosen for item in candidates)
+    operation.ctx.lost_void.get_artifact_pos.return_value = candidates
+    operation.ctx.lost_void.get_artifact_by_priority.return_value = [candidates[0]]
+    words = {}
+    for name, x in [('A', 70), ('确定', 165)]:
+        matches = MatchResultList()
+        matches.append(MatchResult(1, x, 130, 40, 30))
+        words[name] = matches
+    operation.navigation._read_area = Mock(return_value=(frame[780:985, 780:1165], words))
+    assert not operation.choose().is_success
+    assert operation._confirmed and operation._gear_layout
+    operation.ctx.controller.btn_tap.assert_called_once_with('south')
