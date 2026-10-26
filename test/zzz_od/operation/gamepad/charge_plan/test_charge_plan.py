@@ -386,3 +386,19 @@ def test_patrol_dispatch_ignores_hidden_simulation_fields(
     assert plan.run_times == 0
     plan.mission_type_name = '代理人方案培养'
     assert validate_macos_charge_plan(operation.config) is not None
+
+
+def test_locked_deep_hunt_continues_later_plan(operation: GamepadChargePlan, monkeypatch: pytest.MonkeyPatch) -> None:
+    """深度追猎被免费次数锁定时只跳过该项，保留计数并继续后面的材料。"""
+    hunt = ChargePlanItem(category_name='恶名狩猎', mission_type_name='初生死路屠夫')
+    later = operation.config.plan_list[0]
+    operation.config.plan_list.insert(0, hunt)
+    assert operation.select_plan().is_success
+    assert isinstance(operation._simulation, charge_plan.GamepadDeepHunt)
+    back = Mock()
+    back.return_value.execute.return_value = OperationResult(True)
+    monkeypatch.setattr(charge_plan, 'GamepadHuntBackToWorld', back)
+    assert operation.skip_locked_deep_hunt().is_success
+    assert hunt.skipped and hunt.run_times == 0
+    assert operation.select_plan().is_success
+    assert operation.current_plan is later
