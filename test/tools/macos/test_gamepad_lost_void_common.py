@@ -67,6 +67,51 @@ def test_confirmed_upgrade_hands_back_to_store_without_another_a() -> None:
     operation.ctx.controller.btn_tap.assert_not_called()
 
 
+def make_gain_operation() -> GamepadLostVoidChooseCommon:
+    from one_dragon.base.matcher.match_result import MatchResult,MatchResultList
+    operation,_=make_operation()
+    operation.last_screenshot_time=100
+    footer={}
+    for text in ('A','确定'):
+        matches=MatchResultList()
+        matches.append(MatchResult(1,20,20,70,30))
+        footer[text]=matches
+    operation.navigation._read_area=Mock(return_value=(operation.last_screenshot,footer))
+    operation.save_screenshot=Mock()
+    return operation
+
+
+def test_gained_hint_change_returns_to_parent_after_stable_identity(monkeypatch: pytest.MonkeyPatch) -> None:
+    from zzz_od.operation.gamepad import lost_void_common as module
+    operation=make_gain_operation()
+    operation.gained_item_identity=Mock(side_effect=[('武备A','2'),('武备B','2'),('武备B','2')])
+    monkeypatch.setattr(module.time,'monotonic',lambda:100)
+    assert not operation.confirm_gain('武备已升级').is_success
+    assert not operation.confirm_gain('武备已升级').is_success
+    assert operation.confirm_gain('武备已升级').is_success
+    operation.ctx.controller.btn_tap.assert_called_once_with('south')
+
+
+def test_gained_hint_retry_requires_new_frame_and_stops_after_three(monkeypatch: pytest.MonkeyPatch) -> None:
+    from zzz_od.operation.gamepad import lost_void_common as module
+    operation=make_gain_operation()
+    operation.gained_item_identity=Mock(return_value=('武备A','2'))
+    now=[100]
+    monkeypatch.setattr(module.time,'monotonic',lambda:now[0])
+    assert not operation.confirm_gain('武备已升级').is_success
+    now[0]=103
+    assert not operation.confirm_gain('武备已升级').is_success
+    operation.ctx.controller.btn_tap.assert_called_once_with('south')
+    for current,frame in [(103,101),(106,102)]:
+        now[0]=current
+        operation.last_screenshot_time=frame
+        assert not operation.confirm_gain('武备已升级').is_success
+    now[0]=109
+    operation.last_screenshot_time=103
+    assert operation.confirm_gain('武备已升级').is_fail
+    assert operation.ctx.controller.btn_tap.call_count==3
+
+
 def make_multi_operation() -> tuple[GamepadLostVoidChooseCommon,list[LostVoidArtifactPos]]:
     operation,_=make_operation()
     candidates=[LostVoidArtifactPos(LostVoidArtifact('通用',f'候选{index}','A'),Rect(245+index*407,520,455+index*407,550)) for index in range(4)]
