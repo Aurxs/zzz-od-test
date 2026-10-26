@@ -120,3 +120,50 @@ def test_purchase_modal_requires_a_prompt_and_confirms_once(prompt_visible: bool
         operation.ctx.controller.btn_tap.assert_called_once_with('south')
     else:
         operation.ctx.controller.btn_tap.assert_not_called()
+
+
+@pytest.mark.parametrize(('name','expected'), [('ios_purchase_confirm.webp','dpad_left'),('ios_purchase_cancel.webp','south')])
+def test_unplanned_purchase_moves_to_cancel_without_accepting_default(name: str,expected: str) -> None:
+    operation=GamepadLostVoidStoreConfirm(make_ctx(),'购买',accept=False)
+    operation._after_round_wait=Mock()
+    operation.save_screenshot=Mock()
+    image=cv2_utils.read_image(str(Path(__file__).resolve().parents[3]/'screens'/'迷失之地-邦布商店'/name))
+    operation.last_screenshot=image
+    def words(items: list[tuple[str,int,int]]) -> dict[str,MatchResultList]:
+        result={}
+        for text,x,y in items:
+            matches=MatchResultList()
+            matches.append(MatchResult(1,x,y,70,30))
+            result[text]=matches
+        return result
+    areas={
+        '手柄-购买正文':(None,words([('是否确认购买此商品',0,0)])),
+        '按钮-购买-确认':(image[600:654,1034:1230],words([('确认',65,8)])),
+        '手柄-商店确认提示':(None,words([('A',0,0),('选择',40,0)])),
+        '手柄-商店确认选项':(image[580:680,650:1270],words([('取消',150,35),('确认',450,35)])),
+    }
+    operation.navigation._read_area=Mock(side_effect=lambda screen,name:areas[name])
+    assert not operation.confirm().is_success
+    assert not operation.confirm().is_success
+    operation.ctx.controller.btn_tap.assert_called_once_with(expected)
+
+
+def test_store_cancels_unplanned_modal_before_reading_goods(monkeypatch: pytest.MonkeyPatch) -> None:
+    from zzz_od.operation.gamepad import lost_void_store as module
+    ctx=make_ctx()
+    ctx.lost_void.in_normal_world=Mock(return_value=False)
+    operation=GamepadLostVoidBangbooStore(ctx)
+    operation.last_screenshot=object()
+    operation._after_round_wait=Mock()
+    operation.check_and_update_current_screen=Mock(return_value=None)
+    operation._goods=Mock()
+    cancel=Mock()
+    cancel.can_handle.return_value=True
+    cancel.execute.return_value=SimpleNamespace(success=True)
+    factory=Mock(return_value=cancel)
+    monkeypatch.setattr(module,'GamepadLostVoidStoreConfirm',factory)
+    assert not operation.buy().is_success
+    factory.assert_called_once_with(ctx,'购买',accept=False)
+    operation._goods.assert_not_called()
+    assert operation._unplanned_cancel_count==1
+    operation.ctx.controller.btn_tap.assert_not_called()
