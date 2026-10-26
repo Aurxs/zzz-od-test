@@ -61,7 +61,7 @@ def test_preflight_rejects_later_unsupported_plan(
 
 @pytest.mark.parametrize(
     ('setting', 'value', 'expected'),
-    [('restore_charge', '使用储蓄电量', '恢复电量'), ('double_reward', True, '双倍活动')],
+    [('restore_charge', '使用储蓄电量', '恢复电量')],
 )
 def test_preflight_rejects_unimplemented_resource_options(
     config: ChargePlanConfig, setting: str, value: str | bool, expected: str,
@@ -370,10 +370,13 @@ def test_patrol_dispatch_ignores_hidden_simulation_fields(
     plan.mission_type_name = target
     plan.card_num = '旧卡片字段'
     assert validate_macos_charge_plan(operation.config) is None
-    patrol = Mock(expected_charge=cost)
+    patrol = Mock(expected_charge=cost, plan=plan)
     patrol.read_charge.return_value = (cost, cost)
     factory = Mock(return_value=patrol)
     monkeypatch.setattr(charge_plan, factory_name, factory)
+    mode = Mock()
+    mode.return_value.execute.return_value = OperationResult(True)
+    monkeypatch.setattr(charge_plan, 'GamepadDisableBurnout', mode)
     cards = Mock()
     monkeypatch.setattr(charge_plan, 'GamepadConfigureCards', cards)
     assert operation.select_plan().is_success
@@ -381,10 +384,16 @@ def test_patrol_dispatch_ignores_hidden_simulation_fields(
     cards.assert_not_called()
     assert operation.check_charge().is_success
     factory.assert_called_once_with(operation.ctx, plan, config=operation.config)
+    if category == '专业挑战室':
+        mode.assert_called_once_with(operation.ctx, target)
+    else:
+        mode.assert_not_called()
     patrol.read_charge.return_value = (cost - 1, cost)
     assert operation.check_charge().status == operation.STATUS_CHARGE_NOT_ENOUGH
     assert plan.run_times == 0
     plan.mission_type_name = '代理人方案培养'
+    assert validate_macos_charge_plan(operation.config) is None
+    plan.mission_type_name = '未知培养目标'
     assert validate_macos_charge_plan(operation.config) is not None
 
 
@@ -410,3 +419,117 @@ def test_preflight_accepts_later_team_pages(config: ChargePlanConfig, team_idx: 
     config.plan_list[0].predefined_team_idx = team_idx
     assert validate_macos_charge_plan(config) is None
     assert config.plan_list[0].predefined_team_idx == team_idx
+
+
+def test_training_resolution_keeps_saved_plan_and_counts_win(monkeypatch: pytest.MonkeyPatch, operation: GamepadChargePlan) -> None:
+    """解析仅替换本场目标，传送用具体副本，胜利仍按原ID累计培养计划。"""
+    original = operation.config.plan_list[0]
+    original.category_name = '区域巡防'
+    original.mission_type_name = '代理人方案培养'
+    resolver = Mock()
+    resolver.return_value.execute.return_value = OperationResult(True, data={'target': '机师与叛甲'})
+    monkeypatch.setattr(charge_plan, 'GamepadResolveTrainingTarget', resolver)
+    factory = Mock(side_effect=lambda ctx, plan, config: Mock(plan=plan))
+    monkeypatch.setattr(charge_plan, 'GamepadAreaPatrol', factory)
+    transport = Mock()
+    transport.return_value.execute.return_value = OperationResult(True)
+    monkeypatch.setattr(charge_plan, 'GamepadChargeTransport', transport)
+    assert operation.select_plan().status == '解析培养目标'
+    assert operation._simulation is None
+    assert operation.resolve_training().is_success
+    effective = operation._simulation.plan
+    assert effective is not original
+    assert effective.plan_id == original.plan_id
+    assert operation.transport().is_success
+    transport.assert_called_once_with(operation.ctx, '区域巡防', '机师与叛甲')
+    assert original.mission_type_name == '代理人方案培养'
+    assert original.run_times == 0
+
+    def win() -> OperationResult:
+        operation.config.add_plan_run_times(effective)
+        return OperationResult(True)
+
+    operation._simulation.execute.side_effect = win
+    assert operation.run_battle().is_success
+    assert original.run_times == 1
+    assert original.mission_type_name == '代理人方案培养'
+
+
+def test_skipped_training_does_not_count_or_block_next(monkeypatch: pytest.MonkeyPatch, operation: GamepadChargePlan) -> None:
+    """无标记退出后只跳过本轮，原次数不变且继续下一普通计划。"""
+    original = operation.config.plan_list[0]
+    original.category_name = '区域巡防'
+    original.mission_type_name = '代理人方案培养'
+    operation.current_plan = original
+    later = ChargePlanItem(plan_times=1)
+    operation.config.plan_list.append(later)
+    closer = Mock()
+    closer.return_value.execute.return_value = OperationResult(True)
+    monkeypatch.setattr(charge_plan, 'GamepadCloseTrainingHandbook', closer)
+    monkeypatch.setattr(charge_plan, 'GamepadCombatSimulation', Mock())
+    assert operation.skip_training().is_success
+    assert original.skipped
+    assert original.run_times == 0
+    assert operation.select_plan().is_success
+    assert operation.current_plan is later
+
+
+
+def test_double_plan_runs_once_before_saved_plan(monkeypatch: pytest.MonkeyPatch, operation: GamepadChargePlan) -> None:
+    """临时任务优先且不重复检查活动，之后继续原列表，不写入双倍配置。"""
+    operation.config.data['double_reward'] = True
+    source = ChargePlanItem(mission_name='音擎专项', predefined_team_idx=6)
+    operation.config.data['combat_simulation_double_reward_config'] = source.to_dict()
+    original = operation.config.plan_list[0]
+    inspector = Mock()
+    inspector.return_value.execute.return_value = OperationResult(True, data={'remaining': 3, 'current_charge': 45})
+    monkeypatch.setattr(charge_plan, 'GamepadCheckDoubleReward', inspector)
+    monkeypatch.setattr(charge_plan, 'GamepadCombatSimulation', Mock())
+    assert operation.select_plan().status == '检查双倍活动'
+    assert operation.check_double_reward().is_success
+    assert operation.select_plan().is_success
+    temporary = operation.current_plan
+    assert temporary is not original
+    assert temporary.card_num == '2'
+    assert temporary.run_times == 0
+    temporary.run_times = 1
+    assert operation.select_plan().is_success
+    assert operation.current_plan is original
+    assert operation.config.plan_list == [original]
+    assert operation.config.data['combat_simulation_double_reward_config'] == source.to_dict()
+    inspector.return_value.execute.assert_called_once()
+
+
+def test_no_double_event_does_not_require_charge_snapshot(monkeypatch: pytest.MonkeyPatch, operation: GamepadChargePlan) -> None:
+    """无活动时未读取电量，不能把未知值当零；仍继续保存的普通计划。"""
+    operation.config.data['double_reward'] = True
+    inspector = Mock()
+    inspector.return_value.execute.return_value = OperationResult(True, data={'remaining': 0, 'current_charge': None})
+    monkeypatch.setattr(charge_plan, 'GamepadCheckDoubleReward', inspector)
+    monkeypatch.setattr(charge_plan, 'GamepadCombatSimulation', Mock())
+    assert operation.check_double_reward().is_success
+    assert operation._temporary_plan is None
+    assert operation.select_plan().is_success
+    assert operation.current_plan is operation.config.plan_list[0]
+
+
+@pytest.mark.parametrize('shortage', [False, True])
+def test_battery_plan_dispatch_and_count(config, operation, monkeypatch, shortage) -> None:
+    """合成走独立原计划分支；获得才计数，素材不足跳过后续继续。"""
+    plan = ChargePlanItem(category_name='合成电池', mission_type_name='', mission_name='', plan_times=2)
+    config.plan_list = [plan, ChargePlanItem(plan_times=1)]
+    op = operation
+    assert validate_macos_charge_plan(config) is None
+    assert op.select_plan().status == '合成电池'
+    def execute():
+        if not shortage:
+            config.add_plan_run_times(plan)
+        return OperationResult(True, '合成素材不足' if shortage else '单枚电池合成完成')
+    factory = Mock(return_value=Mock(execute=execute))
+    monkeypatch.setattr(charge_plan, 'GamepadSynthesizeEtherBattery', factory)
+    assert op.synthesize_battery().is_success
+    assert plan.run_times == (0 if shortage else 1)
+    assert plan.skipped == shortage
+    factory.assert_called_once_with(op.ctx, plan, config)
+    op.select_plan()
+    assert op.current_plan is (config.plan_list[1] if shortage else plan)
