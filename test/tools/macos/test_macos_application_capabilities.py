@@ -67,7 +67,7 @@ def test_multi_account_and_system_actions_fail_before_preparation(context: Simpl
 
 
 @pytest.mark.parametrize('app_id, supported', [('charge_plan', True), ('random_play', True), ('coffee', True),
-    ('engagement_reward', True), ('city_fund', True), ('daily_signin', False),
+    ('engagement_reward', True), ('city_fund', True), ('daily_signin', True),
     ('ridu_weekly', False), ('email', False)])
 def test_application_checks_capability_and_prepares_even_with_ready_window(
     monkeypatch: pytest.MonkeyPatch, context: SimpleNamespace, app_id: str, supported: bool,
