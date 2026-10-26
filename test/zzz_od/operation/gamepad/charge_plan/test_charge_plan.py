@@ -43,7 +43,7 @@ def config() -> ChargePlanConfig:
         ('mission_name', '未知专项'),
         ('level', '50'),
         ('card_num', '6'),
-        ('predefined_team_idx', 6),
+        ('predefined_team_idx', 20),
     ],
 )
 def test_preflight_rejects_later_unsupported_plan(
@@ -402,3 +402,11 @@ def test_locked_deep_hunt_continues_later_plan(operation: GamepadChargePlan, mon
     assert hunt.skipped and hunt.run_times == 0
     assert operation.select_plan().is_success
     assert operation.current_plan is later
+
+
+@pytest.mark.parametrize('team_idx', [6, 19])
+def test_preflight_accepts_later_team_pages(config: ChargePlanConfig, team_idx: int) -> None:
+    """原计划保留第七队和末队序号，由正式选队流程核对成员。"""
+    config.plan_list[0].predefined_team_idx = team_idx
+    assert validate_macos_charge_plan(config) is None
+    assert config.plan_list[0].predefined_team_idx == team_idx
