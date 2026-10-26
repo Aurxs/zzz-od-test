@@ -118,3 +118,23 @@ def test_real_business_confirmation_requires_correct_message(
     assert app._macos_confirm_visible(message)
     assert not app._macos_confirm_visible('无关确认')
     assert app.transport().status == status
+
+
+@pytest.mark.parametrize('frame,accepted', [('ios_started_confirm', True), ('ios_started_alternate', True), ('ios_start_confirm', False)])
+def test_single_confirmation_uses_layout_not_greeting(monkeypatch: pytest.MonkeyPatch, frame: str, accepted: bool) -> None:
+    """两种单按钮营业祝词都匹配，双按钮营业询问不误按 A。"""
+    from one_dragon.base.matcher.template_matcher import TemplateMatcher
+    from one_dragon.base.screen.template_loader import TemplateLoader
+    from zzz_od.operation.gamepad.confirmation import confirm_expected_single_dialog
+    loader = ProfileScreenContext(defer_missing_screens=True)
+    loader.reload()
+    loader.apply_profile_patches()
+    app = RandomPlayApp.__new__(RandomPlayApp)
+    app.ctx = SimpleNamespace(screen_loader=loader, tm=TemplateMatcher(TemplateLoader()), controller=Mock())
+    app.node_clicked = False
+    app.last_screenshot = cv2_utils.read_image(str(SCREENS / f'{frame}.webp'))
+    monkeypatch.setattr(app, '_after_round_wait', Mock())
+    monkeypatch.setattr(app, 'save_screenshot', Mock())
+    assert confirm_expected_single_dialog(app).is_success is accepted
+    confirm_expected_single_dialog(app)
+    assert app.ctx.controller.btn_tap.call_count == int(accepted)
