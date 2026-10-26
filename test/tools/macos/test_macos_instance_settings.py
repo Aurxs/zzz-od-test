@@ -13,8 +13,12 @@ from one_dragon.base.config.game_account_config import (
     GamePlatformEnum,
 )
 from one_dragon.base.config.yaml_config import YamlConfig
+from zzz_od.config.game_config import GameConfig
 from zzz_od.config.macos_config import MacOsConfig
-from zzz_od.gui.view.setting import zzz_setting_instance_interface
+from zzz_od.gui.view.setting import (
+    setting_game_interface,
+    zzz_setting_instance_interface,
+)
 
 
 @pytest.fixture(scope='module')
@@ -69,7 +73,9 @@ def test_showing_macos_settings_keeps_default_pc_configuration(
     assert ctx.game_account_config.platform == GamePlatformEnum.PC.value.value
     assert interface.platform_opt.getValue() == GamePlatformEnum.PC.value.value
     assert interface.macos_bundle_opt.getValue() == ctx.macos_config.bundle_id
-    assert interface.macos_ojd_opt.getValue() == ctx.macos_config.ojd_cli_path
+    assert not hasattr(interface, 'macos_ojd_opt')
+    assert not hasattr(interface, 'macos_gamepad_settings')
+    assert ctx.macos_config.ojd_auto_start is False
     assert interface.macos_top_inset_opt.spin_box.value() == 0
     assert not (account_path.parent / 'macos.yml').exists()
     assert ctx.ready_for_application is True
@@ -122,4 +128,27 @@ def test_macos_hides_windows_login_controls_in_developer_mode(
         assert control.isHidden()
     assert interface.platform_opt.isVisible()
     assert interface.macos_bundle_opt.isVisible()
-    assert interface.macos_ojd_opt.isVisible()
+
+
+def test_gamepad_settings_preserve_application_readiness(
+    qapp: QApplication,
+    settings: tuple[zzz_setting_instance_interface.ZSettingInstanceInterface, SimpleNamespace, Path],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """手柄设置移到游戏设置，修改参数后仍能使用准备游戏。"""
+    _, ctx, _ = settings
+    ctx.game_config = GameConfig(1)
+    monkeypatch.setattr(setting_game_interface, 'sys', SimpleNamespace(platform='darwin'))
+    interface = setting_game_interface.SettingGameInterface(ctx)
+    interface.on_interface_shown()
+    for _ in range(3):
+        qapp.processEvents()
+    assert interface.macos_gamepad_settings.path.getValue() == ctx.macos_config.ojd_cli_path
+    old_controller = ctx.controller
+    interface.macos_gamepad_settings.auto_start.btn.setChecked(True)
+    assert ctx.macos_config.ojd_auto_start is True
+    assert ctx.ready_for_application is True
+    assert ctx.initialization_error is None
+    old_controller.cleanup_after_app_shutdown.assert_called_once_with()
+    ctx.init_controller.assert_called_once_with()
+    interface.close()

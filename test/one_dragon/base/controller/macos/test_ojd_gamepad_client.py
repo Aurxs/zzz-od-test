@@ -45,6 +45,8 @@ def fake_ojd(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[Path, Pat
         elif sys.argv[-1] == 'status':
             print(json.dumps({{'service': {{'state': os.getenv('FAKE_STATE', 'Running'),
                                           'version': '0.6.0-alpha.1'}}}}))
+        elif sys.argv[-2:] == ['service', 'start']:
+            print(json.dumps({{'state': 'Running'}}))
         else:
             for line in sys.stdin:
                 record({{'frame': json.loads(line)}})
@@ -214,3 +216,18 @@ def test_stopped_service_never_opens_feed(
     assert len(records(fake_ojd[1])) == 2
     assert not adapter.is_connected
     assert adapter.state == GamepadState()
+
+
+def test_auto_start_is_explicit_and_inspection_is_read_only(fake_ojd: tuple[Path, Path]) -> None:
+    """开启按需启动后才调用官方启动命令，只读检查始终不启服务。"""
+    adapter = OjdGamepadClient(str(fake_ojd[0]), auto_start=True)
+    assert adapter.inspect()['service']['state'] == 'Running'
+    assert not any(item.get('command', [])[-2:] == ['service', 'start'] for item in records(fake_ojd[1]))
+    try:
+        adapter.connect()
+        assert adapter.state == GamepadState()
+    finally:
+        adapter.close()
+    commands = [item['command'] for item in records(fake_ojd[1]) if 'command' in item]
+    assert sum(command[-2:] == ['service', 'start'] for command in commands) == 1
+    assert not any(command[-2:] == ['service', 'stop'] for command in commands)
