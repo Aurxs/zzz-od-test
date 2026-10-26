@@ -152,3 +152,13 @@ def test_gamepad_settings_preserve_application_readiness(
     old_controller.cleanup_after_app_shutdown.assert_called_once_with()
     ctx.init_controller.assert_called_once_with()
     interface.close()
+
+
+def test_menu_interval_setting_saves_without_reconnecting(settings) -> None:
+    """界面等待配置即时保存，不断开手柄与采集。"""
+    interface, ctx, _ = settings
+    assert interface.macos_menu_interval_opt.spin_box.value() == 500
+    interface.macos_menu_interval_opt.spin_box.setValue(800)
+    assert MacOsConfig(1).menu_action_interval_ms == 800
+    ctx.run_context.stop_running.assert_not_called()
+    ctx.controller.cleanup_after_app_shutdown.assert_not_called()
