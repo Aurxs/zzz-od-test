@@ -57,3 +57,27 @@ def test_editor_checks_actual_cost_before_next_change(op: GamepadConfigureCards)
     op.last_screenshot = cv2_utils.read_image(str(SCREENS / 'ios_editor_five.webp'))
     assert not op.configure().is_success
     assert op.ctx.controller.btn_tap.call_args.args == ('west',)
+
+
+def test_empty_charge_preset_keeps_stable_next_label(
+    op: GamepadConfigureCards, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """电量耗尽后的完整按钮裁图仍识别下一步，不把预设当未知编辑页。"""
+    from one_dragon.utils import str_utils
+
+    op.last_screenshot = cv2_utils.read_image(str(
+        SCREENS / 'macos_cards_unknown_editor_1792978621510.webp'
+    ))
+
+    def found(name: str) -> bool:
+        """用平台区域做真实局部 OCR，隔离框架服务初始化。"""
+        area = op.ctx.screen_loader.get_area('实战模拟室', name)
+        words = op.ctx.ocr.crop_and_run_ocr(op.last_screenshot, area.rect)
+        return any(str_utils.find_by_lcs(area.text, text, area.lcs_percent) for text in words)
+
+    monkeypatch.setattr(op, '_found', found)
+    assert op._preset_visible()
+    result = op.configure()
+    assert result.is_success and result.data['current_charge'] == 0
+    assert result.data['required_charge'] == 20
+    op.ctx.controller.btn_tap.assert_not_called()

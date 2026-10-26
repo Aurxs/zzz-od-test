@@ -272,3 +272,32 @@ def test_missing_or_unverified_actual_charge_never_starts_battle(
     assert not operation.check_charge().is_success
     simulation.execute.assert_not_called()
     operation.ctx.controller.btn_tap.assert_not_called()
+
+
+def test_shortage_can_continue_configured_single_card_plan(
+    monkeypatch: pytest.MonkeyPatch, operation: GamepadChargePlan,
+) -> None:
+    """开启原跳过选项后，五卡不足可续单卡，不改已运行次数或配置数量。"""
+    first = operation.config.plan_list[0]
+    single = ChargePlanItem(card_num='1', plan_times=4)
+    operation.config.plan_list.append(single)
+    operation.config.data['skip_plan'] = True
+    operation.current_plan = first
+    operation.current_charge = 80
+    monkeypatch.setattr(operation, 'round_by_find_area', lambda *args: operation.round_success())
+    assert operation.return_after_shortage().status == operation.STATUS_TRY_NEXT_PLAN
+    assert first.skipped and first.run_times == 0
+    assert operation.select_plan().is_success
+    assert operation.current_plan is single
+    operation.current_charge = 0
+    assert '未完成计划保留' in operation.return_after_shortage().status
+
+
+def test_plan_can_resume_from_preset_without_reopening_handbook(
+    monkeypatch: pytest.MonkeyPatch, operation: GamepadChargePlan,
+) -> None:
+    """预设页恢复只接回卡片和电量检查，不在 NPC 页面乱开手册。"""
+    operation.current_plan = operation.config.plan_list[0]
+    monkeypatch.setattr(operation, '_found', lambda name: True)
+    assert operation.transport().is_success
+    operation.ctx.controller.btn_tap.assert_not_called()
