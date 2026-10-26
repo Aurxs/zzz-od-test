@@ -83,3 +83,14 @@ def test_next_anchor_avoids_button_background(ctx: SimpleNamespace, filename: st
     screen = cv2_utils.read_image(str(SCREENS / filename))
     assert find_area(ctx, screen, '区域巡防', '手柄-下一步') == FindAreaResultEnum.TRUE
     assert find_area(ctx, screen, '区域巡防', '手柄-挑战等级') == FindAreaResultEnum.TRUE
+
+
+def test_training_avatar_can_cover_focus_corner(ctx: SimpleNamespace) -> None:
+    """培养头像遮角时仍须四边覆盖、标题及目标同时吻合。"""
+    plan = ChargePlanItem(category_name='区域巡防', mission_type_name='机师与叛甲')
+    op = GamepadAreaPatrol(ctx, plan, config=Mock())
+    op.last_screenshot = cv2_utils.read_image(str(SCREENS / 'ios_patrol_training_avatar.webp'))
+    assert op._preset_selected()
+    assert op.read_charge()[1] == 60
+    plan.mission_type_name = '怪兽与怪客'
+    assert not op._preset_selected()
