@@ -100,6 +100,26 @@ def test_existing_gamepad_world_needs_no_input(session: SimpleNamespace) -> None
     session.controller.btn_tap.assert_not_called()
 
 
+@pytest.mark.parametrize('close_found, labels, expected', [
+    (True, '目标 日常 训练 作战 战术', 1),
+    (False, '目标 日常 训练 作战 战术', 0),
+    (True, '目标', 0),
+])
+def test_touch_compendium_requires_close_and_tabs(
+    session: SimpleNamespace, monkeypatch: pytest.MonkeyPatch,
+    close_found: bool, labels: str, expected: int,
+) -> None:
+    """触屏关闭模板和多个手册标签必须同时存在；同一步不连点。"""
+    monkeypatch.setattr(session.operation, '_area_found', lambda name: (
+        name == '快捷手册-触屏关闭' and close_found
+    ))
+    show(session, 'handbook', {'快捷手册-顶部标签': labels})
+    session.operation.prepare_session()
+    session.operation.prepare_session()
+    assert session.pointer.click.call_count == expected
+    session.controller.btn_tap.assert_not_called()
+
+
 def test_touch_switch_requires_new_frame_and_gamepad_world(
     session: SimpleNamespace, monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -400,3 +420,13 @@ def test_world_lt_template_matches_only_gamepad(state: str, expected: bool) -> N
     part = cv2_utils.crop_image_only(screen, Rect(1798, 104, 1853, 154))
     matches = matcher.match_template(part, 'ios_gamepad', 'bootstrap_world_lt', threshold=0.9)
     assert (matches.max is not None) is expected
+
+
+def test_real_touch_compendium_close_template() -> None:
+    """触屏手册关闭图标须来自实拍匹配，其他启动画面不能误命中。"""
+    matcher = TemplateMatcher(TemplateLoader())
+    for state, expected in [('ios_touch_compendium', True), ('ios_world_gamepad_lt_small', False)]:
+        screen = cv2_utils.read_image(str(SCREENS / f'{state}.webp'))
+        part = cv2_utils.crop_image_only(screen, Rect(1775, 210, 1855, 290))
+        matches = matcher.match_template(part, 'ios_gamepad', 'bootstrap_touch_compendium_close', threshold=0.9)
+        assert (matches.max is not None) is expected
