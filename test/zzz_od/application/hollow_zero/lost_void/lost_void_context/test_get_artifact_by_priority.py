@@ -1,4 +1,7 @@
-from test.conftest import TestContext
+from types import SimpleNamespace
+
+from zzz_od.application.hollow_zero.lost_void.context.lost_void_context import LostVoidContext
+from zzz_od.application.hollow_zero.lost_void.lost_void_challenge_config import LostVoidChallengeConfig
 
 from one_dragon.base.geometry.rectangle import Rect
 from zzz_od.application.hollow_zero.lost_void.operation.interact.lost_void_artifact_pos import (
@@ -8,14 +11,17 @@ from zzz_od.application.hollow_zero.lost_void.operation.interact.lost_void_artif
 
 class TestGetArtifactByPriority:
 
-    def test_get_artifact_by_priority_1(self, test_context: TestContext):
+    def test_get_artifact_by_priority_1(self):
         """
         https://github.com/OneDragon-Anything/ZenlessZoneZero-OneDragon/issues/644
         确认第一个优先级可以匹配
         :return:
         """
+        # 优先级检查使用隔离配置，避免运行上下文改写全局调试开关。
+        test_context = SimpleNamespace()
+        test_context.lost_void = LostVoidContext(test_context)
         test_context.lost_void.load_artifact_data()
-        test_context.lost_void.load_challenge_config()
+        test_context.lost_void.challenge_config = LostVoidChallengeConfig('test-priority', is_mock=True)
 
         test_context.lost_void.challenge_config.update(
             'artifact_priority',
