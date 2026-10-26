@@ -112,6 +112,32 @@ def test_gained_hint_retry_requires_new_frame_and_stops_after_three(monkeypatch:
     assert operation.ctx.controller.btn_tap.call_count==3
 
 
+def test_gain_card_ocr_may_omit_a_but_same_row_template_is_required() -> None:
+    from one_dragon.base.matcher.match_result import MatchResult, MatchResultList
+    from one_dragon.base.matcher.template_matcher import TemplateMatcher
+    from one_dragon.base.screen.template_loader import TemplateLoader
+
+    frame = cv2_utils.read_image(str(Path(__file__).resolve().parents[3] / 'screens' / '迷失之地-通用选择' / 'ios_gain_card_a.webp'))
+    operation = make_gain_operation()
+    operation.ctx.tm = TemplateMatcher(TemplateLoader())
+    footer = frame[780:985, 780:1165]
+    words = MatchResultList()
+    words.append(MatchResult(1, 163, 49, 61, 33))
+    ocr = {'确定': words}
+    operation.gained_item_identity = Mock(return_value=('获得战利品', '[异常·击破]万能催化物'))
+    operation.navigation._read_area = Mock(return_value=(footer, ocr))
+    assert operation.has_a_confirmation((footer, ocr))
+    assert not operation.confirm_gain('获得战利品').is_success
+    operation.ctx.controller.btn_tap.assert_called_once_with('south')
+    missing = footer.copy()
+    missing[40:92, 65:125] = 0
+    assert not operation.has_a_confirmation((missing, ocr))
+    wrong_row = footer.copy()
+    wrong_row[120:160, 76:115] = footer[45:85, 76:115]
+    wrong_row[40:92, 65:125] = 0
+    assert not operation.has_a_confirmation((wrong_row, ocr))
+
+
 def make_multi_operation() -> tuple[GamepadLostVoidChooseCommon,list[LostVoidArtifactPos]]:
     operation,_=make_operation()
     candidates=[LostVoidArtifactPos(LostVoidArtifact('通用',f'候选{index}','A'),Rect(245+index*407,520,455+index*407,550)) for index in range(4)]
@@ -180,6 +206,7 @@ def test_two_gears_without_selected_badge_require_a_confirm(has_a_prompt: bool) 
     from one_dragon.base.matcher.match_result import MatchResult, MatchResultList
 
     operation, _ = make_operation()
+    operation.ctx.tm = SimpleNamespace(match_template=Mock(return_value=[]))
     operation.last_screenshot = cv2_utils.read_image(str(
         Path(__file__).resolve().parents[3] / 'screens' / '迷失之地-通用选择' / 'ios_two_gears.webp',
     ))
