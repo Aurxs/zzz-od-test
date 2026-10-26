@@ -58,6 +58,15 @@ def test_confirm_once_and_require_world_before_success() -> None:
     assert not operation.ctx.lost_void.priority_updated
 
 
+def test_confirmed_upgrade_hands_back_to_store_without_another_a() -> None:
+    operation, _ = make_operation()
+    operation._confirmed = True
+    operation.can_handle.return_value = False
+    operation.check_and_update_current_screen = Mock(return_value='迷失之地-邦布商店')
+    assert operation.choose().is_success
+    operation.ctx.controller.btn_tap.assert_not_called()
+
+
 def make_multi_operation() -> tuple[GamepadLostVoidChooseCommon,list[LostVoidArtifactPos]]:
     operation,_=make_operation()
     candidates=[LostVoidArtifactPos(LostVoidArtifact('通用',f'候选{index}','A'),Rect(245+index*407,520,455+index*407,550)) for index in range(4)]

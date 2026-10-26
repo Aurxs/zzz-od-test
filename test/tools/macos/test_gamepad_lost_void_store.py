@@ -7,15 +7,43 @@ from unittest.mock import Mock
 import pytest
 
 from one_dragon.base.matcher.match_result import MatchResult, MatchResultList
+from one_dragon.base.geometry.rectangle import Rect
 from one_dragon.utils import cv2_utils
 from zzz_od.operation.gamepad.lost_void_store import (
     GamepadLostVoidBangbooStore,
     GamepadLostVoidStoreConfirm,
 )
+from zzz_od.application.hollow_zero.lost_void.context.lost_void_artifact import LostVoidArtifact
+from zzz_od.application.hollow_zero.lost_void.operation.interact.lost_void_artifact_pos import LostVoidArtifactPos
 
 
 def make_ctx() -> SimpleNamespace:
     return SimpleNamespace(controller=Mock(), lost_void=SimpleNamespace(priority_updated=True))
+
+
+def test_full_price_overrides_truncated_filtered_digits() -> None:
+    ctx=make_ctx()
+    price_area=SimpleNamespace(rect=Rect(90,735,1800,780),left_top=SimpleNamespace(x=90,y=735))
+    buy_area=SimpleNamespace(rect=Rect(90,780,1800,840),left_top=SimpleNamespace(x=90,y=780))
+    ctx.screen_loader=SimpleNamespace(get_area=Mock(side_effect=lambda screen,name:price_area if name=='区域-价格' else buy_area))
+    operation=GamepadLostVoidBangbooStore(ctx)
+    operation.last_screenshot=object()
+    item=LostVoidArtifactPos(LostVoidArtifact('通用','拆弹器','A'),Rect(694,499,833,526))
+    item.store_price=100
+    operation.parser.get_artifact_pos=Mock(return_value=([item],[item]))
+    def words(text: str,y: int) -> dict[str,MatchResultList]:
+        matches=MatchResultList()
+        matches.append(MatchResult(1,645,y,90,28))
+        return {text:matches}
+    operation.navigation._read_area=Mock(side_effect=lambda screen,name:(None,
+        words('× 1000',7) if name=='区域-价格' else words('购买',12)))
+    all_goods,goods=operation._goods()
+    assert all_goods==goods==[item]
+    assert item.store_price==1000
+    operation.navigation._read_area=Mock(side_effect=lambda screen,name:(None,
+        {} if name=='区域-价格' else words('购买',12)))
+    assert operation._goods()[1]==[]
+    assert item.store_price is None
 
 
 @pytest.mark.parametrize('balance, accepted', [(800, True), (750, False)])
@@ -26,9 +54,27 @@ def test_purchase_requires_exact_observed_cost(balance: int, accepted: bool) -> 
     operation._before_balance = 1000
     operation._cost = 200
     operation._balance = Mock(return_value=balance)
+    operation.save_screenshot = Mock()
     result = operation._settle_pending(True)
+    if not accepted:
+        assert not result.is_fail
+        result = operation._settle_pending(True)
     assert result.is_fail is not accepted
     assert (operation._pending is None) is accepted
+    operation.ctx.controller.btn_tap.assert_not_called()
+
+
+def test_balance_animation_waits_for_exact_cost_without_more_input() -> None:
+    operation = GamepadLostVoidBangbooStore(make_ctx())
+    operation._after_round_wait = Mock()
+    operation._pending = '购买'
+    operation._before_balance = 1000
+    operation._cost = 200
+    operation._balance = Mock(side_effect=[850, 800])
+    assert not operation._settle_pending(True).is_fail
+    assert operation._pending == '购买'
+    assert not operation._settle_pending(True).is_fail
+    assert operation._pending is None
     operation.ctx.controller.btn_tap.assert_not_called()
 
 
