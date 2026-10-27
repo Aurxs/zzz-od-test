@@ -1,0 +1,1433 @@
+{
+  "ios_management_first.webp": {
+    "source_image": "screens/预备编队/ios_management_first.webp",
+    "ocr_texts": [
+      {
+        "text": "编队1",
+        "x": 171,
+        "y": 134,
+        "width": 113,
+        "height": 37,
+        "confidence": 0.9921441078186035
+      },
+      {
+        "text": "RS",
+        "x": 291,
+        "y": 140,
+        "width": 29,
+        "height": 19,
+        "confidence": 0.9997339248657227
+      },
+      {
+        "text": "石",
+        "x": 696,
+        "y": 140,
+        "width": 31,
+        "height": 26,
+        "confidence": 0.8800345063209534
+      },
+      {
+        "text": "3/3",
+        "x": 780,
+        "y": 136,
+        "width": 63,
+        "height": 34,
+        "confidence": 0.9997836947441101
+      },
+      {
+        "text": "3/3",
+        "x": 1633,
+        "y": 136,
+        "width": 63,
+        "height": 35,
+        "confidence": 0.9993231892585754
+      },
+      {
+        "text": "3/3",
+        "x": 817,
+        "y": 420,
+        "width": 63,
+        "height": 34,
+        "confidence": 0.9995357394218445
+      },
+      {
+        "text": "3/3",
+        "x": 1633,
+        "y": 420,
+        "width": 64,
+        "height": 34,
+        "confidence": 0.9989741444587708
+      },
+      {
+        "text": "3/3",
+        "x": 816,
+        "y": 703,
+        "width": 64,
+        "height": 35,
+        "confidence": 0.9996895790100098
+      },
+      {
+        "text": "编队 2",
+        "x": 989,
+        "y": 137,
+        "width": 86,
+        "height": 33,
+        "confidence": 0.8831173181533813
+      },
+      {
+        "text": "1P",
+        "x": 320,
+        "y": 193,
+        "width": 25,
+        "height": 21,
+        "confidence": 0.9941094517707825
+      },
+      {
+        "text": "1P",
+        "x": 1139,
+        "y": 194,
+        "width": 24,
+        "height": 20,
+        "confidence": 0.9915300607681274
+      },
+      {
+        "text": "1P",
+        "x": 321,
+        "y": 476,
+        "width": 26,
+        "height": 20,
+        "confidence": 0.9924468398094177
+      },
+      {
+        "text": "1P",
+        "x": 1135,
+        "y": 474,
+        "width": 30,
+        "height": 25,
+        "confidence": 0.9962337017059326
+      },
+      {
+        "text": "2P",
+        "x": 510,
+        "y": 192,
+        "width": 31,
+        "height": 23,
+        "confidence": 0.9995191693305969
+      },
+      {
+        "text": "2P",
+        "x": 1326,
+        "y": 192,
+        "width": 32,
+        "height": 23,
+        "confidence": 0.9990983009338379
+      },
+      {
+        "text": "2P",
+        "x": 510,
+        "y": 474,
+        "width": 32,
+        "height": 24,
+        "confidence": 0.9991705417633057
+      },
+      {
+        "text": "2P",
+        "x": 1326,
+        "y": 474,
+        "width": 32,
+        "height": 24,
+        "confidence": 0.9990003108978271
+      },
+      {
+        "text": "2P",
+        "x": 511,
+        "y": 759,
+        "width": 28,
+        "height": 22,
+        "confidence": 0.9990454912185669
+      },
+      {
+        "text": "2P",
+        "x": 1328,
+        "y": 760,
+        "width": 27,
+        "height": 20,
+        "confidence": 0.998227596282959
+      },
+      {
+        "text": "3P",
+        "x": 702,
+        "y": 192,
+        "width": 32,
+        "height": 23,
+        "confidence": 0.9982346296310425
+      },
+      {
+        "text": "3P",
+        "x": 1519,
+        "y": 192,
+        "width": 32,
+        "height": 23,
+        "confidence": 0.9996007084846497
+      },
+      {
+        "text": "3P",
+        "x": 702,
+        "y": 474,
+        "width": 32,
+        "height": 25,
+        "confidence": 0.9989098310470581
+      },
+      {
+        "text": "3P",
+        "x": 1516,
+        "y": 473,
+        "width": 36,
+        "height": 27,
+        "confidence": 0.9963570833206177
+      },
+      {
+        "text": "3P",
+        "x": 702,
+        "y": 758,
+        "width": 31,
+        "height": 25,
+        "confidence": 0.9994524717330933
+      },
+      {
+        "text": "3P",
+        "x": 1519,
+        "y": 758,
+        "width": 31,
+        "height": 25,
+        "confidence": 0.9996334314346313
+      },
+      {
+        "text": "BANGBOO",
+        "x": 832,
+        "y": 191,
+        "width": 96,
+        "height": 24,
+        "confidence": 0.9992680549621582
+      },
+      {
+        "text": "BANGBOO",
+        "x": 1651,
+        "y": 195,
+        "width": 92,
+        "height": 17,
+        "confidence": 0.9992322325706482
+      },
+      {
+        "text": "BANGBOO",
+        "x": 832,
+        "y": 475,
+        "width": 96,
+        "height": 23,
+        "confidence": 0.9996353983879089
+      },
+      {
+        "text": "BANGBOO",
+        "x": 1648,
+        "y": 475,
+        "width": 96,
+        "height": 23,
+        "confidence": 0.9985469579696655
+      },
+      {
+        "text": "BANGBOO",
+        "x": 834,
+        "y": 761,
+        "width": 92,
+        "height": 18,
+        "confidence": 0.9990876913070679
+      },
+      {
+        "text": "BANGBOO",
+        "x": 1650,
+        "y": 760,
+        "width": 93,
+        "height": 21,
+        "confidence": 0.9997978210449219
+      },
+      {
+        "text": "68",
+        "x": 1184,
+        "y": 190,
+        "width": 58,
+        "height": 29,
+        "confidence": 0.6390522718429565
+      },
+      {
+        "text": "十",
+        "x": 1380,
+        "y": 194,
+        "width": 28,
+        "height": 21,
+        "confidence": 0.5773137211799622
+      },
+      {
+        "text": "0",
+        "x": 1616,
+        "y": 253,
+        "width": 18,
+        "height": 27,
+        "confidence": 0.9947104454040527
+      },
+      {
+        "text": "0",
+        "x": 1640,
+        "y": 254,
+        "width": 30,
+        "height": 36,
+        "confidence": 0.9700340628623962
+      },
+      {
+        "text": "60",
+        "x": 170,
+        "y": 335,
+        "width": 43,
+        "height": 34,
+        "confidence": 0.9999936819076538
+      },
+      {
+        "text": "60",
+        "x": 360,
+        "y": 334,
+        "width": 48,
+        "height": 36,
+        "confidence": 0.9999893307685852
+      },
+      {
+        "text": "60",
+        "x": 555,
+        "y": 336,
+        "width": 45,
+        "height": 33,
+        "confidence": 0.9999862313270569
+      },
+      {
+        "text": "60",
+        "x": 747,
+        "y": 334,
+        "width": 47,
+        "height": 37,
+        "confidence": 0.9994324445724487
+      },
+      {
+        "text": "60",
+        "x": 986,
+        "y": 335,
+        "width": 44,
+        "height": 34,
+        "confidence": 0.9999926686286926
+      },
+      {
+        "text": "60",
+        "x": 1178,
+        "y": 334,
+        "width": 47,
+        "height": 36,
+        "confidence": 0.9999914765357971
+      },
+      {
+        "text": "60",
+        "x": 1370,
+        "y": 335,
+        "width": 48,
+        "height": 36,
+        "confidence": 0.9999889135360718
+      },
+      {
+        "text": "60",
+        "x": 1565,
+        "y": 336,
+        "width": 44,
+        "height": 33,
+        "confidence": 0.9999873638153076
+      },
+      {
+        "text": "60",
+        "x": 169,
+        "y": 619,
+        "width": 45,
+        "height": 34,
+        "confidence": 0.9999911785125732
+      },
+      {
+        "text": "60",
+        "x": 360,
+        "y": 617,
+        "width": 48,
+        "height": 37,
+        "confidence": 0.9999881386756897
+      },
+      {
+        "text": "60",
+        "x": 556,
+        "y": 618,
+        "width": 44,
+        "height": 35,
+        "confidence": 0.9999935626983643
+      },
+      {
+        "text": "60",
+        "x": 747,
+        "y": 616,
+        "width": 47,
+        "height": 38,
+        "confidence": 0.999981701374054
+      },
+      {
+        "text": "60",
+        "x": 986,
+        "y": 618,
+        "width": 44,
+        "height": 35,
+        "confidence": 0.9999935030937195
+      },
+      {
+        "text": "60",
+        "x": 1177,
+        "y": 617,
+        "width": 48,
+        "height": 37,
+        "confidence": 0.9999821186065674
+      },
+      {
+        "text": "60",
+        "x": 1371,
+        "y": 617,
+        "width": 46,
+        "height": 37,
+        "confidence": 0.9999876618385315
+      },
+      {
+        "text": "60",
+        "x": 1563,
+        "y": 617,
+        "width": 47,
+        "height": 38,
+        "confidence": 0.9999843835830688
+      },
+      {
+        "text": "60",
+        "x": 169,
+        "y": 902,
+        "width": 44,
+        "height": 34,
+        "confidence": 0.999981164932251
+      },
+      {
+        "text": "60",
+        "x": 360,
+        "y": 901,
+        "width": 48,
+        "height": 37,
+        "confidence": 0.9999852776527405
+      },
+      {
+        "text": "60",
+        "x": 554,
+        "y": 900,
+        "width": 48,
+        "height": 38,
+        "confidence": 0.9999910593032837
+      },
+      {
+        "text": "60",
+        "x": 747,
+        "y": 900,
+        "width": 47,
+        "height": 38,
+        "confidence": 0.9999863505363464
+      },
+      {
+        "text": "60",
+        "x": 985,
+        "y": 900,
+        "width": 46,
+        "height": 38,
+        "confidence": 0.9999900460243225
+      },
+      {
+        "text": "60",
+        "x": 1179,
+        "y": 902,
+        "width": 44,
+        "height": 35,
+        "confidence": 0.9999936819076538
+      },
+      {
+        "text": "60",
+        "x": 1371,
+        "y": 900,
+        "width": 48,
+        "height": 38,
+        "confidence": 0.9999925494194031
+      },
+      {
+        "text": "60",
+        "x": 1563,
+        "y": 900,
+        "width": 47,
+        "height": 38,
+        "confidence": 0.9999867677688599
+      },
+      {
+        "text": "编队3",
+        "x": 172,
+        "y": 421,
+        "width": 87,
+        "height": 32,
+        "confidence": 0.9963135719299316
+      },
+      {
+        "text": "编队4",
+        "x": 989,
+        "y": 421,
+        "width": 96,
+        "height": 32,
+        "confidence": 0.9935333728790283
+      },
+      {
+        "text": "2",
+        "x": 1448,
+        "y": 597,
+        "width": 28,
+        "height": 27,
+        "confidence": 0.658385157585144
+      },
+      {
+        "text": "编队5",
+        "x": 172,
+        "y": 704,
+        "width": 89,
+        "height": 32,
+        "confidence": 0.9941480755805969
+      },
+      {
+        "text": "编队6",
+        "x": 989,
+        "y": 704,
+        "width": 86,
+        "height": 32,
+        "confidence": 0.9882545471191406
+      },
+      {
+        "text": "2/3",
+        "x": 1633,
+        "y": 703,
+        "width": 63,
+        "height": 35,
+        "confidence": 0.9989216327667236
+      },
+      {
+        "text": "☆",
+        "x": 368,
+        "y": 758,
+        "width": 56,
+        "height": 27,
+        "confidence": 0.6578366756439209
+      },
+      {
+        "text": "办夏",
+        "x": 991,
+        "y": 757,
+        "width": 55,
+        "height": 27,
+        "confidence": 0.6559858918190002
+      },
+      {
+        "text": "源",
+        "x": 1184,
+        "y": 755,
+        "width": 59,
+        "height": 33,
+        "confidence": 0.6197980046272278
+      },
+      {
+        "text": "00",
+        "x": 1605,
+        "y": 810,
+        "width": 70,
+        "height": 53,
+        "confidence": 0.9990001916885376
+      },
+      {
+        "text": "x",
+        "x": 1470,
+        "y": 1015,
+        "width": 27,
+        "height": 28,
+        "confidence": 0.8828322291374207
+      },
+      {
+        "text": "A",
+        "x": 1605,
+        "y": 1017,
+        "width": 23,
+        "height": 24,
+        "confidence": 0.9997602105140686
+      },
+      {
+        "text": "选择",
+        "x": 1646,
+        "y": 1017,
+        "width": 40,
+        "height": 23,
+        "confidence": 0.9898121356964111
+      },
+      {
+        "text": "B",
+        "x": 1740,
+        "y": 1017,
+        "width": 21,
+        "height": 23,
+        "confidence": 0.9996792078018188
+      },
+      {
+        "text": "返回",
+        "x": 1779,
+        "y": 1017,
+        "width": 41,
+        "height": 23,
+        "confidence": 0.9998501539230347
+      }
+    ]
+  },
+  "ios_management_function.webp": {
+    "source_image": "screens/预备编队/ios_management_function.webp",
+    "ocr_texts": [
+      {
+        "text": "培",
+        "x": 1591,
+        "y": 0,
+        "width": 76,
+        "height": 86,
+        "confidence": 0.8199986815452576
+      },
+      {
+        "text": ".FUNCTIONS",
+        "x": 1399,
+        "y": 128,
+        "width": 407,
+        "height": 65,
+        "confidence": 0.9980760812759399
+      },
+      {
+        "text": "WELCOME TO NEW ERID",
+        "x": 1533,
+        "y": 208,
+        "width": 147,
+        "height": 20,
+        "confidence": 0.972695529460907
+      },
+      {
+        "text": "分+",
+        "x": 1700,
+        "y": 208,
+        "width": 57,
+        "height": 21,
+        "confidence": 0.5990683436393738
+      },
+      {
+        "text": "NEW!",
+        "x": 1271,
+        "y": 259,
+        "width": 61,
+        "height": 25,
+        "confidence": 0.9998597502708435
+      },
+      {
+        "text": "NEW!",
+        "x": 1404,
+        "y": 407,
+        "width": 58,
+        "height": 21,
+        "confidence": 0.9998828172683716
+      },
+      {
+        "text": "NEW!",
+        "x": 1666,
+        "y": 407,
+        "width": 59,
+        "height": 22,
+        "confidence": 0.9998860359191895
+      },
+      {
+        "text": "NEW!",
+        "x": 1404,
+        "y": 590,
+        "width": 58,
+        "height": 21,
+        "confidence": 0.9999035000801086
+      },
+      {
+        "text": "NEW!",
+        "x": 1535,
+        "y": 590,
+        "width": 59,
+        "height": 21,
+        "confidence": 0.9998962879180908
+      },
+      {
+        "text": "NEW!",
+        "x": 1666,
+        "y": 590,
+        "width": 58,
+        "height": 21,
+        "confidence": 0.9999086856842041
+      },
+      {
+        "text": "觀便随",
+        "x": 853,
+        "y": 290,
+        "width": 183,
+        "height": 60,
+        "confidence": 0.993355929851532
+      },
+      {
+        "text": "HOUR",
+        "x": 1302,
+        "y": 320,
+        "width": 47,
+        "height": 21,
+        "confidence": 0.9996899366378784
+      },
+      {
+        "text": "MANAGE",
+        "x": 899,
+        "y": 351,
+        "width": 85,
+        "height": 18,
+        "confidence": 0.9998733401298523
+      },
+      {
+        "text": "商城",
+        "x": 1305,
+        "y": 349,
+        "width": 45,
+        "height": 28,
+        "confidence": 0.9999039769172668
+      },
+      {
+        "text": "音像店",
+        "x": 1427,
+        "y": 348,
+        "width": 63,
+        "height": 30,
+        "confidence": 0.9999663233757019
+      },
+      {
+        "text": "改装店",
+        "x": 1557,
+        "y": 348,
+        "width": 66,
+        "height": 29,
+        "confidence": 0.9998948574066162
+      },
+      {
+        "text": "旅程",
+        "x": 1699,
+        "y": 349,
+        "width": 45,
+        "height": 27,
+        "confidence": 0.9996715784072876
+      },
+      {
+        "text": "LOG",
+        "x": 1306,
+        "y": 433,
+        "width": 39,
+        "height": 30,
+        "confidence": 0.9968361854553223
+      },
+      {
+        "text": "后勤商店",
+        "x": 1287,
+        "y": 495,
+        "width": 82,
+        "height": 28,
+        "confidence": 0.9999076128005981
+      },
+      {
+        "text": "攻略",
+        "x": 1436,
+        "y": 495,
+        "width": 45,
+        "height": 27,
+        "confidence": 0.9984484314918518
+      },
+      {
+        "text": "仓库",
+        "x": 1568,
+        "y": 495,
+        "width": 45,
+        "height": 27,
+        "confidence": 0.9998342394828796
+      },
+      {
+        "text": "合作者",
+        "x": 1689,
+        "y": 494,
+        "width": 65,
+        "height": 29,
+        "confidence": 0.9976751208305359
+      },
+      {
+        "text": "-COMMUNITY-",
+        "x": 1452,
+        "y": 549,
+        "width": 146,
+        "height": 20,
+        "confidence": 0.9991922974586487
+      },
+      {
+        "text": "站点",
+        "x": 1304,
+        "y": 678,
+        "width": 46,
+        "height": 27,
+        "confidence": 0.9999969005584717
+      },
+      {
+        "text": "情报板",
+        "x": 1426,
+        "y": 676,
+        "width": 65,
+        "height": 29,
+        "confidence": 0.999295175075531
+      },
+      {
+        "text": "好友",
+        "x": 1567,
+        "y": 677,
+        "width": 47,
+        "height": 28,
+        "confidence": 0.9997825622558594
+      },
+      {
+        "text": "个人主页",
+        "x": 1680,
+        "y": 677,
+        "width": 82,
+        "height": 29,
+        "confidence": 0.9995999932289124
+      },
+      {
+        "text": "-GENERAL-",
+        "x": 1467,
+        "y": 730,
+        "width": 114,
+        "height": 20,
+        "confidence": 0.9644957780838013
+      },
+      {
+        "text": "预备编队",
+        "x": 1286,
+        "y": 861,
+        "width": 82,
+        "height": 27,
+        "confidence": 0.9937127828598022
+      },
+      {
+        "text": "EMPTY",
+        "x": 1415,
+        "y": 864,
+        "width": 86,
+        "height": 23,
+        "confidence": 0.9999645352363586
+      },
+      {
+        "text": "EMPTY",
+        "x": 1545,
+        "y": 864,
+        "width": 88,
+        "height": 23,
+        "confidence": 0.9999607801437378
+      },
+      {
+        "text": "EMPTY",
+        "x": 1676,
+        "y": 864,
+        "width": 87,
+        "height": 23,
+        "confidence": 0.999951958656311
+      },
+      {
+        "text": "导览套件",
+        "x": 167,
+        "y": 1001,
+        "width": 109,
+        "height": 31,
+        "confidence": 0.9987466335296631
+      },
+      {
+        "text": "选择",
+        "x": 415,
+        "y": 1007,
+        "width": 42,
+        "height": 23,
+        "confidence": 0.9998087882995605
+      },
+      {
+        "text": "返回",
+        "x": 521,
+        "y": 1008,
+        "width": 42,
+        "height": 21,
+        "confidence": 0.9988749027252197
+      }
+    ]
+  },
+  "ios_management_last.webp": {
+    "source_image": "screens/预备编队/ios_management_last.webp",
+    "ocr_texts": [
+      {
+        "text": "编队 15",
+        "x": 173,
+        "y": 141,
+        "width": 102,
+        "height": 32,
+        "confidence": 0.9470421075820923
+      },
+      {
+        "text": "0/0",
+        "x": 815,
+        "y": 137,
+        "width": 67,
+        "height": 38,
+        "confidence": 0.9984133839607239
+      },
+      {
+        "text": "0/0",
+        "x": 1632,
+        "y": 137,
+        "width": 66,
+        "height": 38,
+        "confidence": 0.9975764751434326
+      },
+      {
+        "text": "0/0",
+        "x": 817,
+        "y": 423,
+        "width": 64,
+        "height": 35,
+        "confidence": 0.9968008995056152
+      },
+      {
+        "text": "0/0",
+        "x": 1633,
+        "y": 423,
+        "width": 65,
+        "height": 35,
+        "confidence": 0.9980080723762512
+      },
+      {
+        "text": "0/0",
+        "x": 780,
+        "y": 706,
+        "width": 66,
+        "height": 35,
+        "confidence": 0.9987130165100098
+      },
+      {
+        "text": "0/0",
+        "x": 1633,
+        "y": 705,
+        "width": 66,
+        "height": 37,
+        "confidence": 0.997215986251831
+      },
+      {
+        "text": "编队 16",
+        "x": 989,
+        "y": 141,
+        "width": 102,
+        "height": 32,
+        "confidence": 0.9504615664482117
+      },
+      {
+        "text": "1P",
+        "x": 318,
+        "y": 194,
+        "width": 30,
+        "height": 26,
+        "confidence": 0.9897316694259644
+      },
+      {
+        "text": "1P",
+        "x": 1136,
+        "y": 195,
+        "width": 27,
+        "height": 24,
+        "confidence": 0.9965343475341797
+      },
+      {
+        "text": "1P",
+        "x": 319,
+        "y": 478,
+        "width": 29,
+        "height": 25,
+        "confidence": 0.9973368644714355
+      },
+      {
+        "text": "1P",
+        "x": 1137,
+        "y": 479,
+        "width": 26,
+        "height": 23,
+        "confidence": 0.9940074682235718
+      },
+      {
+        "text": "1P",
+        "x": 321,
+        "y": 762,
+        "width": 25,
+        "height": 24,
+        "confidence": 0.997199535369873
+      },
+      {
+        "text": "1P",
+        "x": 1137,
+        "y": 763,
+        "width": 26,
+        "height": 23,
+        "confidence": 0.9961675405502319
+      },
+      {
+        "text": "2P",
+        "x": 510,
+        "y": 196,
+        "width": 31,
+        "height": 23,
+        "confidence": 0.9979137182235718
+      },
+      {
+        "text": "2P",
+        "x": 1326,
+        "y": 196,
+        "width": 32,
+        "height": 23,
+        "confidence": 0.9981245994567871
+      },
+      {
+        "text": "2P",
+        "x": 507,
+        "y": 476,
+        "width": 36,
+        "height": 28,
+        "confidence": 0.9932854771614075
+      },
+      {
+        "text": "2P",
+        "x": 1326,
+        "y": 477,
+        "width": 32,
+        "height": 26,
+        "confidence": 0.9988887310028076
+      },
+      {
+        "text": "2P",
+        "x": 510,
+        "y": 761,
+        "width": 31,
+        "height": 26,
+        "confidence": 0.999138593673706
+      },
+      {
+        "text": "2P",
+        "x": 1326,
+        "y": 761,
+        "width": 32,
+        "height": 26,
+        "confidence": 0.997104287147522
+      },
+      {
+        "text": "3P",
+        "x": 699,
+        "y": 193,
+        "width": 37,
+        "height": 28,
+        "confidence": 0.9945154190063477
+      },
+      {
+        "text": "3P",
+        "x": 1519,
+        "y": 196,
+        "width": 33,
+        "height": 23,
+        "confidence": 0.9991103410720825
+      },
+      {
+        "text": "3P",
+        "x": 703,
+        "y": 478,
+        "width": 31,
+        "height": 25,
+        "confidence": 0.997605562210083
+      },
+      {
+        "text": "3P",
+        "x": 1516,
+        "y": 476,
+        "width": 37,
+        "height": 28,
+        "confidence": 0.9969887733459473
+      },
+      {
+        "text": "3P",
+        "x": 702,
+        "y": 761,
+        "width": 32,
+        "height": 26,
+        "confidence": 0.9995572566986084
+      },
+      {
+        "text": "3P",
+        "x": 1519,
+        "y": 761,
+        "width": 32,
+        "height": 26,
+        "confidence": 0.999489426612854
+      },
+      {
+        "text": "BANGBOO",
+        "x": 834,
+        "y": 199,
+        "width": 92,
+        "height": 17,
+        "confidence": 0.9996476173400879
+      },
+      {
+        "text": "BANGBOO",
+        "x": 1649,
+        "y": 198,
+        "width": 95,
+        "height": 20,
+        "confidence": 0.9994373321533203
+      },
+      {
+        "text": "BANGBOO",
+        "x": 833,
+        "y": 480,
+        "width": 95,
+        "height": 21,
+        "confidence": 0.9967784881591797
+      },
+      {
+        "text": "BANGBOO",
+        "x": 1650,
+        "y": 480,
+        "width": 95,
+        "height": 21,
+        "confidence": 0.9993833899497986
+      },
+      {
+        "text": "BANGBOO",
+        "x": 833,
+        "y": 763,
+        "width": 95,
+        "height": 21,
+        "confidence": 0.9910659790039062
+      },
+      {
+        "text": "BANGBOO",
+        "x": 1649,
+        "y": 763,
+        "width": 95,
+        "height": 21,
+        "confidence": 0.9983240962028503
+      },
+      {
+        "text": "十",
+        "x": 235,
+        "y": 258,
+        "width": 53,
+        "height": 51,
+        "confidence": 0.5543708205223083
+      },
+      {
+        "text": "十",
+        "x": 813,
+        "y": 257,
+        "width": 56,
+        "height": 54,
+        "confidence": 0.6617856025695801
+      },
+      {
+        "text": "十",
+        "x": 1052,
+        "y": 258,
+        "width": 53,
+        "height": 51,
+        "confidence": 0.5192667841911316
+      },
+      {
+        "text": "十",
+        "x": 1240,
+        "y": 254,
+        "width": 61,
+        "height": 57,
+        "confidence": 0.5720261335372925
+      },
+      {
+        "text": "十",
+        "x": 1437,
+        "y": 257,
+        "width": 57,
+        "height": 53,
+        "confidence": 0.5424219965934753
+      },
+      {
+        "text": "十",
+        "x": 1631,
+        "y": 258,
+        "width": 54,
+        "height": 51,
+        "confidence": 0.6205030083656311
+      },
+      {
+        "text": "十",
+        "x": 234,
+        "y": 541,
+        "width": 56,
+        "height": 54,
+        "confidence": 0.6659064292907715
+      },
+      {
+        "text": "十",
+        "x": 426,
+        "y": 541,
+        "width": 59,
+        "height": 54,
+        "confidence": 0.6582555174827576
+      },
+      {
+        "text": "十",
+        "x": 813,
+        "y": 541,
+        "width": 56,
+        "height": 54,
+        "confidence": 0.7733272910118103
+      },
+      {
+        "text": "十",
+        "x": 1050,
+        "y": 541,
+        "width": 56,
+        "height": 54,
+        "confidence": 0.6876624822616577
+      },
+      {
+        "text": "十",
+        "x": 1242,
+        "y": 541,
+        "width": 58,
+        "height": 54,
+        "confidence": 0.6348810791969299
+      },
+      {
+        "text": "十",
+        "x": 1435,
+        "y": 541,
+        "width": 58,
+        "height": 54,
+        "confidence": 0.6224714517593384
+      },
+      {
+        "text": "十",
+        "x": 1631,
+        "y": 542,
+        "width": 53,
+        "height": 51,
+        "confidence": 0.796864926815033
+      },
+      {
+        "text": "十",
+        "x": 429,
+        "y": 826,
+        "width": 55,
+        "height": 50,
+        "confidence": 0.5224219560623169
+      },
+      {
+        "text": "十",
+        "x": 814,
+        "y": 826,
+        "width": 54,
+        "height": 50,
+        "confidence": 0.5207139253616333
+      },
+      {
+        "text": "十",
+        "x": 1244,
+        "y": 826,
+        "width": 55,
+        "height": 50,
+        "confidence": 0.5791602730751038
+      },
+      {
+        "text": "十",
+        "x": 1438,
+        "y": 826,
+        "width": 55,
+        "height": 50,
+        "confidence": 0.6004016399383545
+      },
+      {
+        "text": "+",
+        "x": 427,
+        "y": 256,
+        "width": 58,
+        "height": 54,
+        "confidence": 0.6011080145835876
+      },
+      {
+        "text": "+",
+        "x": 619,
+        "y": 257,
+        "width": 59,
+        "height": 52,
+        "confidence": 0.5263456702232361
+      },
+      {
+        "text": "+",
+        "x": 616,
+        "y": 539,
+        "width": 67,
+        "height": 56,
+        "confidence": 0.6235198378562927
+      },
+      {
+        "text": "+",
+        "x": 237,
+        "y": 825,
+        "width": 52,
+        "height": 51,
+        "confidence": 0.5346389412879944
+      },
+      {
+        "text": "+",
+        "x": 620,
+        "y": 826,
+        "width": 57,
+        "height": 49,
+        "confidence": 0.5861920118331909
+      },
+      {
+        "text": "+",
+        "x": 1053,
+        "y": 825,
+        "width": 53,
+        "height": 51,
+        "confidence": 0.6404582262039185
+      },
+      {
+        "text": "+",
+        "x": 1632,
+        "y": 825,
+        "width": 53,
+        "height": 51,
+        "confidence": 0.5331729054450989
+      },
+      {
+        "text": "编队17",
+        "x": 173,
+        "y": 425,
+        "width": 107,
+        "height": 32,
+        "confidence": 0.9981437921524048
+      },
+      {
+        "text": "编队 18",
+        "x": 989,
+        "y": 425,
+        "width": 101,
+        "height": 32,
+        "confidence": 0.9478222131729126
+      },
+      {
+        "text": "编队 19",
+        "x": 172,
+        "y": 707,
+        "width": 104,
+        "height": 35,
+        "confidence": 0.9554122686386108
+      },
+      {
+        "text": "RS",
+        "x": 308,
+        "y": 711,
+        "width": 29,
+        "height": 19,
+        "confidence": 0.9992570877075195
+      },
+      {
+        "text": "石",
+        "x": 697,
+        "y": 711,
+        "width": 34,
+        "height": 25,
+        "confidence": 0.7141600847244263
+      },
+      {
+        "text": "编队 20",
+        "x": 987,
+        "y": 705,
+        "width": 128,
+        "height": 37,
+        "confidence": 0.9144517183303833
+      },
+      {
+        "text": "x",
+        "x": 1469,
+        "y": 1015,
+        "width": 36,
+        "height": 29,
+        "confidence": 0.683557391166687
+      },
+      {
+        "text": "编辑",
+        "x": 1513,
+        "y": 1019,
+        "width": 39,
+        "height": 19,
+        "confidence": 0.9955965280532837
+      },
+      {
+        "text": "A",
+        "x": 1602,
+        "y": 1016,
+        "width": 31,
+        "height": 27,
+        "confidence": 0.999721109867096
+      },
+      {
+        "text": "选择",
+        "x": 1644,
+        "y": 1018,
+        "width": 42,
+        "height": 23,
+        "confidence": 0.9955642223358154
+      },
+      {
+        "text": "B",
+        "x": 1739,
+        "y": 1017,
+        "width": 25,
+        "height": 23,
+        "confidence": 0.9995046854019165
+      },
+      {
+        "text": "返回",
+        "x": 1779,
+        "y": 1018,
+        "width": 41,
+        "height": 23,
+        "confidence": 0.9999334812164307
+      }
+    ]
+  }
+}
