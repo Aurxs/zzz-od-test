@@ -135,6 +135,43 @@ def test_user_selecting_macos_saves_platform_and_cleans_old_controller(
     ctx.init_controller.assert_not_called()
 
 
+def test_macos_hides_unused_controls_and_keeps_xbox_configuration(
+    game_settings: tuple[setting_game_interface.SettingGameInterface, SimpleNamespace, Path],
+    qapp: QApplication,
+) -> None:
+    """仅隐藏无效控件，旧 DS4/后台配置不改写，Mac 始终显示实际使用的 Xbox 映射。"""
+    interface, ctx, _ = game_settings
+    ctx.game_config.data.update({
+        'background_mode': True, 'background_gamepad_type': 'ds4', 'launch_argument': True,
+        'key_normal_attack': 'j', 'ds4_key_normal_attack': 'ds4_circle',
+    })
+    original = dict(ctx.game_config.data)
+    interface.on_interface_shown()
+    interface.show()
+    for _ in range(3):
+        qapp.processEvents()
+    for control in (
+        interface.input_way_opt, interface.hdr_btn, interface.launch_argument_switch.btn,
+        interface.screen_size_opt, interface.full_screen_opt, interface.popup_window_switch,
+        interface.monitor_opt, interface.launch_argument_advance, interface._keyboard_group,
+        interface.background_mode_switch.btn, interface.background_gamepad_type_opt.combo_box,
+        interface.mouse_flash_duration_opt,
+    ):
+        assert not control.isVisibleTo(interface)
+    interface._toggle_gamepad_cards(1)
+    assert all(not card.isHidden() for card in interface._xbox_cards.values())
+    assert all(card.isHidden() for card in interface._ds4_cards.values())
+    assert all(not card.isHidden() for card in interface._xbox_action_cards.values())
+    assert all(card.isHidden() for card in interface._ds4_action_cards.values())
+    assert not interface.xbox_key_press_time_opt.isHidden()
+    assert interface.ds4_key_press_time_opt.isHidden()
+    assert ctx.game_config.data == original
+    ctx.run_context.stop_running.assert_not_called()
+    ctx.controller.cleanup_after_app_shutdown.assert_not_called()
+    ctx.dispatch_event.assert_not_called()
+    ctx.init_controller.assert_not_called()
+
+
 def test_macos_hides_windows_login_controls_in_developer_mode(
     qapp: QApplication,
     settings: tuple[zzz_setting_instance_interface.ZSettingInstanceInterface, SimpleNamespace, Path],
