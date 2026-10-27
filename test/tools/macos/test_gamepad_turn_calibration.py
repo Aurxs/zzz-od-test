@@ -87,3 +87,52 @@ def test_original_app_calls_real_calibration_node(monkeypatch: pytest.MonkeyPatc
     operation.back_at_first()
     fake.execute.assert_called_once_with()
     operation.round_success.assert_called_once_with('Mac校准已完成', data={'distance_per_second': 900})
+
+
+def test_static_target_enters_existing_escape_despite_other_icon_changes(monkeypatch: pytest.MonkeyPatch) -> None:
+    """远处图标闪烁不能让当前目标前的障碍一直不触发脱困。"""
+    from one_dragon.base.geometry.rectangle import Rect
+    from zzz_od.operation.gamepad.lost_void_turn import GamepadLostVoidMoveByDet
+    monkeypatch.setattr(module.LostVoidMoveByDet, 'check_stuck', Mock(return_value=None))
+    times = iter([0.0, 1.0, 2.1])
+    monkeypatch.setattr(module.time, 'monotonic', lambda: next(times))
+    operation = object.__new__(GamepadLostVoidMoveByDet)
+    operation.ctx = SimpleNamespace(controller=Mock())
+    operation.stuck_state = SimpleNamespace(stuck_times=0)
+    operation._static_target = None
+    operation._static_since = 0
+    operation._reset_stuck_status = Mock()
+    operation.round_success = Mock(return_value='escape')
+    target = SimpleNamespace(entire_rect=Rect(100, 200, 140, 240))
+    assert operation.check_stuck(object(), target) is None
+    assert operation.check_stuck(object(), target) is None
+    assert operation.check_stuck(object(), target) == 'escape'
+    assert operation.stuck_state.stuck_times == 1
+    operation.ctx.controller.stop_moving_forward.assert_called_once_with()
+
+
+def test_bounded_turn_uses_calibrated_amplitude_and_center_deadzone() -> None:
+    from one_dragon.base.geometry.point import Point
+    operation = object.__new__(module.GamepadLostVoidMoveByDet)
+    operation.ctx = SimpleNamespace(controller=Mock(standard_width=1920), macos_config=SimpleNamespace(
+        turn_distance_per_second=800, turn_stick_amplitude=0.5,
+    ))
+    assert operation.turn_to_target(Point(990, 200)) is False
+    operation.ctx.controller.move_camera.assert_not_called()
+    assert operation.turn_to_target(Point(1400, 200)) is True
+    operation.ctx.controller.move_camera.assert_called_once_with(0.5, 0, press_time=0.15)
+
+
+def test_encounter_precedes_exit_detection_during_movement() -> None:
+    operation = object.__new__(module.GamepadLostVoidMoveByDet)
+    operation.last_screenshot = np.zeros((1080,1920,3),dtype=np.uint8)
+    operation.last_screenshot_time = 100
+    operation._last_encounter_check = 0
+    operation.ctx = SimpleNamespace(controller=Mock(), lost_void=SimpleNamespace(
+        in_normal_world=Mock(return_value=True), check_battle_encounter=Mock(return_value=True), detect_to_go=Mock(),
+    ))
+    operation.round_success = Mock(return_value='battle')
+    assert operation.move_towards() == 'battle'
+    operation.ctx.lost_void.detect_to_go.assert_not_called()
+    operation.ctx.controller.stop_moving_forward.assert_called_once_with()
+    operation.round_success.assert_called_once_with(module.LostVoidMoveByDet.STATUS_IN_BATTLE)
