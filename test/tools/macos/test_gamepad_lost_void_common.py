@@ -282,3 +282,30 @@ def test_gear_with_detectable_namebars_still_uses_gear_confirmation() -> None:
     assert not operation.choose().is_success
     assert operation._confirmed and operation._gear_layout
     operation.ctx.controller.btn_tap.assert_called_once_with('south')
+
+
+def test_single_target_does_not_change_when_ocr_temporarily_loses_it() -> None:
+    operation, candidates = make_operation()
+    operation.ctx.lost_void.get_artifact_by_priority.return_value = [candidates[1]]
+    operation.choose()
+    operation.ctx.controller.reset_mock()
+    operation.ctx.lost_void.get_artifact_pos.return_value = [candidates[0], candidates[2]]
+    assert operation.choose().status == '等待已选目标名称恢复'
+    assert operation._target == candidates[1].artifact.display_name
+    operation.ctx.controller.btn_tap.assert_not_called()
+    operation.ctx.lost_void.get_artifact_by_priority.assert_called_once()
+    operation.ctx.lost_void.get_artifact_pos.return_value = candidates
+    operation._focused_candidates = Mock(return_value=[candidates[1]])
+    candidates[1].chosen = True
+    candidates[1].can_choose = False
+    operation.choose()
+    operation.ctx.controller.btn_tap.assert_called_once_with('south')
+
+
+def test_confirmed_single_card_missing_ocr_is_not_a_new_page() -> None:
+    operation, candidates = make_operation()
+    operation.choose()
+    operation.ctx.controller.reset_mock()
+    operation.ctx.lost_void.get_artifact_pos.return_value = candidates[:2]
+    assert operation.choose().status == '等待本次藏品确认生效'
+    operation.ctx.controller.btn_tap.assert_not_called()
