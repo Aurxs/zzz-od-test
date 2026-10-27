@@ -115,3 +115,47 @@ def test_application_keeps_failed_status_after_return(monkeypatch) -> None:
     app.round_fail.reset_mock()
     assert app.check_left_times() == 'failed'
     app.round_fail.assert_called_once_with('领奖未完成')
+
+
+def test_macos_buff_uses_original_index_and_unique_card_focus(monkeypatch) -> None:
+    """实拍三卡按原序号选第三张，确认后不重复 A。"""
+    from pathlib import Path
+
+    from one_dragon.base.geometry.rectangle import Rect
+    from one_dragon.base.screen.profile_screen_context import ProfileScreenContext
+    from one_dragon.utils import cv2_utils
+    from zzz_od.operation.gamepad import notorious_hunt
+
+    loader = ProfileScreenContext(defer_missing_screens=True)
+    loader.reload()
+    ctx = SimpleNamespace(run_context=Mock(), controller=Mock(), screen_loader=loader,
+                          macos_config=SimpleNamespace(menu_action_interval_ms=500))
+    op = notorious_hunt.GamepadNotoriousHuntMove(ctx, 3)
+    op._after_round_wait = Mock()
+    op.save_screenshot = Mock()
+    op._buff_parser.round_by_find_area = Mock(return_value=SimpleNamespace(is_success=False))
+    path = Path(__file__).resolve().parents[3] / 'screens' / '恶名狩猎' / 'ios_buff_three_cards.webp'
+    op.last_screenshot = cv2_utils.read_image(str(path))
+    names = op._buff_names()
+    assert len(names) == 3
+    op.choose_buff()
+    target = names[2]
+    monkeypatch.setattr(notorious_hunt, 'find_yellow_focus_frames', lambda *args: [
+        Rect(target.x1 - 20, target.y1 - 200, target.x2 + 20, target.y2 + 200),
+    ])
+    op.choose_buff()
+    op.choose_buff()
+    assert [call.args[0] for call in ctx.controller.btn_tap.call_args_list] == ['dpad_right', 'south']
+    ctx.controller.click.assert_not_called()
+
+
+def test_macos_failed_buff_is_not_approach_success() -> None:
+    """父流程的选择失败兜底不能把 Mac 的异常记成接敌成功。"""
+    from zzz_od.operation.gamepad.notorious_hunt import GamepadNotoriousHuntMove
+
+    op = Mock()
+    op.previous_node.name = '选择'
+    op.previous_node.is_success = False
+    GamepadNotoriousHuntMove.move_done(op)
+    op.round_fail.assert_called_once()
+    op.round_success.assert_not_called()

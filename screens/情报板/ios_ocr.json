@@ -1,0 +1,3308 @@
+{
+  "ios_gamepad": {
+    "success": true,
+    "ocr_texts": [
+      {
+        "text": "AAA",
+        "x": 518,
+        "y": 89,
+        "width": 37,
+        "height": 14
+      },
+      {
+        "text": ".FUNCTIONS",
+        "x": 1400,
+        "y": 128,
+        "width": 406,
+        "height": 65
+      },
+      {
+        "text": "火热进行中",
+        "x": 84,
+        "y": 182,
+        "width": 195,
+        "height": 68
+      },
+      {
+        "text": "WELCOME TO NEW ERIDU",
+        "x": 1529,
+        "y": 206,
+        "width": 159,
+        "height": 23
+      },
+      {
+        "text": "-FREQUENT-",
+        "x": 1459,
+        "y": 257,
+        "width": 132,
+        "height": 21
+      },
+      {
+        "text": "NEW!",
+        "x": 1270,
+        "y": 295,
+        "width": 62,
+        "height": 25
+      },
+      {
+        "text": "HOUR",
+        "x": 1302,
+        "y": 355,
+        "width": 48,
+        "height": 22
+      },
+      {
+        "text": "商城",
+        "x": 1305,
+        "y": 386,
+        "width": 45,
+        "height": 27
+      },
+      {
+        "text": "音像店",
+        "x": 1428,
+        "y": 387,
+        "width": 62,
+        "height": 26
+      },
+      {
+        "text": "改装店",
+        "x": 1557,
+        "y": 385,
+        "width": 66,
+        "height": 29
+      },
+      {
+        "text": "旅程",
+        "x": 1699,
+        "y": 386,
+        "width": 45,
+        "height": 27
+      },
+      {
+        "text": "NEW!",
+        "x": 1404,
+        "y": 444,
+        "width": 58,
+        "height": 21
+      },
+      {
+        "text": "NEW!",
+        "x": 1666,
+        "y": 444,
+        "width": 60,
+        "height": 22
+      },
+      {
+        "text": "LOG",
+        "x": 1305,
+        "y": 470,
+        "width": 40,
+        "height": 29
+      },
+      {
+        "text": "后勤商店",
+        "x": 1286,
+        "y": 532,
+        "width": 83,
+        "height": 28
+      },
+      {
+        "text": "攻略",
+        "x": 1435,
+        "y": 532,
+        "width": 46,
+        "height": 27
+      },
+      {
+        "text": "仓库",
+        "x": 1569,
+        "y": 532,
+        "width": 45,
+        "height": 27
+      },
+      {
+        "text": "合作者",
+        "x": 1690,
+        "y": 531,
+        "width": 64,
+        "height": 29
+      },
+      {
+        "text": "-COMMUNITY-",
+        "x": 1451,
+        "y": 586,
+        "width": 147,
+        "height": 20
+      },
+      {
+        "text": "NEW!",
+        "x": 1533,
+        "y": 623,
+        "width": 63,
+        "height": 27
+      },
+      {
+        "text": "NEW!",
+        "x": 1665,
+        "y": 624,
+        "width": 61,
+        "height": 25
+      },
+      {
+        "text": "站点",
+        "x": 1304,
+        "y": 715,
+        "width": 47,
+        "height": 27
+      },
+      {
+        "text": "情报板",
+        "x": 1427,
+        "y": 714,
+        "width": 65,
+        "height": 28
+      },
+      {
+        "text": "好友",
+        "x": 1567,
+        "y": 714,
+        "width": 46,
+        "height": 28
+      },
+      {
+        "text": "个人主页",
+        "x": 1680,
+        "y": 714,
+        "width": 82,
+        "height": 28
+      },
+      {
+        "text": "-GENERAL-",
+        "x": 1466,
+        "y": 767,
+        "width": 117,
+        "height": 21
+      },
+      {
+        "text": "导览套件",
+        "x": 166,
+        "y": 999,
+        "width": 111,
+        "height": 34
+      },
+      {
+        "text": "选择",
+        "x": 415,
+        "y": 1007,
+        "width": 42,
+        "height": 23
+      },
+      {
+        "text": "返回",
+        "x": 519,
+        "y": 1005,
+        "width": 44,
+        "height": 26
+      }
+    ],
+    "error": null,
+    "screens": [
+      {
+        "screen_name": "功能导览",
+        "is_precise": true,
+        "areas": [
+          {
+            "area_name": "标题",
+            "area_type": "text",
+            "x": 1400,
+            "y": 128,
+            "width": 406,
+            "height": 65,
+            "text": ".FUNCTIONS",
+            "confidence": 0.9966229200363159
+          }
+        ]
+      }
+    ],
+    "screenshot_path": "screens/功能导览/ios_gamepad.webp",
+    "vision_hint": "本结果仅包含 OCR 识别的文字与模板匹配的命中项,是画面的部分识别结果,不等同于对画面的完整视觉理解。需要全面判断画面时,请用视觉工具或多模态大模型再看一遍该画面。"
+  },
+  "ios_zero_charge": {
+    "success": true,
+    "ocr_texts": [
+      {
+        "text": "挑战等级",
+        "x": 1444,
+        "y": 36,
+        "width": 96,
+        "height": 29
+      },
+      {
+        "text": "等级Lv.55",
+        "x": 1589,
+        "y": 35,
+        "width": 123,
+        "height": 31
+      },
+      {
+        "text": "牲鬼·卫律使者",
+        "x": 754,
+        "y": 191,
+        "width": 342,
+        "height": 57
+      },
+      {
+        "text": "相关代理人",
+        "x": 1593,
+        "y": 198,
+        "width": 143,
+        "height": 37
+      },
+      {
+        "text": "燃竭",
+        "x": 266,
+        "y": 233,
+        "width": 66,
+        "height": 38
+      },
+      {
+        "text": "弱点",
+        "x": 761,
+        "y": 264,
+        "width": 53,
+        "height": 32
+      },
+      {
+        "text": "抗性",
+        "x": 1302,
+        "y": 264,
+        "width": 53,
+        "height": 32
+      },
+      {
+        "text": "火属性",
+        "x": 900,
+        "y": 311,
+        "width": 104,
+        "height": 39
+      },
+      {
+        "text": "物理属性",
+        "x": 990,
+        "y": 313,
+        "width": 160,
+        "height": 34
+      },
+      {
+        "text": "冰属性",
+        "x": 1412,
+        "y": 311,
+        "width": 132,
+        "height": 41
+      },
+      {
+        "text": "风属性",
+        "x": 1594,
+        "y": 314,
+        "width": 86,
+        "height": 35
+      },
+      {
+        "text": "当前情报",
+        "x": 760,
+        "y": 372,
+        "width": 92,
+        "height": 29
+      },
+      {
+        "text": "本场战斗中，牲鬼·卫律使者将获得以下效果：",
+        "x": 763,
+        "y": 422,
+        "width": 565,
+        "height": 33
+      },
+      {
+        "text": "·牲鬼·卫律使者在[秽浊流界]状态下，每次成功攻击到代理人时会回复10%的",
+        "x": 770,
+        "y": 459,
+        "width": 975,
+        "height": 32
+      },
+      {
+        "text": "[秽盾]值，在破除[秽浊流界]状态后的5秒内受到的伤害增加80%。",
+        "x": 766,
+        "y": 496,
+        "width": 806,
+        "height": 34
+      },
+      {
+        "text": "身披翅刃、近远兼备的特化牲鬼。",
+        "x": 763,
+        "y": 570,
+        "width": 399,
+        "height": 34
+      },
+      {
+        "text": "双翼在完全展开时化作赤红，斩金断铁。既能贴身施展致命突刺，又能释放能量",
+        "x": 762,
+        "y": 608,
+        "width": 971,
+        "height": 33
+      },
+      {
+        "text": "市理自汉进行远程精准打去",
+        "x": 763,
+        "y": 645,
+        "width": 365,
+        "height": 20
+      },
+      {
+        "text": "今日标天法预测基攻去方式",
+        "x": 1397,
+        "y": 645,
+        "width": 334,
+        "height": 20
+      },
+      {
+        "text": "挑战奖励",
+        "x": 758,
+        "y": 684,
+        "width": 94,
+        "height": 28
+      },
+      {
+        "text": "RT",
+        "x": 1399,
+        "y": 686,
+        "width": 33,
+        "height": 25
+      },
+      {
+        "text": "燃竭模式",
+        "x": 1484,
+        "y": 684,
+        "width": 98,
+        "height": 29
+      },
+      {
+        "text": "RS",
+        "x": 1593,
+        "y": 686,
+        "width": 30,
+        "height": 19
+      },
+      {
+        "text": "ON",
+        "x": 1681,
+        "y": 682,
+        "width": 42,
+        "height": 35
+      },
+      {
+        "text": "EMPTY",
+        "x": 991,
+        "y": 850,
+        "width": 65,
+        "height": 29
+      },
+      {
+        "text": "EMPTY",
+        "x": 1108,
+        "y": 850,
+        "width": 64,
+        "height": 30
+      },
+      {
+        "text": "EMPTY",
+        "x": 1224,
+        "y": 850,
+        "width": 64,
+        "height": 29
+      },
+      {
+        "text": "EMPTY",
+        "x": 1339,
+        "y": 850,
+        "width": 65,
+        "height": 29
+      },
+      {
+        "text": "EMPTY",
+        "x": 1457,
+        "y": 853,
+        "width": 63,
+        "height": 25
+      },
+      {
+        "text": "委托代行中",
+        "x": 1537,
+        "y": 921,
+        "width": 108,
+        "height": 28
+      },
+      {
+        "text": "ON",
+        "x": 1717,
+        "y": 933,
+        "width": 37,
+        "height": 30
+      },
+      {
+        "text": "LT",
+        "x": 1828,
+        "y": 927,
+        "width": 44,
+        "height": 37
+      },
+      {
+        "text": "本次作战无常规报酬",
+        "x": 1511,
+        "y": 953,
+        "width": 158,
+        "height": 21
+      },
+      {
+        "text": "双倍电量消耗，双倍奖励获取",
+        "x": 133,
+        "y": 1002,
+        "width": 272,
+        "height": 26
+      },
+      {
+        "text": "查看素材",
+        "x": 1016,
+        "y": 1018,
+        "width": 74,
+        "height": 21
+      },
+      {
+        "text": "石",
+        "x": 1140,
+        "y": 1017,
+        "width": 28,
+        "height": 22
+      },
+      {
+        "text": "[长按]查看解析",
+        "x": 1182,
+        "y": 1016,
+        "width": 128,
+        "height": 24
+      },
+      {
+        "text": "电量消耗：",
+        "x": 1351,
+        "y": 1014,
+        "width": 88,
+        "height": 28
+      },
+      {
+        "text": "146/00",
+        "x": 1481,
+        "y": 1012,
+        "width": 88,
+        "height": 32
+      },
+      {
+        "text": "下一步",
+        "x": 1692,
+        "y": 1012,
+        "width": 85,
+        "height": 35
+      },
+      {
+        "text": "剩余14天",
+        "x": 134,
+        "y": 1031,
+        "width": 112,
+        "height": 24
+      }
+    ],
+    "error": null,
+    "screens": [
+      {
+        "screen_name": "实战模拟室",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "下一步",
+            "area_type": "text",
+            "x": 1692,
+            "y": 1012,
+            "width": 85,
+            "height": 35,
+            "text": "下一步",
+            "confidence": 0.9993963241577148
+          },
+          {
+            "area_name": "挑战等级",
+            "area_type": "text",
+            "x": 1444,
+            "y": 36,
+            "width": 96,
+            "height": 29,
+            "text": "挑战等级",
+            "confidence": 0.9996626377105713
+          },
+          {
+            "area_name": "手柄-下一步",
+            "area_type": "text",
+            "x": 1692,
+            "y": 1012,
+            "width": 85,
+            "height": 35,
+            "text": "下一步",
+            "confidence": 0.9993963241577148
+          }
+        ]
+      },
+      {
+        "screen_name": "区域巡防",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "手柄-挑战等级",
+            "area_type": "text",
+            "x": 1444,
+            "y": 36,
+            "width": 96,
+            "height": 29,
+            "text": "挑战等级",
+            "confidence": 0.9996626377105713
+          },
+          {
+            "area_name": "手柄-下一步",
+            "area_type": "text",
+            "x": 1692,
+            "y": 1012,
+            "width": 85,
+            "height": 35,
+            "text": "下一步",
+            "confidence": 0.9993963241577148
+          }
+        ]
+      },
+      {
+        "screen_name": "战斗-菜单",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "菜单-返回",
+            "area_type": "template",
+            "x": 92,
+            "y": 23,
+            "width": 48,
+            "height": 57,
+            "text": null,
+            "confidence": 0.9405638575553894
+          },
+          {
+            "area_name": "按钮-战况",
+            "area_type": "text",
+            "x": 1444,
+            "y": 36,
+            "width": 96,
+            "height": 29,
+            "text": "挑战等级",
+            "confidence": 0.9996626377105713
+          }
+        ]
+      },
+      {
+        "screen_name": "专业挑战室",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "手柄-挑战等级",
+            "area_type": "text",
+            "x": 1444,
+            "y": 36,
+            "width": 96,
+            "height": 29,
+            "text": "挑战等级",
+            "confidence": 0.9996626377105713
+          },
+          {
+            "area_name": "手柄-下一步",
+            "area_type": "text",
+            "x": 1692,
+            "y": 1012,
+            "width": 85,
+            "height": 35,
+            "text": "下一步",
+            "confidence": 0.9993963241577148
+          }
+        ]
+      },
+      {
+        "screen_name": "迷失之地-矩阵行动",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "菜单-返回",
+            "area_type": "template",
+            "x": 92,
+            "y": 23,
+            "width": 48,
+            "height": 57,
+            "text": null,
+            "confidence": 0.9405638575553894
+          },
+          {
+            "area_name": "下一步",
+            "area_type": "text",
+            "x": 1692,
+            "y": 1012,
+            "width": 85,
+            "height": 35,
+            "text": "下一步",
+            "confidence": 0.9993963241577148
+          }
+        ]
+      }
+    ],
+    "screenshot_path": "screens/情报板/ios_zero_charge.webp",
+    "vision_hint": "本结果仅包含 OCR 识别的文字与模板匹配的命中项,是画面的部分识别结果,不等同于对画面的完整视觉理解。需要全面判断画面时,请用视觉工具或多模态大模型再看一遍该画面。"
+  },
+  "ios_list": {
+    "success": true,
+    "ocr_texts": [
+      {
+        "text": "NEW!",
+        "x": 1325,
+        "y": 14,
+        "width": 62,
+        "height": 25
+      },
+      {
+        "text": "NEW!",
+        "x": 1579,
+        "y": 16,
+        "width": 63,
+        "height": 25
+      },
+      {
+        "text": "站点",
+        "x": 284,
+        "y": 33,
+        "width": 61,
+        "height": 35
+      },
+      {
+        "text": "LB",
+        "x": 1012,
+        "y": 43,
+        "width": 27,
+        "height": 18
+      },
+      {
+        "text": "推送",
+        "x": 1171,
+        "y": 34,
+        "width": 61,
+        "height": 34
+      },
+      {
+        "text": "情报板",
+        "x": 1415,
+        "y": 35,
+        "width": 83,
+        "height": 33
+      },
+      {
+        "text": "日程",
+        "x": 1682,
+        "y": 34,
+        "width": 60,
+        "height": 34
+      },
+      {
+        "text": "RB",
+        "x": 1868,
+        "y": 41,
+        "width": 30,
+        "height": 21
+      },
+      {
+        "text": "困难委托",
+        "x": 151,
+        "y": 137,
+        "width": 81,
+        "height": 25
+      },
+      {
+        "text": "困难委托",
+        "x": 505,
+        "y": 137,
+        "width": 80,
+        "height": 25
+      },
+      {
+        "text": "困难委托",
+        "x": 858,
+        "y": 138,
+        "width": 81,
+        "height": 24
+      },
+      {
+        "text": "困难委托",
+        "x": 1211,
+        "y": 135,
+        "width": 82,
+        "height": 28
+      },
+      {
+        "text": "专业挑战室",
+        "x": 1539,
+        "y": 137,
+        "width": 99,
+        "height": 25
+      },
+      {
+        "text": "THE HOL",
+        "x": 1840,
+        "y": 131,
+        "width": 79,
+        "height": 38
+      },
+      {
+        "text": "01天08时",
+        "x": 129,
+        "y": 180,
+        "width": 90,
+        "height": 21
+      },
+      {
+        "text": "01天12时",
+        "x": 468,
+        "y": 180,
+        "width": 106,
+        "height": 21
+      },
+      {
+        "text": "01天12时",
+        "x": 820,
+        "y": 180,
+        "width": 107,
+        "height": 21
+      },
+      {
+        "text": "01天12时",
+        "x": 1171,
+        "y": 179,
+        "width": 111,
+        "height": 23
+      },
+      {
+        "text": "01天13时",
+        "x": 1542,
+        "y": 180,
+        "width": 94,
+        "height": 21
+      },
+      {
+        "text": "临溪雨",
+        "x": 537,
+        "y": 325,
+        "width": 63,
+        "height": 24
+      },
+      {
+        "text": "急中生智的自救",
+        "x": 474,
+        "y": 367,
+        "width": 172,
+        "height": 27
+      },
+      {
+        "text": "80",
+        "x": 503,
+        "y": 416,
+        "width": 33,
+        "height": 25
+      },
+      {
+        "text": "600",
+        "x": 569,
+        "y": 416,
+        "width": 43,
+        "height": 24
+      },
+      {
+        "text": "临溪雨",
+        "x": 890,
+        "y": 440,
+        "width": 63,
+        "height": 26
+      },
+      {
+        "text": "斋",
+        "x": 1599,
+        "y": 444,
+        "width": 23,
+        "height": 24
+      },
+      {
+        "text": "意想不到的挑战",
+        "x": 837,
+        "y": 484,
+        "width": 161,
+        "height": 24
+      },
+      {
+        "text": "日祸首·通缉打手",
+        "x": 1533,
+        "y": 484,
+        "width": 173,
+        "height": 30
+      },
+      {
+        "text": "专业挑战室",
+        "x": 477,
+        "y": 497,
+        "width": 99,
+        "height": 25
+      },
+      {
+        "text": "花火的狗",
+        "x": 183,
+        "y": 535,
+        "width": 82,
+        "height": 25
+      },
+      {
+        "text": "01天17时",
+        "x": 465,
+        "y": 539,
+        "width": 110,
+        "height": 24
+      },
+      {
+        "text": "80",
+        "x": 857,
+        "y": 531,
+        "width": 33,
+        "height": 24
+      },
+      {
+        "text": "600",
+        "x": 921,
+        "y": 530,
+        "width": 46,
+        "height": 26
+      },
+      {
+        "text": "临溪雨",
+        "x": 1246,
+        "y": 535,
+        "width": 62,
+        "height": 25
+      },
+      {
+        "text": "70",
+        "x": 1565,
+        "y": 535,
+        "width": 36,
+        "height": 23
+      },
+      {
+        "text": "250",
+        "x": 1625,
+        "y": 535,
+        "width": 48,
+        "height": 23
+      },
+      {
+        "text": "日死路直通车",
+        "x": 120,
+        "y": 577,
+        "width": 130,
+        "height": 27
+      },
+      {
+        "text": "捷足先登的买手",
+        "x": 1192,
+        "y": 578,
+        "width": 160,
+        "height": 27
+      },
+      {
+        "text": "恶名狩猎",
+        "x": 831,
+        "y": 613,
+        "width": 81,
+        "height": 25
+      },
+      {
+        "text": "80",
+        "x": 149,
+        "y": 625,
+        "width": 33,
+        "height": 25
+      },
+      {
+        "text": "80",
+        "x": 1212,
+        "y": 625,
+        "width": 33,
+        "height": 25
+      },
+      {
+        "text": "恶名狩猪",
+        "x": 1538,
+        "y": 616,
+        "width": 81,
+        "height": 25
+      },
+      {
+        "text": "600",
+        "x": 215,
+        "y": 626,
+        "width": 43,
+        "height": 24
+      },
+      {
+        "text": "600",
+        "x": 1275,
+        "y": 626,
+        "width": 44,
+        "height": 23
+      },
+      {
+        "text": "01天21时",
+        "x": 819,
+        "y": 654,
+        "width": 109,
+        "height": 24
+      },
+      {
+        "text": "01天21时",
+        "x": 1525,
+        "y": 657,
+        "width": 112,
+        "height": 24
+      },
+      {
+        "text": "专业挑战室",
+        "x": 123,
+        "y": 708,
+        "width": 100,
+        "height": 25
+      },
+      {
+        "text": "恶名狩猎",
+        "x": 1184,
+        "y": 708,
+        "width": 81,
+        "height": 25
+      },
+      {
+        "text": "01天13时",
+        "x": 112,
+        "y": 750,
+        "width": 107,
+        "height": 21
+      },
+      {
+        "text": "01天21时",
+        "x": 1172,
+        "y": 747,
+        "width": 110,
+        "height": 24
+      },
+      {
+        "text": "鬼畜熊",
+        "x": 538,
+        "y": 803,
+        "width": 61,
+        "height": 26
+      },
+      {
+        "text": "我的海螺在哪里",
+        "x": 891,
+        "y": 802,
+        "width": 137,
+        "height": 24
+      },
+      {
+        "text": "牲鬼·卫律使者",
+        "x": 474,
+        "y": 848,
+        "width": 170,
+        "height": 24
+      },
+      {
+        "text": "库萨里库",
+        "x": 837,
+        "y": 846,
+        "width": 100,
+        "height": 25
+      },
+      {
+        "text": "70",
+        "x": 503,
+        "y": 894,
+        "width": 33,
+        "height": 24
+      },
+      {
+        "text": "250",
+        "x": 564,
+        "y": 895,
+        "width": 48,
+        "height": 23
+      },
+      {
+        "text": "100",
+        "x": 860,
+        "y": 893,
+        "width": 41,
+        "height": 24
+      },
+      {
+        "text": "500",
+        "x": 933,
+        "y": 892,
+        "width": 46,
+        "height": 26
+      },
+      {
+        "text": "伊卡洛斯",
+        "x": 1599,
+        "y": 921,
+        "width": 81,
+        "height": 25
+      },
+      {
+        "text": "x",
+        "x": 32,
+        "y": 969,
+        "width": 23,
+        "height": 24
+      },
+      {
+        "text": "n本社用电",
+        "x": 1538,
+        "y": 966,
+        "width": 106,
+        "height": 14
+      },
+      {
+        "text": "『萌新』",
+        "x": 200,
+        "y": 995,
+        "width": 81,
+        "height": 36
+      },
+      {
+        "text": "NEW!",
+        "x": 950,
+        "y": 993,
+        "width": 58,
+        "height": 21
+      },
+      {
+        "text": "LT",
+        "x": 751,
+        "y": 1017,
+        "width": 28,
+        "height": 22
+      },
+      {
+        "text": "RS",
+        "x": 970,
+        "y": 1015,
+        "width": 29,
+        "height": 19
+      },
+      {
+        "text": "点数兑换",
+        "x": 1062,
+        "y": 1012,
+        "width": 110,
+        "height": 34
+      },
+      {
+        "text": "石",
+        "x": 1272,
+        "y": 1015,
+        "width": 31,
+        "height": 26
+      },
+      {
+        "text": "委托管理",
+        "x": 1364,
+        "y": 1013,
+        "width": 108,
+        "height": 32
+      },
+      {
+        "text": "发布委托",
+        "x": 1667,
+        "y": 1012,
+        "width": 111,
+        "height": 35
+      },
+      {
+        "text": "50/7000",
+        "x": 72,
+        "y": 1032,
+        "width": 97,
+        "height": 27
+      },
+      {
+        "text": "周期内可获取",
+        "x": 202,
+        "y": 1032,
+        "width": 125,
+        "height": 26
+      },
+      {
+        "text": "0/1000",
+        "x": 350,
+        "y": 1034,
+        "width": 84,
+        "height": 24
+      }
+    ],
+    "error": null,
+    "screens": [
+      {
+        "screen_name": "快捷手册-日常",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "TAB-作战",
+            "area_type": "text",
+            "x": 1539,
+            "y": 137,
+            "width": 99,
+            "height": 25,
+            "text": "专业挑战室",
+            "confidence": 0.9992004632949829
+          },
+          {
+            "area_name": "TAB-战术",
+            "area_type": "text",
+            "x": 1539,
+            "y": 137,
+            "width": 99,
+            "height": 25,
+            "text": "专业挑战室",
+            "confidence": 0.9992004632949829
+          }
+        ]
+      },
+      {
+        "screen_name": "快捷手册-目标",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "TAB-作战",
+            "area_type": "text",
+            "x": 1539,
+            "y": 137,
+            "width": 99,
+            "height": 25,
+            "text": "专业挑战室",
+            "confidence": 0.9992004632949829
+          },
+          {
+            "area_name": "TAB-战术",
+            "area_type": "text",
+            "x": 1539,
+            "y": 137,
+            "width": 99,
+            "height": 25,
+            "text": "专业挑战室",
+            "confidence": 0.9992004632949829
+          }
+        ]
+      },
+      {
+        "screen_name": "快捷手册-训练",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "TAB-作战",
+            "area_type": "text",
+            "x": 1539,
+            "y": 137,
+            "width": 99,
+            "height": 25,
+            "text": "专业挑战室",
+            "confidence": 0.9992004632949829
+          },
+          {
+            "area_name": "TAB-战术",
+            "area_type": "text",
+            "x": 1539,
+            "y": 137,
+            "width": 99,
+            "height": 25,
+            "text": "专业挑战室",
+            "confidence": 0.9992004632949829
+          }
+        ]
+      },
+      {
+        "screen_name": "情报板",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "点数兑换",
+            "area_type": "text",
+            "x": 1062,
+            "y": 1012,
+            "width": 110,
+            "height": 34,
+            "text": "点数兑换",
+            "confidence": 0.9943426251411438
+          },
+          {
+            "area_name": "刷新按钮",
+            "area_type": "template",
+            "x": 806,
+            "y": 1004,
+            "width": 50,
+            "height": 50,
+            "text": null,
+            "confidence": 0.9654892683029175
+          }
+        ]
+      },
+      {
+        "screen_name": "菜单",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "返回",
+            "area_type": "template",
+            "x": 92,
+            "y": 23,
+            "width": 48,
+            "height": 57,
+            "text": null,
+            "confidence": 0.939990222454071
+          },
+          {
+            "area_name": "按钮-返回",
+            "area_type": "template",
+            "x": 92,
+            "y": 23,
+            "width": 48,
+            "height": 57,
+            "text": null,
+            "confidence": 0.939990222454071
+          }
+        ]
+      }
+    ],
+    "screenshot_path": "screens/情报板/ios_list.webp",
+    "vision_hint": "本结果仅包含 OCR 识别的文字与模板匹配的命中项,是画面的部分识别结果,不等同于对画面的完整视觉理解。需要全面判断画面时,请用视觉工具或多模态大模型再看一遍该画面。"
+  },
+  "ios_commission_reward": {
+    "success": true,
+    "ocr_texts": [
+      {
+        "text": "代行委托完成",
+        "x": 872,
+        "y": 384,
+        "width": 176,
+        "height": 34
+      },
+      {
+        "text": "70",
+        "x": 877,
+        "y": 607,
+        "width": 26,
+        "height": 22
+      },
+      {
+        "text": "250",
+        "x": 1009,
+        "y": 607,
+        "width": 42,
+        "height": 23
+      },
+      {
+        "text": "贡献点数",
+        "x": 854,
+        "y": 636,
+        "width": 72,
+        "height": 21
+      },
+      {
+        "text": "站点信度",
+        "x": 993,
+        "y": 635,
+        "width": 74,
+        "height": 22
+      },
+      {
+        "text": "确认",
+        "x": 950,
+        "y": 735,
+        "width": 57,
+        "height": 33
+      },
+      {
+        "text": "切换选中",
+        "x": 883,
+        "y": 822,
+        "width": 72,
+        "height": 22
+      },
+      {
+        "text": "A",
+        "x": 1009,
+        "y": 821,
+        "width": 24,
+        "height": 23
+      },
+      {
+        "text": "选择",
+        "x": 1049,
+        "y": 821,
+        "width": 40,
+        "height": 23
+      }
+    ],
+    "error": null,
+    "screens": [
+      {
+        "screen_name": "道具处理-获得",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "按钮-确认",
+            "area_type": "text",
+            "x": 950,
+            "y": 735,
+            "width": 57,
+            "height": 33,
+            "text": "确认",
+            "confidence": 0.9999804496765137
+          },
+          {
+            "area_name": "手柄-奖励选择提示",
+            "area_type": "text",
+            "x": 1049,
+            "y": 821,
+            "width": 40,
+            "height": 23,
+            "text": "选择",
+            "confidence": 0.9997332096099854
+          }
+        ]
+      },
+      {
+        "screen_name": "丽都城募",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "按钮-确认",
+            "area_type": "text",
+            "x": 950,
+            "y": 735,
+            "width": 57,
+            "height": 33,
+            "text": "确认",
+            "confidence": 0.9999804496765137
+          }
+        ]
+      },
+      {
+        "screen_name": "家政券",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "确认",
+            "area_type": "text",
+            "x": 950,
+            "y": 735,
+            "width": 57,
+            "height": 33,
+            "text": "确认",
+            "confidence": 0.9999804496765137
+          }
+        ]
+      },
+      {
+        "screen_name": "情报板",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "刷新按钮",
+            "area_type": "template",
+            "x": 806,
+            "y": 1004,
+            "width": 50,
+            "height": 50,
+            "text": null,
+            "confidence": 0.7651132345199585
+          }
+        ]
+      },
+      {
+        "screen_name": "迷失之地-抽奖机",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "按钮-获取确定",
+            "area_type": "text",
+            "x": 950,
+            "y": 735,
+            "width": 57,
+            "height": 33,
+            "text": "确认",
+            "confidence": 0.9999804496765137
+          }
+        ]
+      }
+    ],
+    "screenshot_path": "screens/情报板/ios_commission_reward.webp",
+    "vision_hint": "本结果仅包含 OCR 识别的文字与模板匹配的命中项,是画面的部分识别结果,不等同于对画面的完整视觉理解。需要全面判断画面时,请用视觉工具或多模态大模型再看一遍该画面。"
+  },
+  "ios_filter_selected": {
+    "success": true,
+    "ocr_texts": [
+      {
+        "text": "站点",
+        "x": 284,
+        "y": 33,
+        "width": 61,
+        "height": 35
+      },
+      {
+        "text": "推送",
+        "x": 1171,
+        "y": 34,
+        "width": 59,
+        "height": 34
+      },
+      {
+        "text": "x",
+        "x": 1784,
+        "y": 32,
+        "width": 39,
+        "height": 37
+      },
+      {
+        "text": "委托筛选",
+        "x": 1307,
+        "y": 44,
+        "width": 108,
+        "height": 31
+      },
+      {
+        "text": "恶名狩猪",
+        "x": 121,
+        "y": 136,
+        "width": 84,
+        "height": 28
+      },
+      {
+        "text": "恶名狩猎",
+        "x": 477,
+        "y": 138,
+        "width": 81,
+        "height": 25
+      },
+      {
+        "text": "恶名狩猎",
+        "x": 830,
+        "y": 136,
+        "width": 83,
+        "height": 28
+      },
+      {
+        "text": "恶名",
+        "x": 1183,
+        "y": 137,
+        "width": 49,
+        "height": 27
+      },
+      {
+        "text": "委托发布时间",
+        "x": 1379,
+        "y": 149,
+        "width": 140,
+        "height": 28
+      },
+      {
+        "text": "4",
+        "x": 1794,
+        "y": 148,
+        "width": 29,
+        "height": 28
+      },
+      {
+        "text": "01天21时",
+        "x": 109,
+        "y": 176,
+        "width": 112,
+        "height": 27
+      },
+      {
+        "text": "01天21时",
+        "x": 471,
+        "y": 179,
+        "width": 103,
+        "height": 23
+      },
+      {
+        "text": "01天21时",
+        "x": 819,
+        "y": 179,
+        "width": 109,
+        "height": 23
+      },
+      {
+        "text": "01天",
+        "x": 1174,
+        "y": 178,
+        "width": 60,
+        "height": 24
+      },
+      {
+        "text": "对应站点",
+        "x": 1297,
+        "y": 258,
+        "width": 83,
+        "height": 25
+      },
+      {
+        "text": "黑塔空间站",
+        "x": 1380,
+        "y": 310,
+        "width": 92,
+        "height": 24
+      },
+      {
+        "text": "新艾利都",
+        "x": 1667,
+        "y": 308,
+        "width": 78,
+        "height": 28
+      },
+      {
+        "text": "我的海螺在哪里",
+        "x": 538,
+        "y": 327,
+        "width": 136,
+        "height": 23
+      },
+      {
+        "text": "库萨里库",
+        "x": 482,
+        "y": 369,
+        "width": 102,
+        "height": 28
+      },
+      {
+        "text": "雅小姐后援会",
+        "x": 1371,
+        "y": 367,
+        "width": 108,
+        "height": 24
+      },
+      {
+        "text": "170(含耳朵)",
+        "x": 1649,
+        "y": 367,
+        "width": 112,
+        "height": 24
+      },
+      {
+        "text": "100",
+        "x": 506,
+        "y": 418,
+        "width": 42,
+        "height": 24
+      },
+      {
+        "text": "500",
+        "x": 581,
+        "y": 418,
+        "width": 43,
+        "height": 24
+      },
+      {
+        "text": "录像店开party",
+        "x": 1357,
+        "y": 422,
+        "width": 135,
+        "height": 30
+      },
+      {
+        "text": "绝密女装堵门来",
+        "x": 1643,
+        "y": 425,
+        "width": 126,
+        "height": 24
+      },
+      {
+        "text": "伊卡洛斯",
+        "x": 891,
+        "y": 443,
+        "width": 82,
+        "height": 25
+      },
+      {
+        "text": "日库萨里库",
+        "x": 827,
+        "y": 484,
+        "width": 111,
+        "height": 28
+      },
+      {
+        "text": "流光紫绕天鹅座",
+        "x": 1362,
+        "y": 482,
+        "width": 126,
+        "height": 24
+      },
+      {
+        "text": "执信歌舞厅",
+        "x": 1659,
+        "y": 482,
+        "width": 92,
+        "height": 25
+      },
+      {
+        "text": "恶名狩猎",
+        "x": 477,
+        "y": 498,
+        "width": 81,
+        "height": 28
+      },
+      {
+        "text": "我的海螺在哪里",
+        "x": 183,
+        "y": 538,
+        "width": 136,
+        "height": 24
+      },
+      {
+        "text": "01天23时",
+        "x": 464,
+        "y": 540,
+        "width": 111,
+        "height": 24
+      },
+      {
+        "text": "100",
+        "x": 860,
+        "y": 535,
+        "width": 42,
+        "height": 24
+      },
+      {
+        "text": "500",
+        "x": 931,
+        "y": 535,
+        "width": 47,
+        "height": 23
+      },
+      {
+        "text": "超爱大明星",
+        "x": 1379,
+        "y": 540,
+        "width": 92,
+        "height": 24
+      },
+      {
+        "text": "库萨里库",
+        "x": 131,
+        "y": 582,
+        "width": 100,
+        "height": 27
+      },
+      {
+        "text": "日库",
+        "x": 1180,
+        "y": 580,
+        "width": 53,
+        "height": 29
+      },
+      {
+        "text": "委托目标",
+        "x": 1298,
+        "y": 591,
+        "width": 84,
+        "height": 27
+      },
+      {
+        "text": "恶名狩猪",
+        "x": 830,
+        "y": 616,
+        "width": 82,
+        "height": 25
+      },
+      {
+        "text": "100",
+        "x": 150,
+        "y": 629,
+        "width": 52,
+        "height": 26
+      },
+      {
+        "text": "500",
+        "x": 211,
+        "y": 629,
+        "width": 60,
+        "height": 26
+      },
+      {
+        "text": "10",
+        "x": 1214,
+        "y": 631,
+        "width": 19,
+        "height": 21
+      },
+      {
+        "text": "恶名狩猎",
+        "x": 1388,
+        "y": 644,
+        "width": 75,
+        "height": 25
+      },
+      {
+        "text": "专业挑战室",
+        "x": 1660,
+        "y": 643,
+        "width": 92,
+        "height": 25
+      },
+      {
+        "text": "01天23时",
+        "x": 818,
+        "y": 657,
+        "width": 110,
+        "height": 24
+      },
+      {
+        "text": "纳西妲",
+        "x": 537,
+        "y": 688,
+        "width": 63,
+        "height": 26
+      },
+      {
+        "text": "恶名",
+        "x": 1183,
+        "y": 711,
+        "width": 48,
+        "height": 28
+      },
+      {
+        "text": "困难委托",
+        "x": 1388,
+        "y": 702,
+        "width": 75,
+        "height": 25
+      },
+      {
+        "text": "恶名狩猎",
+        "x": 123,
+        "y": 712,
+        "width": 81,
+        "height": 25
+      },
+      {
+        "text": "未知复合侵蚀体",
+        "x": 474,
+        "y": 732,
+        "width": 171,
+        "height": 26
+      },
+      {
+        "text": "01天23时",
+        "x": 119,
+        "y": 751,
+        "width": 102,
+        "height": 24
+      },
+      {
+        "text": "01天",
+        "x": 1170,
+        "y": 752,
+        "width": 62,
+        "height": 26
+      },
+      {
+        "text": "100",
+        "x": 504,
+        "y": 777,
+        "width": 51,
+        "height": 28
+      },
+      {
+        "text": "500",
+        "x": 551,
+        "y": 779,
+        "width": 74,
+        "height": 25
+      },
+      {
+        "text": "x",
+        "x": 30,
+        "y": 967,
+        "width": 26,
+        "height": 28
+      },
+      {
+        "text": "n在姓用生",
+        "x": 829,
+        "y": 966,
+        "width": 107,
+        "height": 14
+      },
+      {
+        "text": "『萌新』",
+        "x": 200,
+        "y": 995,
+        "width": 82,
+        "height": 36
+      },
+      {
+        "text": "NEW,",
+        "x": 945,
+        "y": 986,
+        "width": 66,
+        "height": 33
+      },
+      {
+        "text": "LT",
+        "x": 750,
+        "y": 1016,
+        "width": 31,
+        "height": 24
+      },
+      {
+        "text": "RS",
+        "x": 969,
+        "y": 1015,
+        "width": 31,
+        "height": 20
+      },
+      {
+        "text": "点数兑换",
+        "x": 1062,
+        "y": 1012,
+        "width": 109,
+        "height": 34
+      },
+      {
+        "text": "50/7000",
+        "x": 73,
+        "y": 1034,
+        "width": 96,
+        "height": 25
+      },
+      {
+        "text": "周期内可获取",
+        "x": 202,
+        "y": 1033,
+        "width": 123,
+        "height": 25
+      },
+      {
+        "text": "0/1000",
+        "x": 350,
+        "y": 1034,
+        "width": 84,
+        "height": 25
+      }
+    ],
+    "error": null,
+    "screens": [
+      {
+        "screen_name": "情报板",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "点数兑换",
+            "area_type": "text",
+            "x": 1062,
+            "y": 1012,
+            "width": 109,
+            "height": 34,
+            "text": "点数兑换",
+            "confidence": 0.9952044486999512
+          },
+          {
+            "area_name": "刷新按钮",
+            "area_type": "template",
+            "x": 806,
+            "y": 1004,
+            "width": 50,
+            "height": 50,
+            "text": null,
+            "confidence": 0.9654874801635742
+          },
+          {
+            "area_name": "手柄-筛选标题",
+            "area_type": "text",
+            "x": 1307,
+            "y": 44,
+            "width": 108,
+            "height": 31,
+            "text": "委托筛选",
+            "confidence": 0.9997084736824036
+          }
+        ]
+      },
+      {
+        "screen_name": "菜单",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "返回",
+            "area_type": "template",
+            "x": 92,
+            "y": 23,
+            "width": 48,
+            "height": 57,
+            "text": null,
+            "confidence": 0.937999963760376
+          },
+          {
+            "area_name": "按钮-返回",
+            "area_type": "template",
+            "x": 92,
+            "y": 23,
+            "width": 48,
+            "height": 57,
+            "text": null,
+            "confidence": 0.937999963760376
+          }
+        ]
+      },
+      {
+        "screen_name": "3D地图",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "菜单-返回",
+            "area_type": "template",
+            "x": 92,
+            "y": 23,
+            "width": 48,
+            "height": 57,
+            "text": null,
+            "confidence": 0.937999963760376
+          }
+        ]
+      },
+      {
+        "screen_name": "战斗-菜单",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "菜单-返回",
+            "area_type": "template",
+            "x": 92,
+            "y": 23,
+            "width": 48,
+            "height": 57,
+            "text": null,
+            "confidence": 0.937999963760376
+          }
+        ]
+      },
+      {
+        "screen_name": "委托助手",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "左上角返回",
+            "area_type": "template",
+            "x": 92,
+            "y": 23,
+            "width": 48,
+            "height": 57,
+            "text": null,
+            "confidence": 0.937999963760376
+          }
+        ]
+      }
+    ],
+    "screenshot_path": "screens/情报板/ios_filter_selected.webp",
+    "vision_hint": "本结果仅包含 OCR 识别的文字与模板匹配的命中项,是画面的部分识别结果,不等同于对画面的完整视觉理解。需要全面判断画面时,请用视觉工具或多模态大模型再看一遍该画面。"
+  },
+  "ios_expert_victory": {
+    "success": true,
+    "ocr_texts": [
+      {
+        "text": "挑战结果",
+        "x": 721,
+        "y": 162,
+        "width": 474,
+        "height": 118
+      },
+      {
+        "text": "829",
+        "x": 195,
+        "y": 330,
+        "width": 55,
+        "height": 30
+      },
+      {
+        "text": "1777",
+        "x": 358,
+        "y": 330,
+        "width": 67,
+        "height": 29
+      },
+      {
+        "text": "892",
+        "x": 544,
+        "y": 328,
+        "width": 57,
+        "height": 33
+      },
+      {
+        "text": "60",
+        "x": 1327,
+        "y": 322,
+        "width": 126,
+        "height": 90
+      },
+      {
+        "text": "绳网等级",
+        "x": 1460,
+        "y": 333,
+        "width": 111,
+        "height": 34
+      },
+      {
+        "text": "HOLLOW",
+        "x": 1756,
+        "y": 324,
+        "width": 64,
+        "height": 20
+      },
+      {
+        "text": "MAX /MAX",
+        "x": 1459,
+        "y": 371,
+        "width": 167,
+        "height": 34
+      },
+      {
+        "text": "+0EXP",
+        "x": 1698,
+        "y": 419,
+        "width": 104,
+        "height": 29
+      },
+      {
+        "text": "60",
+        "x": 87,
+        "y": 550,
+        "width": 55,
+        "height": 42
+      },
+      {
+        "text": "60",
+        "x": 261,
+        "y": 550,
+        "width": 57,
+        "height": 41
+      },
+      {
+        "text": "60",
+        "x": 438,
+        "y": 553,
+        "width": 52,
+        "height": 37
+      },
+      {
+        "text": "AGENT",
+        "x": 185,
+        "y": 573,
+        "width": 54,
+        "height": 14
+      },
+      {
+        "text": "AGENT",
+        "x": 534,
+        "y": 572,
+        "width": 57,
+        "height": 17
+      },
+      {
+        "text": "总计用时：",
+        "x": 97,
+        "y": 622,
+        "width": 97,
+        "height": 29
+      },
+      {
+        "text": "00:00:32",
+        "x": 459,
+        "y": 620,
+        "width": 141,
+        "height": 33
+      },
+      {
+        "text": "EMPTY",
+        "x": 1353,
+        "y": 630,
+        "width": 63,
+        "height": 26
+      },
+      {
+        "text": "EMPTY",
+        "x": 1479,
+        "y": 630,
+        "width": 62,
+        "height": 26
+      },
+      {
+        "text": "EMPTY",
+        "x": 1603,
+        "y": 630,
+        "width": 62,
+        "height": 26
+      },
+      {
+        "text": "EMPTY",
+        "x": 1729,
+        "y": 630,
+        "width": 63,
+        "height": 26
+      },
+      {
+        "text": "完成专业挑战",
+        "x": 129,
+        "y": 678,
+        "width": 134,
+        "height": 27
+      },
+      {
+        "text": "1/1",
+        "x": 550,
+        "y": 675,
+        "width": 50,
+        "height": 37
+      },
+      {
+        "text": "通关时长不超过6分钟",
+        "x": 133,
+        "y": 736,
+        "width": 209,
+        "height": 26
+      },
+      {
+        "text": "1/1",
+        "x": 550,
+        "y": 731,
+        "width": 50,
+        "height": 37
+      },
+      {
+        "text": "通关时长不超过3分钟",
+        "x": 131,
+        "y": 791,
+        "width": 210,
+        "height": 27
+      },
+      {
+        "text": "1/1",
+        "x": 549,
+        "y": 786,
+        "width": 51,
+        "height": 38
+      },
+      {
+        "text": "EMPTY",
+        "x": 1352,
+        "y": 787,
+        "width": 64,
+        "height": 29
+      },
+      {
+        "text": "EMPTY",
+        "x": 1479,
+        "y": 789,
+        "width": 62,
+        "height": 26
+      },
+      {
+        "text": "EMPTY",
+        "x": 1603,
+        "y": 789,
+        "width": 62,
+        "height": 26
+      },
+      {
+        "text": "EMPTY",
+        "x": 1729,
+        "y": 789,
+        "width": 62,
+        "height": 26
+      },
+      {
+        "text": "B",
+        "x": 1566,
+        "y": 1018,
+        "width": 17,
+        "height": 21
+      },
+      {
+        "text": "完成",
+        "x": 1684,
+        "y": 1011,
+        "width": 63,
+        "height": 37
+      }
+    ],
+    "error": null,
+    "screens": [
+      {
+        "screen_name": "迷失之地-挑战结果",
+        "is_precise": true,
+        "areas": [
+          {
+            "area_name": "标题-挑战结果",
+            "area_type": "text",
+            "x": 721,
+            "y": 162,
+            "width": 474,
+            "height": 118,
+            "text": "挑战结果",
+            "confidence": 0.9786680936813354
+          },
+          {
+            "area_name": "按钮-完成",
+            "area_type": "text",
+            "x": 1684,
+            "y": 1011,
+            "width": 63,
+            "height": 37,
+            "text": "完成",
+            "confidence": 0.9997314810752869
+          },
+          {
+            "area_name": "手柄-最终S评级",
+            "area_type": "template",
+            "x": 718,
+            "y": 345,
+            "width": 485,
+            "height": 460,
+            "text": null,
+            "confidence": 0.9481590390205383
+          }
+        ]
+      }
+    ],
+    "screenshot_path": "screens/情报板/ios_expert_victory.webp",
+    "vision_hint": "本结果仅包含 OCR 识别的文字与模板匹配的命中项,是画面的部分识别结果,不等同于对画面的完整视觉理解。需要全面判断画面时,请用视觉工具或多模态大模型再看一遍该画面。"
+  },
+  "ios_delegation_notice": {
+    "success": true,
+    "ocr_texts": [
+      {
+        "text": "委托代行中",
+        "x": 886,
+        "y": 457,
+        "width": 149,
+        "height": 34
+      },
+      {
+        "text": "代行委托专属的行动模式，",
+        "x": 550,
+        "y": 506,
+        "width": 252,
+        "height": 27
+      },
+      {
+        "text": "完成挑战后无法获得常规报酬，",
+        "x": 813,
+        "y": 506,
+        "width": 299,
+        "height": 27
+      },
+      {
+        "text": "但是可以完成代行委托",
+        "x": 1119,
+        "y": 508,
+        "width": 230,
+        "height": 24
+      },
+      {
+        "text": "不再提示",
+        "x": 930,
+        "y": 558,
+        "width": 86,
+        "height": 28
+      },
+      {
+        "text": "确认",
+        "x": 950,
+        "y": 662,
+        "width": 57,
+        "height": 34
+      },
+      {
+        "text": "A选择",
+        "x": 922,
+        "y": 745,
+        "width": 86,
+        "height": 29
+      },
+      {
+        "text": "288",
+        "x": 239,
+        "y": 898,
+        "width": 89,
+        "height": 35
+      }
+    ],
+    "error": null,
+    "screens": [
+      {
+        "screen_name": "咖啡店",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "电量确认",
+            "area_type": "text",
+            "x": 950,
+            "y": 662,
+            "width": 57,
+            "height": 34,
+            "text": "确认",
+            "confidence": 0.9999629855155945
+          },
+          {
+            "area_name": "不可贪杯确认",
+            "area_type": "text",
+            "x": 950,
+            "y": 662,
+            "width": 57,
+            "height": 34,
+            "text": "确认",
+            "confidence": 0.9999629855155945
+          }
+        ]
+      },
+      {
+        "screen_name": "丽都城募",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "按钮-确认",
+            "area_type": "text",
+            "x": 950,
+            "y": 662,
+            "width": 57,
+            "height": 34,
+            "text": "确认",
+            "confidence": 0.9999629855155945
+          }
+        ]
+      },
+      {
+        "screen_name": "迷失之地-武备选择",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "不再提示",
+            "area_type": "text",
+            "x": 930,
+            "y": 558,
+            "width": 86,
+            "height": 28,
+            "text": "不再提示",
+            "confidence": 0.9987294673919678
+          }
+        ]
+      },
+      {
+        "screen_name": "迷失之地-抽奖机",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "按钮-获取确定",
+            "area_type": "text",
+            "x": 950,
+            "y": 662,
+            "width": 57,
+            "height": 34,
+            "text": "确认",
+            "confidence": 0.9999629855155945
+          }
+        ]
+      },
+      {
+        "screen_name": "迷失之地-矩阵行动-编队选择",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "确认",
+            "area_type": "text",
+            "x": 950,
+            "y": 662,
+            "width": 57,
+            "height": 34,
+            "text": "确认",
+            "confidence": 0.9999629855155945
+          }
+        ]
+      }
+    ],
+    "screenshot_path": "screens/情报板/ios_delegation_notice.webp",
+    "vision_hint": "本结果仅包含 OCR 识别的文字与模板匹配的命中项,是画面的部分识别结果,不等同于对画面的完整视觉理解。需要全面判断画面时,请用视觉工具或多模态大模型再看一遍该画面。"
+  },
+  "ios_filter_two_types": {
+    "success": true,
+    "ocr_texts": [
+      {
+        "text": "站点",
+        "x": 284,
+        "y": 33,
+        "width": 62,
+        "height": 35
+      },
+      {
+        "text": "推送",
+        "x": 1171,
+        "y": 34,
+        "width": 59,
+        "height": 34
+      },
+      {
+        "text": "x",
+        "x": 1783,
+        "y": 30,
+        "width": 41,
+        "height": 40
+      },
+      {
+        "text": "委托筛选",
+        "x": 1307,
+        "y": 44,
+        "width": 108,
+        "height": 31
+      },
+      {
+        "text": "专业挑战室",
+        "x": 123,
+        "y": 137,
+        "width": 100,
+        "height": 25
+      },
+      {
+        "text": "专业挑战室",
+        "x": 477,
+        "y": 137,
+        "width": 100,
+        "height": 25
+      },
+      {
+        "text": "恶名狩猫",
+        "x": 831,
+        "y": 137,
+        "width": 81,
+        "height": 25
+      },
+      {
+        "text": "恶名",
+        "x": 1182,
+        "y": 134,
+        "width": 50,
+        "height": 30
+      },
+      {
+        "text": "委托发布时间",
+        "x": 1379,
+        "y": 149,
+        "width": 140,
+        "height": 28
+      },
+      {
+        "text": "4",
+        "x": 1792,
+        "y": 147,
+        "width": 32,
+        "height": 31
+      },
+      {
+        "text": "01天13时",
+        "x": 110,
+        "y": 176,
+        "width": 110,
+        "height": 27
+      },
+      {
+        "text": "01天16时",
+        "x": 477,
+        "y": 179,
+        "width": 99,
+        "height": 23
+      },
+      {
+        "text": "01天20时",
+        "x": 819,
+        "y": 180,
+        "width": 108,
+        "height": 21
+      },
+      {
+        "text": "01天",
+        "x": 1173,
+        "y": 178,
+        "width": 62,
+        "height": 24
+      },
+      {
+        "text": "对应站点",
+        "x": 1297,
+        "y": 258,
+        "width": 83,
+        "height": 25
+      },
+      {
+        "text": "黑塔空间站",
+        "x": 1380,
+        "y": 310,
+        "width": 92,
+        "height": 24
+      },
+      {
+        "text": "新艾利都",
+        "x": 1667,
+        "y": 308,
+        "width": 78,
+        "height": 28
+      },
+      {
+        "text": "鬼畜熊",
+        "x": 536,
+        "y": 325,
+        "width": 64,
+        "height": 28
+      },
+      {
+        "text": "牲鬼·卫律使者",
+        "x": 473,
+        "y": 369,
+        "width": 171,
+        "height": 27
+      },
+      {
+        "text": "雅小姐后援会",
+        "x": 1371,
+        "y": 367,
+        "width": 109,
+        "height": 24
+      },
+      {
+        "text": "170(含耳朵)",
+        "x": 1649,
+        "y": 367,
+        "width": 112,
+        "height": 24
+      },
+      {
+        "text": "70",
+        "x": 503,
+        "y": 417,
+        "width": 33,
+        "height": 25
+      },
+      {
+        "text": "250",
+        "x": 568,
+        "y": 418,
+        "width": 44,
+        "height": 23
+      },
+      {
+        "text": "录像店开party",
+        "x": 1357,
+        "y": 422,
+        "width": 135,
+        "height": 30
+      },
+      {
+        "text": "绝密女装堵门来",
+        "x": 1642,
+        "y": 425,
+        "width": 127,
+        "height": 24
+      },
+      {
+        "text": "我的海螺在哪里",
+        "x": 890,
+        "y": 442,
+        "width": 138,
+        "height": 27
+      },
+      {
+        "text": "日库萨里库",
+        "x": 827,
+        "y": 484,
+        "width": 111,
+        "height": 28
+      },
+      {
+        "text": "流光紫绕天鹅座",
+        "x": 1362,
+        "y": 482,
+        "width": 126,
+        "height": 24
+      },
+      {
+        "text": "执信歌舞厅",
+        "x": 1659,
+        "y": 482,
+        "width": 92,
+        "height": 25
+      },
+      {
+        "text": "恶名狩猎",
+        "x": 476,
+        "y": 498,
+        "width": 83,
+        "height": 28
+      },
+      {
+        "text": "斋",
+        "x": 182,
+        "y": 538,
+        "width": 27,
+        "height": 27
+      },
+      {
+        "text": "01天22时",
+        "x": 464,
+        "y": 540,
+        "width": 112,
+        "height": 24
+      },
+      {
+        "text": "100",
+        "x": 859,
+        "y": 535,
+        "width": 42,
+        "height": 24
+      },
+      {
+        "text": "500",
+        "x": 931,
+        "y": 535,
+        "width": 47,
+        "height": 23
+      },
+      {
+        "text": "超爱大明星",
+        "x": 1380,
+        "y": 540,
+        "width": 92,
+        "height": 24
+      },
+      {
+        "text": "日伐木机",
+        "x": 120,
+        "y": 581,
+        "width": 90,
+        "height": 28
+      },
+      {
+        "text": "日库",
+        "x": 1180,
+        "y": 580,
+        "width": 53,
+        "height": 29
+      },
+      {
+        "text": "委托目标",
+        "x": 1298,
+        "y": 591,
+        "width": 84,
+        "height": 27
+      },
+      {
+        "text": "恶名狩猪",
+        "x": 831,
+        "y": 616,
+        "width": 81,
+        "height": 25
+      },
+      {
+        "text": "70",
+        "x": 150,
+        "y": 629,
+        "width": 35,
+        "height": 25
+      },
+      {
+        "text": "250",
+        "x": 213,
+        "y": 629,
+        "width": 46,
+        "height": 26
+      },
+      {
+        "text": "10",
+        "x": 1214,
+        "y": 632,
+        "width": 18,
+        "height": 20
+      },
+      {
+        "text": "恶名狩猎",
+        "x": 1387,
+        "y": 644,
+        "width": 76,
+        "height": 25
+      },
+      {
+        "text": "专业挑战室",
+        "x": 1660,
+        "y": 644,
+        "width": 92,
+        "height": 25
+      },
+      {
+        "text": "01天22时",
+        "x": 819,
+        "y": 657,
+        "width": 110,
+        "height": 24
+      },
+      {
+        "text": "恶名",
+        "x": 1183,
+        "y": 711,
+        "width": 49,
+        "height": 27
+      },
+      {
+        "text": "困难委托",
+        "x": 1388,
+        "y": 702,
+        "width": 76,
+        "height": 25
+      },
+      {
+        "text": "恶名狩猪",
+        "x": 122,
+        "y": 712,
+        "width": 82,
+        "height": 25
+      },
+      {
+        "text": "01天22时",
+        "x": 117,
+        "y": 751,
+        "width": 104,
+        "height": 25
+      },
+      {
+        "text": "01天",
+        "x": 1169,
+        "y": 748,
+        "width": 65,
+        "height": 32
+      },
+      {
+        "text": "纳西妲",
+        "x": 889,
+        "y": 805,
+        "width": 65,
+        "height": 25
+      },
+      {
+        "text": "未知复合侵蚀体",
+        "x": 828,
+        "y": 848,
+        "width": 171,
+        "height": 27
+      },
+      {
+        "text": "纳西妲",
+        "x": 182,
+        "y": 900,
+        "width": 65,
+        "height": 26
+      },
+      {
+        "text": "纳西妲",
+        "x": 536,
+        "y": 900,
+        "width": 64,
+        "height": 26
+      },
+      {
+        "text": "100",
+        "x": 859,
+        "y": 895,
+        "width": 51,
+        "height": 26
+      },
+      {
+        "text": "500",
+        "x": 903,
+        "y": 895,
+        "width": 76,
+        "height": 25
+      },
+      {
+        "text": "宁芙·双子",
+        "x": 158,
+        "y": 944,
+        "width": 113,
+        "height": 28
+      },
+      {
+        "text": "日冥宁芙·双子",
+        "x": 472,
+        "y": 943,
+        "width": 153,
+        "height": 28
+      },
+      {
+        "text": "X",
+        "x": 30,
+        "y": 967,
+        "width": 26,
+        "height": 28
+      },
+      {
+        "text": "『萌新』",
+        "x": 200,
+        "y": 995,
+        "width": 82,
+        "height": 36
+      },
+      {
+        "text": "NEW!",
+        "x": 949,
+        "y": 990,
+        "width": 59,
+        "height": 28
+      },
+      {
+        "text": "LT",
+        "x": 750,
+        "y": 1016,
+        "width": 31,
+        "height": 24
+      },
+      {
+        "text": "RS",
+        "x": 969,
+        "y": 1015,
+        "width": 30,
+        "height": 20
+      },
+      {
+        "text": "点数兑换",
+        "x": 1061,
+        "y": 1012,
+        "width": 110,
+        "height": 34
+      },
+      {
+        "text": "300/7000",
+        "x": 67,
+        "y": 1035,
+        "width": 108,
+        "height": 24
+      },
+      {
+        "text": "周期内可获取",
+        "x": 202,
+        "y": 1033,
+        "width": 123,
+        "height": 25
+      },
+      {
+        "text": "70/1000",
+        "x": 352,
+        "y": 1034,
+        "width": 94,
+        "height": 24
+      }
+    ],
+    "error": null,
+    "screens": [
+      {
+        "screen_name": "情报板",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "点数兑换",
+            "area_type": "text",
+            "x": 1061,
+            "y": 1012,
+            "width": 110,
+            "height": 34,
+            "text": "点数兑换",
+            "confidence": 0.9925329685211182
+          },
+          {
+            "area_name": "刷新按钮",
+            "area_type": "template",
+            "x": 806,
+            "y": 1004,
+            "width": 50,
+            "height": 50,
+            "text": null,
+            "confidence": 0.9651491641998291
+          },
+          {
+            "area_name": "手柄-筛选标题",
+            "area_type": "text",
+            "x": 1307,
+            "y": 44,
+            "width": 108,
+            "height": 31,
+            "text": "委托筛选",
+            "confidence": 0.9997068643569946
+          }
+        ]
+      },
+      {
+        "screen_name": "菜单",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "返回",
+            "area_type": "template",
+            "x": 92,
+            "y": 23,
+            "width": 48,
+            "height": 57,
+            "text": null,
+            "confidence": 0.939350426197052
+          },
+          {
+            "area_name": "按钮-返回",
+            "area_type": "template",
+            "x": 92,
+            "y": 23,
+            "width": 48,
+            "height": 57,
+            "text": null,
+            "confidence": 0.939350426197052
+          }
+        ]
+      },
+      {
+        "screen_name": "3D地图",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "菜单-返回",
+            "area_type": "template",
+            "x": 92,
+            "y": 23,
+            "width": 48,
+            "height": 57,
+            "text": null,
+            "confidence": 0.939350426197052
+          }
+        ]
+      },
+      {
+        "screen_name": "战斗-菜单",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "菜单-返回",
+            "area_type": "template",
+            "x": 92,
+            "y": 23,
+            "width": 48,
+            "height": 57,
+            "text": null,
+            "confidence": 0.939350426197052
+          }
+        ]
+      },
+      {
+        "screen_name": "委托助手",
+        "is_precise": false,
+        "areas": [
+          {
+            "area_name": "左上角返回",
+            "area_type": "template",
+            "x": 92,
+            "y": 23,
+            "width": 48,
+            "height": 57,
+            "text": null,
+            "confidence": 0.939350426197052
+          }
+        ]
+      }
+    ],
+    "screenshot_path": "screens/情报板/ios_filter_two_types.webp",
+    "vision_hint": "本结果仅包含 OCR 识别的文字与模板匹配的命中项,是画面的部分识别结果,不等同于对画面的完整视觉理解。需要全面判断画面时,请用视觉工具或多模态大模型再看一遍该画面。"
+  },
+  "ios_hunt_failure": {
+    "success": true,
+    "ocr_texts": [
+      {
+        "text": "挑战结果",
+        "x": 720,
+        "y": 158,
+        "width": 479,
+        "height": 126
+      },
+      {
+        "text": "360",
+        "x": 543,
+        "y": 328,
+        "width": 58,
+        "height": 34
+      },
+      {
+        "text": "60",
+        "x": 1327,
+        "y": 319,
+        "width": 126,
+        "height": 94
+      },
+      {
+        "text": "1131",
+        "x": 182,
+        "y": 329,
+        "width": 72,
+        "height": 32
+      },
+      {
+        "text": "2007",
+        "x": 354,
+        "y": 329,
+        "width": 71,
+        "height": 32
+      },
+      {
+        "text": "绳网等级",
+        "x": 1460,
+        "y": 333,
+        "width": 110,
+        "height": 34
+      },
+      {
+        "text": "HOLLOW",
+        "x": 1756,
+        "y": 324,
+        "width": 64,
+        "height": 20
+      },
+      {
+        "text": "MAX /MAX",
+        "x": 1459,
+        "y": 370,
+        "width": 165,
+        "height": 34
+      },
+      {
+        "text": "+",
+        "x": 1701,
+        "y": 423,
+        "width": 23,
+        "height": 22
+      },
+      {
+        "text": "EXP",
+        "x": 1745,
+        "y": 420,
+        "width": 56,
+        "height": 27
+      },
+      {
+        "text": "60",
+        "x": 86,
+        "y": 550,
+        "width": 57,
+        "height": 42
+      },
+      {
+        "text": "60",
+        "x": 264,
+        "y": 552,
+        "width": 51,
+        "height": 38
+      },
+      {
+        "text": "60",
+        "x": 440,
+        "y": 552,
+        "width": 49,
+        "height": 39
+      },
+      {
+        "text": "AGENT",
+        "x": 184,
+        "y": 572,
+        "width": 55,
+        "height": 17
+      },
+      {
+        "text": "AGEN",
+        "x": 361,
+        "y": 574,
+        "width": 51,
+        "height": 14
+      },
+      {
+        "text": "AGENT",
+        "x": 535,
+        "y": 572,
+        "width": 55,
+        "height": 17
+      },
+      {
+        "text": "总计用时：",
+        "x": 97,
+        "y": 622,
+        "width": 97,
+        "height": 29
+      },
+      {
+        "text": "00:04:39",
+        "x": 460,
+        "y": 619,
+        "width": 137,
+        "height": 33
+      },
+      {
+        "text": "EMPTY",
+        "x": 1352,
+        "y": 629,
+        "width": 65,
+        "height": 29
+      },
+      {
+        "text": "EMPTY",
+        "x": 1479,
+        "y": 630,
+        "width": 61,
+        "height": 26
+      },
+      {
+        "text": "EMPTY",
+        "x": 1602,
+        "y": 629,
+        "width": 64,
+        "height": 29
+      },
+      {
+        "text": "EMPTY",
+        "x": 1729,
+        "y": 630,
+        "width": 62,
+        "height": 26
+      },
+      {
+        "text": "完成恶名狩猎",
+        "x": 129,
+        "y": 677,
+        "width": 136,
+        "height": 31
+      },
+      {
+        "text": "0/1",
+        "x": 548,
+        "y": 674,
+        "width": 52,
+        "height": 38
+      },
+      {
+        "text": "通关时长不超过10分钟",
+        "x": 133,
+        "y": 734,
+        "width": 223,
+        "height": 29
+      },
+      {
+        "text": "0/1",
+        "x": 548,
+        "y": 731,
+        "width": 52,
+        "height": 36
+      },
+      {
+        "text": "通关时长不超过5分钟",
+        "x": 133,
+        "y": 791,
+        "width": 208,
+        "height": 27
+      },
+      {
+        "text": "0/1",
+        "x": 548,
+        "y": 786,
+        "width": 52,
+        "height": 37
+      },
+      {
+        "text": "EMPTY",
+        "x": 1352,
+        "y": 787,
+        "width": 63,
+        "height": 29
+      },
+      {
+        "text": "EMPTY",
+        "x": 1479,
+        "y": 789,
+        "width": 61,
+        "height": 26
+      },
+      {
+        "text": "EMPTY",
+        "x": 1602,
+        "y": 787,
+        "width": 63,
+        "height": 29
+      },
+      {
+        "text": "EMPTY",
+        "x": 1728,
+        "y": 786,
+        "width": 63,
+        "height": 29
+      },
+      {
+        "text": "退出",
+        "x": 1683,
+        "y": 1012,
+        "width": 62,
+        "height": 34
+      }
+    ],
+    "error": null,
+    "screens": [
+      {
+        "screen_name": "迷失之地-挑战结果",
+        "is_precise": true,
+        "areas": [
+          {
+            "area_name": "标题-挑战结果",
+            "area_type": "text",
+            "x": 720,
+            "y": 158,
+            "width": 479,
+            "height": 126,
+            "text": "挑战结果",
+            "confidence": 0.9898673295974731
+          }
+        ]
+      }
+    ],
+    "screenshot_path": "screens/情报板/ios_hunt_failure.webp",
+    "vision_hint": "本结果仅包含 OCR 识别的文字与模板匹配的命中项,是画面的部分识别结果,不等同于对画面的完整视觉理解。需要全面判断画面时,请用视觉工具或多模态大模型再看一遍该画面。"
+  }
+}
