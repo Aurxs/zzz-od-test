@@ -1,0 +1,417 @@
+{
+  "战斗画面/ios_assistant_native_entry.webp": {
+    "source_image": "screens/战斗画面/ios_assistant_native_entry.webp",
+    "ocr_texts": [
+      {
+        "text": "10558/10558",
+        "x": 250,
+        "y": 80,
+        "width": 106,
+        "height": 24,
+        "confidence": 0.9999616146087646
+      },
+      {
+        "text": "000",
+        "x": 761,
+        "y": 90,
+        "width": 49,
+        "height": 18,
+        "confidence": 0.6571320295333862
+      },
+      {
+        "text": "00000",
+        "x": 136,
+        "y": 109,
+        "width": 102,
+        "height": 21,
+        "confidence": 0.8780239820480347
+      },
+      {
+        "text": "哈",
+        "x": 73,
+        "y": 149,
+        "width": 153,
+        "height": 84,
+        "confidence": 0.8708143830299377
+      },
+      {
+        "text": "02:32.83",
+        "x": 1606,
+        "y": 142,
+        "width": 152,
+        "height": 35,
+        "confidence": 0.9995914697647095
+      },
+      {
+        "text": "1000PTS",
+        "x": 200,
+        "y": 149,
+        "width": 217,
+        "height": 63,
+        "confidence": 0.9941133260726929
+      },
+      {
+        "text": "UPROAR",
+        "x": 196,
+        "y": 200,
+        "width": 89,
+        "height": 25,
+        "confidence": 0.9997518062591553
+      },
+      {
+        "text": "警告！侦测到最高级别威胁，最后的敌人",
+        "x": 1359,
+        "y": 223,
+        "width": 400,
+        "height": 30,
+        "confidence": 0.9993070960044861
+      },
+      {
+        "text": "ALLE",
+        "x": 884,
+        "y": 304,
+        "width": 91,
+        "height": 35,
+        "confidence": 0.9697493314743042
+      },
+      {
+        "text": "RT",
+        "x": 1762,
+        "y": 882,
+        "width": 32,
+        "height": 24,
+        "confidence": 0.9998481273651123
+      },
+      {
+        "text": "X",
+        "x": 1445,
+        "y": 1024,
+        "width": 22,
+        "height": 23,
+        "confidence": 0.5619898438453674
+      },
+      {
+        "text": "RB",
+        "x": 1763,
+        "y": 1024,
+        "width": 31,
+        "height": 21,
+        "confidence": 0.9999644160270691
+      }
+    ]
+  },
+  "战斗画面/ios_assistant_pause_menu.webp": {
+    "source_image": "screens/战斗画面/ios_assistant_pause_menu.webp",
+    "ocr_texts": [
+      {
+        "text": "LB",
+        "x": 1357,
+        "y": 40,
+        "width": 29,
+        "height": 21,
+        "confidence": 0.9999258518218994
+      },
+      {
+        "text": "战况",
+        "x": 1494,
+        "y": 33,
+        "width": 61,
+        "height": 34,
+        "confidence": 0.9958179593086243
+      },
+      {
+        "text": "设置",
+        "x": 1704,
+        "y": 32,
+        "width": 63,
+        "height": 37,
+        "confidence": 0.9998679161071777
+      },
+      {
+        "text": "RB",
+        "x": 1870,
+        "y": 41,
+        "width": 29,
+        "height": 20,
+        "confidence": 0.9999648332595825
+      },
+      {
+        "text": "击败当前出现的敌人",
+        "x": 479,
+        "y": 178,
+        "width": 202,
+        "height": 26,
+        "confidence": 0.9998556971549988
+      },
+      {
+        "text": "1/1",
+        "x": 1744,
+        "y": 175,
+        "width": 48,
+        "height": 32,
+        "confidence": 0.9996297955513
+      },
+      {
+        "text": "委托详情",
+        "x": 160,
+        "y": 207,
+        "width": 103,
+        "height": 34,
+        "confidence": 0.9997755289077759
+      },
+      {
+        "text": "出招表",
+        "x": 172,
+        "y": 276,
+        "width": 80,
+        "height": 32,
+        "confidence": 0.9999685287475586
+      },
+      {
+        "text": "技能信息",
+        "x": 159,
+        "y": 342,
+        "width": 102,
+        "height": 32,
+        "confidence": 0.9997587203979492
+      },
+      {
+        "text": "意象影画",
+        "x": 161,
+        "y": 411,
+        "width": 102,
+        "height": 32,
+        "confidence": 0.9986711144447327
+      },
+      {
+        "text": "属性详情",
+        "x": 161,
+        "y": 478,
+        "width": 102,
+        "height": 32,
+        "confidence": 0.9983065128326416
+      },
+      {
+        "text": "EMPTY",
+        "x": 1095,
+        "y": 482,
+        "width": 51,
+        "height": 14,
+        "confidence": 0.9726686477661133
+      },
+      {
+        "text": "EMPTY",
+        "x": 1485,
+        "y": 482,
+        "width": 51,
+        "height": 14,
+        "confidence": 0.9967489242553711
+      },
+      {
+        "text": "EMPTY",
+        "x": 492,
+        "y": 661,
+        "width": 51,
+        "height": 22,
+        "confidence": 0.9990607500076294
+      },
+      {
+        "text": "EMPTY",
+        "x": 599,
+        "y": 661,
+        "width": 51,
+        "height": 22,
+        "confidence": 0.9994856119155884
+      },
+      {
+        "text": "EMPTY",
+        "x": 705,
+        "y": 660,
+        "width": 52,
+        "height": 24,
+        "confidence": 0.9988442659378052
+      },
+      {
+        "text": "EMPTY",
+        "x": 813,
+        "y": 662,
+        "width": 52,
+        "height": 21,
+        "confidence": 0.9993706941604614
+      },
+      {
+        "text": "EMPTY",
+        "x": 921,
+        "y": 661,
+        "width": 52,
+        "height": 22,
+        "confidence": 0.995528519153595
+      },
+      {
+        "text": "EMPTY",
+        "x": 1028,
+        "y": 661,
+        "width": 51,
+        "height": 22,
+        "confidence": 0.9969218969345093
+      },
+      {
+        "text": "EMPTY",
+        "x": 1135,
+        "y": 661,
+        "width": 51,
+        "height": 22,
+        "confidence": 0.9996587634086609
+      },
+      {
+        "text": "EMPTY",
+        "x": 1244,
+        "y": 660,
+        "width": 48,
+        "height": 24,
+        "confidence": 0.9980095028877258
+      },
+      {
+        "text": "EMPTY",
+        "x": 1348,
+        "y": 660,
+        "width": 53,
+        "height": 24,
+        "confidence": 0.9993144869804382
+      },
+      {
+        "text": "EMPTY",
+        "x": 1457,
+        "y": 661,
+        "width": 51,
+        "height": 22,
+        "confidence": 0.9996076822280884
+      },
+      {
+        "text": "EMPTY",
+        "x": 1564,
+        "y": 662,
+        "width": 52,
+        "height": 21,
+        "confidence": 0.9997100830078125
+      },
+      {
+        "text": "EMPTY",
+        "x": 1671,
+        "y": 661,
+        "width": 52,
+        "height": 22,
+        "confidence": 0.9992653131484985
+      },
+      {
+        "text": "引导手册",
+        "x": 162,
+        "y": 546,
+        "width": 102,
+        "height": 32,
+        "confidence": 0.9706001877784729
+      },
+      {
+        "text": "效果详情",
+        "x": 160,
+        "y": 612,
+        "width": 104,
+        "height": 32,
+        "confidence": 0.9998201131820679
+      },
+      {
+        "text": "x",
+        "x": 1312,
+        "y": 1017,
+        "width": 23,
+        "height": 24,
+        "confidence": 0.5345092415809631
+      },
+      {
+        "text": "重新开始",
+        "x": 1354,
+        "y": 1016,
+        "width": 74,
+        "height": 25,
+        "confidence": 0.999732255935669
+      },
+      {
+        "text": "退出战斗",
+        "x": 1521,
+        "y": 1017,
+        "width": 73,
+        "height": 22,
+        "confidence": 0.9999637603759766
+      },
+      {
+        "text": "选择",
+        "x": 1688,
+        "y": 1016,
+        "width": 41,
+        "height": 24,
+        "confidence": 0.9921717643737793
+      },
+      {
+        "text": "返回",
+        "x": 1822,
+        "y": 1017,
+        "width": 40,
+        "height": 23,
+        "confidence": 0.9998182058334351
+      }
+    ]
+  },
+  "恶名狩猎/ios_unrewarded_notice.webp": {
+    "source_image": "screens/恶名狩猎/ios_unrewarded_notice.webp",
+    "ocr_texts": [
+      {
+        "text": "本周内获取「恶名狩猎」奖励的次数已耗尽，无法获得挑战奖励，",
+        "x": 447,
+        "y": 505,
+        "width": 827,
+        "height": 38,
+        "confidence": 0.9969481825828552
+      },
+      {
+        "text": "是否继续挑战？",
+        "x": 1263,
+        "y": 507,
+        "width": 199,
+        "height": 34,
+        "confidence": 0.9720558524131775
+      },
+      {
+        "text": "X",
+        "x": 686,
+        "y": 614,
+        "width": 27,
+        "height": 29,
+        "confidence": 0.9314802289009094
+      },
+      {
+        "text": "取消",
+        "x": 796,
+        "y": 606,
+        "width": 62,
+        "height": 40,
+        "confidence": 0.9996674656867981
+      },
+      {
+        "text": "确认",
+        "x": 1101,
+        "y": 609,
+        "width": 58,
+        "height": 35,
+        "confidence": 0.9998829364776611
+      },
+      {
+        "text": "A选择",
+        "x": 923,
+        "y": 694,
+        "width": 84,
+        "height": 29,
+        "confidence": 0.9994592070579529
+      }
+    ]
+  }
+}

@@ -13,8 +13,11 @@ def test_result_requires_hunt_objective() -> None:
     """通用结果标题本身不能证明通关；0/1 为失败。"""
     op = Mock()
     op.round_by_find_area.return_value.is_success = True
+    from one_dragon.base.geometry.rectangle import Rect
+
+    op.ctx.screen_loader.get_area.return_value.rect = Rect(80,660,630,725)
     for text, expected in [('完成恶名狩猎0/1', False), ('完成恶名狩猎1/1', True), ('通关时长不超过5分钟1/1', None)]:
-        op.ctx.ocr.crop_and_run_ocr.return_value = {text: []}
+        op.ctx.ocr.run_ocr.return_value = {text:[SimpleNamespace(center=SimpleNamespace(x=300,y=690))]}
         assert read_hunt_result(op) is expected
     op.round_by_find_area.return_value.is_success = False
     assert read_hunt_result(op) is None
