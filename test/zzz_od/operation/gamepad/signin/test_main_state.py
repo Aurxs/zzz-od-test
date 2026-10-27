@@ -66,3 +66,14 @@ def test_real_completed_main_never_starts_divination_again(
     assert not op.return_to_world().is_success
     assert not op.return_to_world().is_success
     real_context.controller.btn_tap.assert_called_once_with('east')
+
+
+def test_current_scale_main_uses_cover_when_divination_ocr_is_incomplete(
+    real_context: SimpleNamespace, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """当前窗口的占卜提示漏读一字，标题与开封面仍足以确认主界面。"""
+    op = GamepadDailySignIn(real_context, 'trigrams_collection')
+    monkeypatch.setattr(op, '_after_round_wait', Mock())
+    op.last_screenshot = cv2_utils.read_image(str(SCREENS / 'ios_main_current_scale.webp'))
+    assert not op._found('手柄-占卜提示')
+    assert op._main_state() == 'available'
