@@ -66,6 +66,23 @@ def test_constructor_and_unknown_inputs_do_not_fallback(
     controller.gamepad.tap_combo.assert_not_called()
 
 
+def test_manual_stick_uses_capture_guard_and_neutral_does_not_need_a_frame(
+    controller: zzz_macos_controller.ZMacController,
+) -> None:
+    """手动摇杆复用有效帧保护，失帧暂停后不再接受方向输入。"""
+    controller._input_paused = False
+    controller.set_gamepad_stick('left', 0.4, -0.5)
+    controller.gamepad.set_stick.assert_called_once_with('left', 0.4, -0.5)
+    controller.window_capture.latest_frame.return_value = None
+    controller.set_gamepad_stick('left', 0, 0)
+    controller.gamepad.set_stick.assert_called_with('left', 0, 0)
+    with pytest.raises(RuntimeError, match='有效的游戏画面'):
+        controller.set_gamepad_stick('right', 0.5, 0)
+    assert controller._input_paused
+    controller.gamepad.suspend.assert_called_once()
+    assert controller.gamepad.set_stick.call_count == 2
+
+
 def test_window_selection_ignores_helpers_and_accepts_empty_main_title(
     controller: zzz_macos_controller.ZMacController,
     monkeypatch: pytest.MonkeyPatch,

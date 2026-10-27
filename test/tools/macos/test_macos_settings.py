@@ -45,6 +45,7 @@ def test_overlay_page_is_created_only_on_windows(
         expected.insert(1, 'setting_overlay_interface')
         overlay_factory.assert_called_once()
     else:
+        expected.insert(1, 'setting_gamepad_interface')
         overlay_factory.assert_not_called()
     assert names == expected
     interface.close()
