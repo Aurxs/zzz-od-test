@@ -99,6 +99,9 @@ def test_showing_macos_settings_keeps_default_pc_configuration(
     assert not hasattr(interface, 'macos_gamepad_settings')
     assert ctx.macos_config.ojd_auto_start is False
     assert runtime.macos_top_inset_opt.spin_box.value() == 0
+    assert runtime.macos_auto_top_inset_opt.btn.isChecked()
+    assert not runtime.macos_top_inset_opt.isEnabled()
+    assert not runtime.macos_top_inset_points_opt.isEnabled()
     assert not (account_path.parent / 'macos.yml').exists()
     assert ctx.ready_for_application is True
     ctx.run_context.stop_running.assert_not_called()
@@ -191,6 +194,30 @@ def test_menu_interval_setting_saves_without_reconnecting(
     ctx.controller.cleanup_after_app_shutdown.assert_not_called()
 
 
+def test_auto_capture_switch_preserves_manual_values_and_disconnects(
+    game_settings: tuple[setting_game_interface.SettingGameInterface, SimpleNamespace, Path],
+    qapp: QApplication,
+) -> None:
+    """默认自动且保留旧值，关闭后启用手动输入，沿用原连接清理。"""
+    game_interface, ctx, _ = game_settings
+    ctx.macos_config.capture_top_inset_points = 28
+    ctx.macos_config.capture_top_inset_pixels = 56
+    runtime = game_interface.macos_runtime_settings
+    runtime.reload()
+    for _ in range(3):
+        qapp.processEvents()
+    old_controller = ctx.controller
+    runtime.macos_auto_top_inset_opt.btn.setChecked(False)
+    saved = MacOsConfig(1)
+    assert saved.capture_auto_top_inset is False
+    assert (saved.capture_top_inset_points, saved.capture_top_inset_pixels) == (28, 56)
+    assert runtime.macos_top_inset_opt.isEnabled()
+    assert runtime.macos_top_inset_points_opt.isEnabled()
+    old_controller.cleanup_after_app_shutdown.assert_called_once_with()
+    ctx.run_context.stop_running.assert_called_once_with()
+    assert ctx.controller is None
+
+
 def test_runtime_settings_rebind_current_account(
     game_settings: tuple[setting_game_interface.SettingGameInterface, SimpleNamespace, Path],
     qapp: QApplication, tmp_path: Path,
@@ -203,6 +230,7 @@ def test_runtime_settings_rebind_current_account(
     replacement.data = {}
     replacement.menu_action_interval_ms = 1200
     replacement.capture_top_inset_pixels = 42
+    replacement.capture_auto_top_inset = False
     ctx.macos_config = replacement
     interface.on_interface_shown()
     for _ in range(3):
@@ -210,6 +238,8 @@ def test_runtime_settings_rebind_current_account(
     runtime = interface.macos_runtime_settings
     assert runtime.macos_menu_interval_opt.spin_box.value() == 1200
     assert runtime.macos_top_inset_opt.spin_box.value() == 42
+    assert not runtime.macos_auto_top_inset_opt.btn.isChecked()
+    assert runtime.macos_top_inset_opt.isEnabled()
     runtime.macos_menu_interval_opt.spin_box.setValue(900)
     assert replacement.menu_action_interval_ms == 900
     assert original.menu_action_interval_ms == 500

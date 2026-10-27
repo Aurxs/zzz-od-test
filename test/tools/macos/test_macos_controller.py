@@ -81,11 +81,30 @@ def test_window_selection_ignores_helpers_and_accepts_empty_main_title(
 
     assert controller.init_before_context_run() is True
 
-    controller.window_capture.start.assert_called_once_with(main, fps=30, top_inset_pixels=0)
+    controller.window_capture.start.assert_called_once_with(main, fps=30, auto_top_inset=True)
     assert controller.run_generation == 1
     controller.window_capture.list_windows.return_value = []
     assert controller.init_before_context_run() is False
     assert controller.run_generation == 2  # 失败重连也使旧准备缓存失效。
+
+
+@pytest.mark.parametrize('automatic, points', [(True, 28), (False, 28), (False, 0)])
+def test_capture_mode_preserves_manual_fallback(
+    controller: zzz_macos_controller.ZMacController, monkeypatch: pytest.MonkeyPatch,
+    automatic: bool, points: int,
+) -> None:
+    """旧账户默认自动，显式关闭后仍按逻辑点优先、旧像素备用连接。"""
+    controller.macos_config.capture_auto_top_inset = automatic
+    controller.macos_config.capture_top_inset_points = points
+    controller.macos_config.capture_top_inset_pixels = 56
+    window = controller.window_capture.window
+    monkeypatch.setattr(controller.game_launcher, 'ensure_window', lambda: window)
+    monkeypatch.setattr(controller, '_start_frame_monitor', Mock())
+    assert controller.init_before_context_run()
+    expected = {'auto_top_inset': True} if automatic else (
+        {'top_inset_points': points} if points else {'top_inset_pixels': 56}
+    )
+    controller.window_capture.start.assert_called_once_with(window, fps=30, **expected)
 
 
 def test_semantic_actions_use_xbox_config(

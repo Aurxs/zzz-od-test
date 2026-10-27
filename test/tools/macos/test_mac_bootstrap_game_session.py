@@ -100,6 +100,32 @@ def test_existing_gamepad_world_needs_no_input(session: SimpleNamespace) -> None
     session.controller.btn_tap.assert_not_called()
 
 
+@pytest.mark.parametrize('automatic, points', [(True, 28), (False, 28), (False, 0)])
+def test_startup_pointer_uses_same_capture_mode(
+    session: SimpleNamespace, monkeypatch: pytest.MonkeyPatch, automatic: bool, points: int,
+) -> None:
+    """实际触屏准备入口传递同一裁剪模式，自动开启时不夹带旧手动高度。"""
+    pointer_class = Mock(return_value=session.pointer)
+    monkeypatch.setattr(
+        'one_dragon.base.controller.macos.macos_bootstrap_pointer.MacBootstrapPointer', pointer_class,
+    )
+    session.controller.macos_config = SimpleNamespace(
+        capture_auto_top_inset=automatic, capture_top_inset_points=points, capture_top_inset_pixels=56,
+    )
+    session.controller.window_capture = Mock()
+    session.operation._pointer = None
+    show(session, 'world-touch', {})
+    assert not session.operation.prepare_session().is_fail
+    expected = {'auto_top_inset': True} if automatic else (
+        {'top_inset_points': points} if points else {'top_inset_pixels': 56}
+    )
+    pointer_class.assert_called_once_with(
+        session.controller.window_capture.window, window_capture=session.controller.window_capture,
+        foreground=True, **expected,
+    )
+    session.pointer.click.assert_called_once()
+
+
 @pytest.mark.parametrize('close_found, labels, expected', [
     (True, '目标 日常 训练 作战 战术', 1),
     (False, '目标 日常 训练 作战 战术', 0),
