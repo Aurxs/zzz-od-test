@@ -34,6 +34,13 @@ def test_actual_weekly_no_reward_and_confirmed_return(
         monkeypatch.setattr(operation, 'save_screenshot', Mock(side_effect=lambda prefix: prefix))
         screens = Path(__file__).resolve().parents[5] / 'screens'
         operation.last_screenshot = cv2_utils.read_image(str(
+            screens / '丽都周纪/ios_weekly_claimable_progress_ocr.webp'
+        ))
+        completed, unfinished, claimable, unknown = operation.grid_state()
+        assert claimable == [9]
+        assert unknown == []
+        assert set(completed + unfinished) == set(range(1, 9))
+        operation.last_screenshot = cv2_utils.read_image(str(
             screens / '丽都周纪/macos_rewards_weekly_score_claimable_1792978815622.webp'
         ))
         assert operation.focused_task() == 1
