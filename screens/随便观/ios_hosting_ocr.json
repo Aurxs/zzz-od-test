@@ -1,0 +1,923 @@
+{
+  "ios_hosting_before_start.webp": {
+    "source_image": "screens/随便观/ios_hosting_before_start.webp",
+    "ocr_texts": [
+      {
+        "text": "LB",
+        "x": 1181,
+        "y": 135,
+        "width": 33,
+        "height": 24,
+        "confidence": 0.9998633861541748
+      },
+      {
+        "text": "经营日志",
+        "x": 1276,
+        "y": 130,
+        "width": 110,
+        "height": 35,
+        "confidence": 0.9991250038146973
+      },
+      {
+        "text": "自动托管",
+        "x": 1503,
+        "y": 129,
+        "width": 110,
+        "height": 38,
+        "confidence": 0.9999082088470459
+      },
+      {
+        "text": "RB",
+        "x": 1673,
+        "y": 136,
+        "width": 33,
+        "height": 22,
+        "confidence": 0.9999706745147705
+      },
+      {
+        "text": "当前周期获取上限",
+        "x": 358,
+        "y": 209,
+        "width": 220,
+        "height": 31,
+        "confidence": 0.999971866607666
+      },
+      {
+        "text": "5000/5000",
+        "x": 404,
+        "y": 255,
+        "width": 159,
+        "height": 34,
+        "confidence": 0.9999182224273682
+      },
+      {
+        "text": "经营策略",
+        "x": 784,
+        "y": 247,
+        "width": 117,
+        "height": 35,
+        "confidence": 0.9993389248847961
+      },
+      {
+        "text": "优先完成饮茶仙【定期采办】委托",
+        "x": 1293,
+        "y": 249,
+        "width": 359,
+        "height": 30,
+        "confidence": 0.999081552028656
+      },
+      {
+        "text": "自动售卖获取收益",
+        "x": 867,
+        "y": 366,
+        "width": 191,
+        "height": 28,
+        "confidence": 0.99973464012146
+      },
+      {
+        "text": "暂未开始",
+        "x": 1510,
+        "y": 362,
+        "width": 109,
+        "height": 35,
+        "confidence": 0.9964662790298462
+      },
+      {
+        "text": "托管效率",
+        "x": 414,
+        "y": 372,
+        "width": 106,
+        "height": 35,
+        "confidence": 0.9998939037322998
+      },
+      {
+        "text": "登峰造极",
+        "x": 417,
+        "y": 447,
+        "width": 102,
+        "height": 31,
+        "confidence": 0.9999803900718689
+      },
+      {
+        "text": "EMPTY",
+        "x": 1159,
+        "y": 471,
+        "width": 122,
+        "height": 47,
+        "confidence": 0.9999567270278931
+      },
+      {
+        "text": "EMPTY",
+        "x": 1159,
+        "y": 585,
+        "width": 122,
+        "height": 46,
+        "confidence": 0.9999570846557617
+      },
+      {
+        "text": "饮茶仙委托耗时-60%",
+        "x": 326,
+        "y": 539,
+        "width": 209,
+        "height": 24,
+        "confidence": 0.9986394643783569
+      },
+      {
+        "text": "托管售卖收益+300%",
+        "x": 325,
+        "y": 565,
+        "width": 210,
+        "height": 27,
+        "confidence": 0.999939501285553
+      },
+      {
+        "text": "本次托管预计收益",
+        "x": 850,
+        "y": 738,
+        "width": 205,
+        "height": 27,
+        "confidence": 0.9999562501907349
+      },
+      {
+        "text": "0",
+        "x": 1396,
+        "y": 738,
+        "width": 25,
+        "height": 29,
+        "confidence": 0.9911626577377319
+      },
+      {
+        "text": "3016800",
+        "x": 1469,
+        "y": 737,
+        "width": 121,
+        "height": 31,
+        "confidence": 0.9999875426292419
+      },
+      {
+        "text": "预计耗时：",
+        "x": 844,
+        "y": 782,
+        "width": 104,
+        "height": 32,
+        "confidence": 0.9901876449584961
+      },
+      {
+        "text": "20时00分",
+        "x": 1477,
+        "y": 779,
+        "width": 114,
+        "height": 34,
+        "confidence": 0.999920129776001
+      },
+      {
+        "text": "增效建议",
+        "x": 430,
+        "y": 818,
+        "width": 105,
+        "height": 32,
+        "confidence": 0.9997519254684448
+      },
+      {
+        "text": "X",
+        "x": 1108,
+        "y": 889,
+        "width": 18,
+        "height": 20,
+        "confidence": 0.864677369594574
+      },
+      {
+        "text": "开始托管",
+        "x": 1172,
+        "y": 880,
+        "width": 127,
+        "height": 39,
+        "confidence": 0.9999826550483704
+      },
+      {
+        "text": "RT",
+        "x": 1646,
+        "y": 951,
+        "width": 29,
+        "height": 21,
+        "confidence": 0.9998919367790222
+      },
+      {
+        "text": "详情",
+        "x": 1684,
+        "y": 948,
+        "width": 46,
+        "height": 27,
+        "confidence": 0.9985657930374146
+      }
+    ]
+  },
+  "ios_hosting_completed.webp": {
+    "source_image": "screens/随便观/ios_hosting_completed.webp",
+    "ocr_texts": [
+      {
+        "text": "204942600",
+        "x": 1343,
+        "y": 36,
+        "width": 137,
+        "height": 30,
+        "confidence": 0.9999935626983643
+      },
+      {
+        "text": "5440",
+        "x": 1629,
+        "y": 36,
+        "width": 68,
+        "height": 29,
+        "confidence": 0.9999920725822449
+      },
+      {
+        "text": "RT",
+        "x": 1864,
+        "y": 39,
+        "width": 35,
+        "height": 24,
+        "confidence": 0.9992804527282715
+      },
+      {
+        "text": "RT",
+        "x": 1646,
+        "y": 951,
+        "width": 27,
+        "height": 21,
+        "confidence": 0.9998697638511658
+      },
+      {
+        "text": "LB",
+        "x": 1181,
+        "y": 135,
+        "width": 33,
+        "height": 24,
+        "confidence": 0.9998842477798462
+      },
+      {
+        "text": "经营日志",
+        "x": 1277,
+        "y": 132,
+        "width": 108,
+        "height": 32,
+        "confidence": 0.999148964881897
+      },
+      {
+        "text": "自动托管",
+        "x": 1505,
+        "y": 131,
+        "width": 108,
+        "height": 35,
+        "confidence": 0.9999043941497803
+      },
+      {
+        "text": "RB",
+        "x": 1673,
+        "y": 136,
+        "width": 33,
+        "height": 22,
+        "confidence": 0.9999678730964661
+      },
+      {
+        "text": "当前周期获取上限",
+        "x": 358,
+        "y": 209,
+        "width": 220,
+        "height": 31,
+        "confidence": 0.9999646544456482
+      },
+      {
+        "text": "0/5000",
+        "x": 429,
+        "y": 255,
+        "width": 110,
+        "height": 35,
+        "confidence": 0.9994428157806396
+      },
+      {
+        "text": "经营策略",
+        "x": 784,
+        "y": 247,
+        "width": 117,
+        "height": 35,
+        "confidence": 0.9991517663002014
+      },
+      {
+        "text": "优先完成饮茶仙【定期采办】委托",
+        "x": 1293,
+        "y": 249,
+        "width": 359,
+        "height": 30,
+        "confidence": 0.9989941120147705
+      },
+      {
+        "text": "托管效率",
+        "x": 414,
+        "y": 372,
+        "width": 106,
+        "height": 35,
+        "confidence": 0.9999024868011475
+      },
+      {
+        "text": "[饮茶仙委托][随便观货品][精淬]归藏靴",
+        "x": 812,
+        "y": 364,
+        "width": 431,
+        "height": 31,
+        "confidence": 0.9798283576965332
+      },
+      {
+        "text": "登峰造极",
+        "x": 417,
+        "y": 447,
+        "width": 102,
+        "height": 31,
+        "confidence": 0.9999805688858032
+      },
+      {
+        "text": "[饮茶仙委托][随便观货品][精淬]静笃护腕",
+        "x": 815,
+        "y": 480,
+        "width": 452,
+        "height": 27,
+        "confidence": 0.9791486859321594
+      },
+      {
+        "text": "饮茶仙委托耗时-60%",
+        "x": 326,
+        "y": 540,
+        "width": 210,
+        "height": 24,
+        "confidence": 0.9985958337783813
+      },
+      {
+        "text": "托管售卖收益+300%",
+        "x": 325,
+        "y": 567,
+        "width": 209,
+        "height": 24,
+        "confidence": 0.9999452233314514
+      },
+      {
+        "text": "[饮茶仙委托][随便观货品][精淬]松烟釜",
+        "x": 813,
+        "y": 594,
+        "width": 428,
+        "height": 28,
+        "confidence": 0.9810446500778198
+      },
+      {
+        "text": "本次托管预计收益",
+        "x": 850,
+        "y": 739,
+        "width": 205,
+        "height": 27,
+        "confidence": 0.9999130368232727
+      },
+      {
+        "text": "5000",
+        "x": 1346,
+        "y": 736,
+        "width": 75,
+        "height": 32,
+        "confidence": 0.9999912977218628
+      },
+      {
+        "text": "2577920",
+        "x": 1469,
+        "y": 737,
+        "width": 121,
+        "height": 31,
+        "confidence": 0.9999940991401672
+      },
+      {
+        "text": "派驻邦",
+        "x": 116,
+        "y": 749,
+        "width": 86,
+        "height": 29,
+        "confidence": 0.9999750256538391
+      },
+      {
+        "text": "自动托管已完成",
+        "x": 1141,
+        "y": 783,
+        "width": 158,
+        "height": 28,
+        "confidence": 0.999730110168457
+      },
+      {
+        "text": "增效建议",
+        "x": 429,
+        "y": 818,
+        "width": 106,
+        "height": 32,
+        "confidence": 0.999381959438324
+      },
+      {
+        "text": "X",
+        "x": 1104,
+        "y": 886,
+        "width": 23,
+        "height": 26,
+        "confidence": 0.5384318232536316
+      },
+      {
+        "text": "领取收益",
+        "x": 1173,
+        "y": 881,
+        "width": 123,
+        "height": 36,
+        "confidence": 0.9999813437461853
+      },
+      {
+        "text": "鄂全国坊",
+        "x": 1430,
+        "y": 914,
+        "width": 121,
+        "height": 20,
+        "confidence": 0.6115861535072327
+      },
+      {
+        "text": "详情",
+        "x": 1685,
+        "y": 948,
+        "width": 45,
+        "height": 27,
+        "confidence": 0.9994223117828369
+      },
+      {
+        "text": "托管中",
+        "x": 126,
+        "y": 966,
+        "width": 83,
+        "height": 36,
+        "confidence": 0.9987761378288269
+      },
+      {
+        "text": "返回",
+        "x": 1822,
+        "y": 1029,
+        "width": 40,
+        "height": 19,
+        "confidence": 0.9997377395629883
+      }
+    ]
+  },
+  "ios_hosting_entry_running.webp": {
+    "source_image": "screens/随便观/ios_hosting_entry_running.webp",
+    "ocr_texts": [
+      {
+        "text": "石",
+        "x": 1283,
+        "y": 40,
+        "width": 28,
+        "height": 22,
+        "confidence": 0.9618442058563232
+      },
+      {
+        "text": "207520520",
+        "x": 1342,
+        "y": 36,
+        "width": 137,
+        "height": 31,
+        "confidence": 0.9999904632568359
+      },
+      {
+        "text": "00010440",
+        "x": 1572,
+        "y": 36,
+        "width": 125,
+        "height": 31,
+        "confidence": 0.9999415874481201
+      },
+      {
+        "text": "RT",
+        "x": 1866,
+        "y": 41,
+        "width": 30,
+        "height": 21,
+        "confidence": 0.999891459941864
+      },
+      {
+        "text": "道",
+        "x": 1390,
+        "y": 157,
+        "width": 174,
+        "height": 141,
+        "confidence": 0.9999597072601318
+      },
+      {
+        "text": "学",
+        "x": 1549,
+        "y": 176,
+        "width": 21,
+        "height": 30,
+        "confidence": 0.644327700138092
+      },
+      {
+        "text": "RS",
+        "x": 1461,
+        "y": 282,
+        "width": 30,
+        "height": 19,
+        "confidence": 0.9988133907318115
+      },
+      {
+        "text": "Lv.45",
+        "x": 1435,
+        "y": 304,
+        "width": 84,
+        "height": 33,
+        "confidence": 0.9998407363891602
+      },
+      {
+        "text": "完成复兴",
+        "x": 1416,
+        "y": 449,
+        "width": 121,
+        "height": 35,
+        "confidence": 0.9999053478240967
+      },
+      {
+        "text": "NEW!",
+        "x": 132,
+        "y": 592,
+        "width": 76,
+        "height": 33,
+        "confidence": 0.9998147487640381
+      },
+      {
+        "text": "NEW!",
+        "x": 1309,
+        "y": 868,
+        "width": 75,
+        "height": 29,
+        "confidence": 0.9998164176940918
+      },
+      {
+        "text": "自动托管中",
+        "x": 1409,
+        "y": 663,
+        "width": 136,
+        "height": 32,
+        "confidence": 0.9998247027397156
+      },
+      {
+        "text": "可关闭自动托管进行手动操作",
+        "x": 1304,
+        "y": 701,
+        "width": 348,
+        "height": 31,
+        "confidence": 0.9999404549598694
+      },
+      {
+        "text": "派驻邦布",
+        "x": 117,
+        "y": 746,
+        "width": 102,
+        "height": 32,
+        "confidence": 0.9999634027481079
+      },
+      {
+        "text": "X",
+        "x": 77,
+        "y": 839,
+        "width": 21,
+        "height": 24,
+        "confidence": 0.5285515189170837
+      },
+      {
+        "text": "邻里街坊",
+        "x": 1426,
+        "y": 898,
+        "width": 133,
+        "height": 39,
+        "confidence": 0.999793529510498
+      },
+      {
+        "text": "托管中",
+        "x": 127,
+        "y": 965,
+        "width": 81,
+        "height": 36,
+        "confidence": 0.9999266266822815
+      },
+      {
+        "text": "返回",
+        "x": 1823,
+        "y": 1030,
+        "width": 38,
+        "height": 18,
+        "confidence": 0.9989855885505676
+      }
+    ]
+  },
+  "ios_hosting_reward.webp": {
+    "source_image": "screens/随便观/ios_hosting_reward.webp",
+    "ocr_texts": [
+      {
+        "text": "获得奖励",
+        "x": 891,
+        "y": 399,
+        "width": 136,
+        "height": 48,
+        "confidence": 0.9998722076416016
+      },
+      {
+        "text": "5000",
+        "x": 853,
+        "y": 595,
+        "width": 53,
+        "height": 25,
+        "confidence": 0.9999696612358093
+      },
+      {
+        "text": "2577920",
+        "x": 998,
+        "y": 595,
+        "width": 87,
+        "height": 24,
+        "confidence": 0.9999939799308777
+      },
+      {
+        "text": "百通宝",
+        "x": 849,
+        "y": 621,
+        "width": 61,
+        "height": 29,
+        "confidence": 0.9993416666984558
+      },
+      {
+        "text": "云纹徽",
+        "x": 1010,
+        "y": 623,
+        "width": 60,
+        "height": 26,
+        "confidence": 0.9989773631095886
+      },
+      {
+        "text": "确认",
+        "x": 929,
+        "y": 690,
+        "width": 58,
+        "height": 36,
+        "confidence": 0.9999825954437256
+      },
+      {
+        "text": "奖励详情",
+        "x": 813,
+        "y": 779,
+        "width": 77,
+        "height": 28,
+        "confidence": 0.9997798204421997
+      },
+      {
+        "text": "A",
+        "x": 940,
+        "y": 779,
+        "width": 29,
+        "height": 27,
+        "confidence": 0.9997411370277405
+      },
+      {
+        "text": "确定",
+        "x": 982,
+        "y": 781,
+        "width": 41,
+        "height": 24,
+        "confidence": 0.9999525547027588
+      },
+      {
+        "text": "B",
+        "x": 1078,
+        "y": 783,
+        "width": 20,
+        "height": 19,
+        "confidence": 0.9997544884681702
+      },
+      {
+        "text": "返回",
+        "x": 1116,
+        "y": 782,
+        "width": 41,
+        "height": 22,
+        "confidence": 0.9998323321342468
+      }
+    ]
+  },
+  "ios_hosting_running.webp": {
+    "source_image": "screens/随便观/ios_hosting_running.webp",
+    "ocr_texts": [
+      {
+        "text": "LB",
+        "x": 1181,
+        "y": 135,
+        "width": 33,
+        "height": 24,
+        "confidence": 0.9998786449432373
+      },
+      {
+        "text": "经营日志",
+        "x": 1276,
+        "y": 130,
+        "width": 110,
+        "height": 35,
+        "confidence": 0.9992022514343262
+      },
+      {
+        "text": "自动托管",
+        "x": 1503,
+        "y": 129,
+        "width": 110,
+        "height": 38,
+        "confidence": 0.9999074935913086
+      },
+      {
+        "text": "RB",
+        "x": 1673,
+        "y": 136,
+        "width": 33,
+        "height": 22,
+        "confidence": 0.9999697208404541
+      },
+      {
+        "text": "当前周期获取上限",
+        "x": 358,
+        "y": 209,
+        "width": 220,
+        "height": 31,
+        "confidence": 0.9999697804450989
+      },
+      {
+        "text": "5000/5000",
+        "x": 404,
+        "y": 255,
+        "width": 159,
+        "height": 34,
+        "confidence": 0.9999186992645264
+      },
+      {
+        "text": "经营策略",
+        "x": 784,
+        "y": 247,
+        "width": 117,
+        "height": 35,
+        "confidence": 0.9990970492362976
+      },
+      {
+        "text": "优先完成饮茶仙【定期采办】委托",
+        "x": 1293,
+        "y": 249,
+        "width": 359,
+        "height": 30,
+        "confidence": 0.9990404844284058
+      },
+      {
+        "text": "托管效率",
+        "x": 414,
+        "y": 372,
+        "width": 107,
+        "height": 35,
+        "confidence": 0.9999338984489441
+      },
+      {
+        "text": "自动售卖获取收益",
+        "x": 867,
+        "y": 366,
+        "width": 191,
+        "height": 28,
+        "confidence": 0.9998037219047546
+      },
+      {
+        "text": "预计19时59分",
+        "x": 1463,
+        "y": 367,
+        "width": 154,
+        "height": 27,
+        "confidence": 0.9999692440032959
+      },
+      {
+        "text": "登峰造极",
+        "x": 417,
+        "y": 447,
+        "width": 102,
+        "height": 31,
+        "confidence": 0.9999768733978271
+      },
+      {
+        "text": "EMPTY",
+        "x": 1159,
+        "y": 471,
+        "width": 122,
+        "height": 47,
+        "confidence": 0.9999553561210632
+      },
+      {
+        "text": "EMPTY",
+        "x": 1159,
+        "y": 585,
+        "width": 122,
+        "height": 46,
+        "confidence": 0.9999540448188782
+      },
+      {
+        "text": "饮茶仙委托耗时-60%",
+        "x": 325,
+        "y": 539,
+        "width": 210,
+        "height": 24,
+        "confidence": 0.9988374710083008
+      },
+      {
+        "text": "托管售卖收益+300%",
+        "x": 325,
+        "y": 565,
+        "width": 210,
+        "height": 27,
+        "confidence": 0.9999479651451111
+      },
+      {
+        "text": "本次托管预计收益",
+        "x": 850,
+        "y": 739,
+        "width": 205,
+        "height": 27,
+        "confidence": 0.9999480843544006
+      },
+      {
+        "text": "0",
+        "x": 1396,
+        "y": 738,
+        "width": 25,
+        "height": 29,
+        "confidence": 0.9902509450912476
+      },
+      {
+        "text": "3016800",
+        "x": 1469,
+        "y": 737,
+        "width": 121,
+        "height": 31,
+        "confidence": 0.9999873042106628
+      },
+      {
+        "text": "剩余时间：",
+        "x": 846,
+        "y": 783,
+        "width": 101,
+        "height": 29,
+        "confidence": 0.9975754618644714
+      },
+      {
+        "text": "19时59分",
+        "x": 1483,
+        "y": 782,
+        "width": 108,
+        "height": 31,
+        "confidence": 0.9999709725379944
+      },
+      {
+        "text": "增效建议",
+        "x": 429,
+        "y": 818,
+        "width": 106,
+        "height": 32,
+        "confidence": 0.9992828965187073
+      },
+      {
+        "text": "X",
+        "x": 1108,
+        "y": 888,
+        "width": 19,
+        "height": 21,
+        "confidence": 0.6006325483322144
+      },
+      {
+        "text": "停止托管",
+        "x": 1173,
+        "y": 880,
+        "width": 126,
+        "height": 39,
+        "confidence": 0.9999487400054932
+      },
+      {
+        "text": "RT",
+        "x": 1646,
+        "y": 951,
+        "width": 28,
+        "height": 21,
+        "confidence": 0.9998692274093628
+      },
+      {
+        "text": "详情",
+        "x": 1685,
+        "y": 948,
+        "width": 45,
+        "height": 27,
+        "confidence": 0.9994142055511475
+      }
+    ]
+  }
+}
