@@ -1,0 +1,179 @@
+{
+  "date": "2026-10-28",
+  "game_restarted_before_checks": true,
+  "ether_activity": 7,
+  "independent_attempts": 5,
+  "uninterrupted_completions": 1,
+  "segmented_completions": 1,
+  "manual_game_input": false,
+  "attempts": [
+    {
+      "attempt": 1,
+      "success": false,
+      "status": "人工结束",
+      "data": null,
+      "segmented": false,
+      "saved_plan_changed": false,
+      "temporary_completion": "当前真实周次数+1",
+      "ether_activity": 7,
+      "before_counts": {
+        "weekly": 2,
+        "daily": 1
+      },
+      "after_counts": {
+        "weekly": 2,
+        "daily": 1
+      }
+    },
+    {
+      "attempt": 2,
+      "success": true,
+      "status": "已返回游戏主界面",
+      "data": null,
+      "segmented": false,
+      "saved_plan_changed": false,
+      "temporary_completion": "当前真实周次数+1",
+      "ether_activity": 7,
+      "before_counts": {
+        "weekly": 2,
+        "daily": 1
+      },
+      "after_counts": {
+        "weekly": 3,
+        "daily": 2
+      }
+    },
+    {
+      "attempt": 3,
+      "success": false,
+      "status": "副本焦点不明确，未发送输入",
+      "data": null,
+      "segmented": false,
+      "saved_plan_changed": false,
+      "temporary_completion": "当前真实周次数+1",
+      "ether_activity": 7,
+      "before_counts": {
+        "weekly": 3,
+        "daily": 2
+      },
+      "after_counts": {
+        "weekly": 3,
+        "daily": 2
+      }
+    },
+    {
+      "attempt": 4,
+      "success": false,
+      "status": "目标已高亮但同排 A 提示缺失，未确认",
+      "data": {
+        "option": "01",
+        "evidence": {
+          "选项未完成": "/Users/aurxs/Program/ZenlessZoneZero-OneDragon/.debug/images/Mac_手柄对话_选项未完成_1793163654700.png"
+        }
+      },
+      "segmented": false,
+      "saved_plan_changed": false,
+      "temporary_completion": "当前真实周次数+1",
+      "ether_activity": 7,
+      "before_counts": {
+        "weekly": 3,
+        "daily": 2
+      },
+      "after_counts": {
+        "weekly": 3,
+        "daily": 2
+      }
+    },
+    {
+      "attempt": 5,
+      "success": false,
+      "status": "迷失之地手柄交互画面待适配",
+      "data": null,
+      "segmented": false,
+      "saved_plan_changed": false,
+      "temporary_completion": "当前真实周次数+1",
+      "ether_activity": 7,
+      "before_counts": {
+        "weekly": 3,
+        "daily": 2
+      },
+      "after_counts": {
+        "weekly": 3,
+        "daily": 2
+      }
+    }
+  ],
+  "fifth_recovery": {
+    "first": {
+      "success": false,
+      "status": "等待区域加载",
+      "data": null
+    },
+    "second": {
+      "success": true,
+      "status": "已返回游戏主界面",
+      "data": null
+    },
+    "segmented": true,
+    "before_counts": {
+      "weekly": 3,
+      "daily": 2
+    },
+    "after_counts": {
+      "weekly": 4,
+      "daily": 3
+    }
+  },
+  "final_counts": {
+    "weekly": 4,
+    "daily": 3
+  },
+  "protected_configs": {
+    "config/02/one_dragon/lost_void.yml": {
+      "before": "7955694c1020c165142ea66c04443926935eba1726567ae8fbeecd4d2c5bc9b8",
+      "after": "7955694c1020c165142ea66c04443926935eba1726567ae8fbeecd4d2c5bc9b8"
+    },
+    "config/lost_void_challenge/Mac迷失之地.yml": {
+      "before": "4e529fe25808316ea3b0bdcf64f256b1aadf530854af2eb1498d47e27ecf21ec",
+      "after": "4e529fe25808316ea3b0bdcf64f256b1aadf530854af2eb1498d47e27ecf21ec"
+    },
+    "config/02/team.yml": {
+      "before": "1578d77ff0729a5650f62a72aa2affa04f51af9c9d4562e737230086e4ec3250",
+      "after": "1578d77ff0729a5650f62a72aa2affa04f51af9c9d4562e737230086e4ec3250"
+    },
+    "config/02/one_dragon/_group.yml": {
+      "before": "5d14c086392388297c86ecf11e4df6916464d1d1cca3c9cf3b184a21c07abe00",
+      "after": "5d14c086392388297c86ecf11e4df6916464d1d1cca3c9cf3b184a21c07abe00"
+    },
+    "config/02/macos.yml": {
+      "before": "a3ae9c75d459d259c75e15c3f543b190a2fb72a1c8736af94ea56a6b9d8a293a",
+      "after": "a3ae9c75d459d259c75e15c3f543b190a2fb72a1c8736af94ea56a6b9d8a293a"
+    }
+  },
+  "all_protected_configs_unchanged": true,
+  "fix_commits": {
+    "main": [
+      "9713cb5",
+      "7167700",
+      "9b0bee6",
+      "9db6ef2"
+    ],
+    "tests": [
+      "831aabd",
+      "fc8e0e4",
+      "3202455",
+      "0b743bd"
+    ]
+  },
+  "validation": {
+    "relevant_unique_cases_passed": 38,
+    "ruff": "passed",
+    "notes": "旧测试截图因稀疏检出缺失，从测试仓HEAD补回后仅重跑原失败项；黑底恢复节点修正后只重跑4项受影响检查。"
+  },
+  "local_evidence": ".debug/macos/lost_void_five_20261028",
+  "limitations": [
+    "五轮不是五轮全部成功：第一轮主动停止重复寻路，第三、四、五轮分别安全失败。",
+    "最后版本仅完成第五轮分段恢复，没有另做第六轮从头连续验收。",
+    "抽奖机完成后的过滤通过代码检查，本轮未把商店实测扩大成抽奖机完整实测。"
+  ]
+}
