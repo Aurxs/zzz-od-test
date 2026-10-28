@@ -233,6 +233,34 @@ def test_interaction_animation_waits_for_known_card_instead_of_failing(monkeypat
     operation.ctx.controller.btn_tap.assert_not_called()
 
 
+@pytest.mark.parametrize('screen', ['迷失之地-邦布商店', '迷失之地-抽奖机'])
+@pytest.mark.parametrize('success', [False, True])
+def test_completed_shop_marker_is_ignored_only_after_success(
+    monkeypatch: pytest.MonkeyPatch, screen: str, success: bool,
+) -> None:
+    """购物成功后不能再追商店图标；失败保留目标，重复处理不重复追加。"""
+    from zzz_od.operation.gamepad import lost_void_lottery, lost_void_store
+
+    operation = recovery_operation()
+    operation.ctx.lost_void = SimpleNamespace(in_normal_world=Mock(return_value=False))
+    operation.last_screenshot = np.full((1080, 1920, 3), 60, dtype=np.uint8)
+    operation.interact_target = None
+    operation.had_been_list = ['路径迭换']
+    operation.try_talk = Mock(return_value=None)
+    operation.check_and_update_current_screen = Mock(
+        side_effect=lambda image, screen_name_list: screen if screen in screen_name_list else None,
+    )
+    operation.round_by_op_result = Mock(return_value='failed')
+    component = Mock()
+    component.execute.return_value = SimpleNamespace(success=success, status='已返回')
+    monkeypatch.setattr(lost_void_store, 'GamepadLostVoidBangbooStore', lambda ctx: component)
+    monkeypatch.setattr(lost_void_lottery, 'GamepadLostVoidLottery', lambda ctx: component)
+    monkeypatch.setattr(lost_void_store, 'GamepadLostVoidStoreConfirm', Mock())
+    for _ in range(2):
+        assert operation.handle_interact() == ('wait' if success else 'failed')
+    assert operation.had_been_list == (['路径迭换', '邦布商店'] if success else ['路径迭换'])
+
+
 def test_entry_repeated_gear_uses_original_three_repeat_escape(monkeypatch: pytest.MonkeyPatch) -> None:
     from zzz_od.application.hollow_zero.lost_void.context.lost_void_detector import LostVoidDetector
     from zzz_od.operation.gamepad import lost_void_common, lost_void_gear
