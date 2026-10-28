@@ -163,3 +163,23 @@ def test_configured_team_uses_existing_macos_selector(monkeypatch) -> None:
     monkeypatch.setattr(predefined_team, 'GamepadChoosePredefinedTeam', selector)
     app.choose_predefined_team()
     selector.assert_called_once_with(app.ctx, 5)
+
+
+@pytest.mark.parametrize('platform', ['darwin', 'win32'])
+def test_initialization_keeps_original_application_lifecycle(monkeypatch: pytest.MonkeyPatch, platform: str) -> None:
+    from zzz_od.application.intel_board import intel_board_app
+    from zzz_od.application.zzz_application import ZApplication
+
+    parent = Mock()
+    monkeypatch.setattr(ZApplication, 'handle_init', parent)
+    monkeypatch.setattr(intel_board_app, 'sys', SimpleNamespace(platform=platform))
+    app = object.__new__(IntelBoardApp)
+    app.has_filtered = True
+    app.current_commission_type = CommissionType.NOTORIOUS_HUNT
+    app._macos_battle_won = True
+    app.scroll_times = 3
+    app.handle_init()
+    parent.assert_called_once_with(app)
+    if platform == 'darwin':
+        assert not app.has_filtered and app.current_commission_type is None
+        assert app._macos_battle_won is None and app.scroll_times == 0

@@ -1,0 +1,32 @@
+{
+  "start": "2026-10-28 08:36:56",
+  "end": "2026-10-28 08:50:55",
+  "success": true,
+  "segmented": false,
+  "team_idx": 0,
+  "strategy": "Mac全配队通用",
+  "before_contribution": 510,
+  "after_contribution": 1000,
+  "before_counts": {
+    "run_status": 0,
+    "dt": "20261027",
+    "run_time": "10-28 00:37",
+    "run_time_float": 1793119041.211682,
+    "expert_challenge_count": 2,
+    "notorious_hunt_count": 2
+  },
+  "after_counts": {
+    "run_status": 1,
+    "dt": "20261028",
+    "run_time": "10-28 08:54",
+    "run_time_float": 1793148848.5669508,
+    "expert_challenge_count": 2,
+    "notorious_hunt_count": 7,
+    "progress_complete": true
+  },
+  "team_hash_unchanged": true,
+  "battle_commissions_only": true,
+  "energy_spent": 0,
+  "full_cycle_source_head": "a0047b1",
+  "after_counts_capture": "含父类初始化修复后的已满跳过复验"
+}
