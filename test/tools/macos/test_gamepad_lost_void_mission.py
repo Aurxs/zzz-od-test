@@ -13,8 +13,9 @@ from zzz_od.operation.gamepad.lost_void import GamepadLostVoidBackToWorld, Gamep
 
 
 @pytest.mark.parametrize('highlighted', [True, False])
-def test_purge_card_with_arrow_gap_requires_real_border(highlighted: bool) -> None:
-    image = cv2_utils.read_image(str(Path(__file__).resolve().parents[3] / 'screens' / '迷失之地-入口-常规' / 'ios_purge_focus_gap.webp'))
+@pytest.mark.parametrize('filename', ['ios_purge_focus_gap.webp', 'ios_purge_focus_notification.webp'])
+def test_purge_card_with_arrow_gap_requires_real_border(highlighted: bool, filename: str) -> None:
+    image = cv2_utils.read_image(str(Path(__file__).resolve().parents[3] / 'screens' / '迷失之地-入口-常规' / filename))
     operation = GamepadLostVoidChooseMission(SimpleNamespace(controller=Mock()), '战线肃清')
     operation.last_screenshot = image
     operation._after_round_wait = Mock()
