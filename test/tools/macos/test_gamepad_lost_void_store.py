@@ -6,15 +6,63 @@ from unittest.mock import Mock
 
 import pytest
 
-from one_dragon.base.matcher.match_result import MatchResult, MatchResultList
 from one_dragon.base.geometry.rectangle import Rect
+from one_dragon.base.matcher.match_result import MatchResult, MatchResultList
 from one_dragon.utils import cv2_utils
+from zzz_od.application.hollow_zero.lost_void.context.lost_void_artifact import (
+    LostVoidArtifact,
+)
+from zzz_od.application.hollow_zero.lost_void.operation.interact.lost_void_artifact_pos import (
+    LostVoidArtifactPos,
+)
 from zzz_od.operation.gamepad.lost_void_store import (
     GamepadLostVoidBangbooStore,
     GamepadLostVoidStoreConfirm,
 )
-from zzz_od.application.hollow_zero.lost_void.context.lost_void_artifact import LostVoidArtifact
-from zzz_od.application.hollow_zero.lost_void.operation.interact.lost_void_artifact_pos import LostVoidArtifactPos
+
+
+def currency_operation() -> GamepadLostVoidBangbooStore:
+    from one_dragon.base.matcher.template_matcher import TemplateMatcher
+    from one_dragon.base.screen.profile_screen_context import ProfileScreenContext
+    from one_dragon.base.screen.template_loader import TemplateLoader
+
+    ctx = make_ctx()
+    ctx.screen_loader = ProfileScreenContext(defer_missing_screens=True)
+    ctx.screen_loader.reload()
+    ctx.screen_loader.apply_profile_patches()
+    ctx.tm = TemplateMatcher(TemplateLoader())
+    op = GamepadLostVoidBangbooStore(ctx)
+    op._after_round_wait = Mock()
+    path = Path(__file__).resolve().parents[3] / 'screens' / '迷失之地-邦布商店' / 'ios_gold_refresh_exhausted.webp'
+    op.last_screenshot = cv2_utils.read_image(str(path))
+    return op
+
+
+def test_currency_after_refresh_exhausted_uses_goods_gold() -> None:
+    op = currency_operation()
+    assert not op.round_by_find_area(op.last_screenshot, '迷失之地-邦布商店', '标识-金币').is_success
+    assert op._currency_flags() == (True, False)
+
+
+@pytest.mark.parametrize('use_blood_icon', [False, True])
+def test_currency_never_uses_wallet_gold_to_allow_unknown_goods(use_blood_icon: bool) -> None:
+    op = currency_operation()
+    blood = op.ctx.tm.template_loader.get_template('lost_void', 'blood_drop').raw
+    for idx in range(1, 5):
+        rect = op.ctx.screen_loader.get_area('迷失之地-邦布商店', f'手柄-商品金币-{idx}').rect
+        op.last_screenshot[rect.y1:rect.y2, rect.x1:rect.x2] = 0
+        if use_blood_icon:
+            height, width = blood.shape[:2]
+            op.last_screenshot[rect.y1:rect.y1 + height, rect.x1:rect.x1 + width] = blood
+    assert op._currency_flags() == (False, False)
+
+
+def test_currency_does_not_override_an_existing_blood_marker() -> None:
+    op = GamepadLostVoidBangbooStore(make_ctx())
+    op.last_screenshot = object()
+    op.round_by_find_area = Mock(side_effect=[SimpleNamespace(is_success=False), SimpleNamespace(is_success=True)])
+    assert op._currency_flags() == (False, True)
+    assert op.round_by_find_area.call_count == 2
 
 
 def make_ctx() -> SimpleNamespace:
