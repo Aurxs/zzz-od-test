@@ -1,0 +1,75 @@
+{
+  "start": "2026-10-28 08:00:36",
+  "end": "2026-10-28 08:10:40",
+  "entry": "原GUI一条龙运行页，游戏已先退出，自动冷启动",
+  "source_head_unchanged": true,
+  "records": {
+    "daily_signin": {
+      "run_status": 1,
+      "dt": "20261028",
+      "run_time": "10-28 08:02",
+      "run_time_float": 1793145755.425492
+    },
+    "random_play": {
+      "run_status": 1,
+      "dt": "20261028",
+      "run_time": "10-28 08:03",
+      "run_time_float": 1793145808.077903
+    },
+    "coffee": {
+      "run_status": 1,
+      "dt": "20261028",
+      "run_time": "10-28 08:04",
+      "run_time_float": 1793145842.031523
+    },
+    "charge_plan": {
+      "run_status": 1,
+      "current_charge_power_snapshot": [
+        4,
+        1793146164
+      ],
+      "dt": "20261028",
+      "run_time": "10-28 08:09",
+      "run_time_float": 1793146175.069497
+    },
+    "engagement_reward": {
+      "run_status": 1,
+      "dt": "20261028",
+      "run_time": "10-28 08:09",
+      "run_time_float": 1793146187.669012
+    },
+    "ridu_weekly": {
+      "run_status": 1,
+      "dt": "20261028",
+      "run_time": "10-28 08:10",
+      "run_time_float": 1793146212.822016
+    },
+    "city_fund": {
+      "run_status": 1,
+      "dt": "20261028",
+      "run_time": "10-28 08:10",
+      "run_time_float": 1793146240.9148328
+    }
+  },
+  "all_daily_status_success": true,
+  "protected_hashes_match": {
+    "config/02/team.yml": true,
+    "config/02/one_dragon/_group.yml": true,
+    "config/02/one_dragon/random_play.yml": true,
+    "config/model.yml": true
+  },
+  "charge_plan_parameters_unchanged": true,
+  "charge_battles": 3,
+  "charge_consumed": 300,
+  "charge_remaining_snapshot": 4,
+  "uncompleted_one_card_plan": true,
+  "engagement": {
+    "score": 400,
+    "maximum": 400,
+    "claimed_tiers": 4,
+    "polychrome_received": 60
+  },
+  "segmented": false,
+  "manual_gameplay_input": false,
+  "source_changed_during_run": false
+}
