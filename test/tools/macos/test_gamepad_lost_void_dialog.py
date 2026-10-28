@@ -104,3 +104,35 @@ def test_dialogue_needs_panel_and_prompt_and_stops_unchanged_page(monkeypatch: p
         operation.last_screenshot_time += 2
     assert operation.try_talk(frame) == '对话推进未取得进展，已停止'
     assert operation.ctx.controller.btn_tap.call_count == 3
+
+
+@pytest.mark.parametrize('is_dialog', [False, True])
+def test_card_quantity_is_not_dialog_option(monkeypatch: pytest.MonkeyPatch, is_dialog: bool) -> None:
+    """实拍黄色数量不能抢占鸣徽流程，带同行A的真实对话仍能进入选择。"""
+    from zzz_od.operation.gamepad import dialog
+
+    operation, _ = _short_dialog_operation('')
+    screens = Path(__file__).resolve().parents[3] / 'screens'
+    path = screens / ('迷失之地-大世界/ios_talk_option_a.webp' if is_dialog
+                      else '迷失之地-通用选择/ios_quantity_not_dialog.webp')
+    frame = cv2_utils.read_image(str(path))
+    rect = Rect(1340, 490, 1920, 815)
+    matches = MatchResultList()
+    matches.append(MatchResult(1, 140, 162, 181, 28) if is_dialog
+                   else MatchResult(1, 107, 205, 62, 45))
+    operation.ctx.screen_loader.get_area = lambda screen, name: SimpleNamespace(
+        rect=rect if name == '手柄-对话选项带' else Rect(390, 780, 1530, 1040),
+    )
+    operation.ctx.ocr.crop_and_run_ocr = lambda image, area: (
+        {'好' if is_dialog else '01': matches} if area is rect else {}
+    )
+    operation.ctx.tm = TemplateMatcher(TemplateLoader())
+    operation.talk_opt_idx = 0
+    component = Mock()
+    component.execute.return_value = SimpleNamespace(success=True)
+    factory = Mock(return_value=component)
+    monkeypatch.setattr(dialog, 'GamepadChooseDialogOption', factory)
+    result = operation.try_talk(frame)
+    assert (result is not None) == is_dialog
+    assert factory.call_count == int(is_dialog)
+    operation.ctx.controller.btn_tap.assert_not_called()
