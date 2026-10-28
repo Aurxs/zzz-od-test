@@ -1,0 +1,102 @@
+{
+  "operation": {
+    "success": true,
+    "status": "已返回游戏主界面",
+    "data": null,
+    "segmented": false,
+    "saved_plan_changed": false,
+    "temporary_completion": "当前真实周次数+1",
+    "ether_activity": 7,
+    "before_counts": {
+      "weekly": 1,
+      "daily": 0
+    },
+    "after_counts": {
+      "weekly": 2,
+      "daily": 1
+    }
+  },
+  "source_head": "a5efb66a49c21df542696605bbd9d9849ccac8cc",
+  "source_head_unchanged": true,
+  "protected_hashes_match": {
+    "config/02/one_dragon/lost_void.yml": true,
+    "config/lost_void_challenge/Mac迷失之地.yml": true,
+    "config/02/team.yml": true,
+    "config/02/one_dragon/_group.yml": true,
+    "config/model.yml": true,
+    "config/02/macos.yml": true
+  },
+  "models": [
+    {
+      "model": "yolov26n-736-lost-void-det-20260630",
+      "sha256": "153be1261e757c17afd194c195fa209505044188873a46444700be1293de445c",
+      "actual_calls": 1936,
+      "providers": [
+        "CoreMLExecutionProvider",
+        "CPUExecutionProvider"
+      ],
+      "errors": [],
+      "first_time": 1793156151.009974,
+      "last_time": 1793157922.311122,
+      "node_events": [
+        {
+          "provider": "CoreMLExecutionProvider",
+          "op_name": "18240237604405099987_CoreML_18240237604405099987_0",
+          "count": 1936
+        }
+      ],
+      "profile": ".debug/macos/tonight_coreml_runtime/yolov26n-736-lost-void-det-20260630_2026-10-28_10-54-17.json",
+      "loaded_phys_mib": 911.4,
+      "peak_sampled_phys_mib": 3572.3
+    },
+    {
+      "model": "yolov8n-640-flash-20250921",
+      "sha256": "cdd4ffc7a4610321724e6acd43032cc95b8f8431deba3d4c5849c335d4dc08a0",
+      "actual_calls": 13096,
+      "providers": [
+        "CoreMLExecutionProvider",
+        "CPUExecutionProvider"
+      ],
+      "errors": [],
+      "first_time": 1793156151.283884,
+      "last_time": 1793157983.757368,
+      "node_events": [
+        {
+          "provider": "CoreMLExecutionProvider",
+          "op_name": "16595557458434782411_CoreML_16595557458434782411_0",
+          "count": 13096
+        },
+        {
+          "provider": "CPUExecutionProvider",
+          "op_name": "Flatten",
+          "count": 13096
+        },
+        {
+          "provider": "CoreMLExecutionProvider",
+          "op_name": "16595557458434782411_CoreML_16595557458434782411_1",
+          "count": 13096
+        }
+      ],
+      "profile": ".debug/macos/tonight_coreml_runtime/yolov8n-640-flash-20250921_2026-10-28_10-55-30.json",
+      "loaded_phys_mib": 1633.5,
+      "peak_sampled_phys_mib": 3572.7
+    }
+  ],
+  "memory": {
+    "before_model_load_phys_mib": 874.7,
+    "peak_sampled_phys_mib": 3572.7,
+    "end_after_profile_finalize_phys_mib": 3411.6,
+    "scope": "整个联调进程，含采集、OCR、自动策略、ONNX profiler及监控，非纯模型增量，不含游戏或进程外CoreML服务"
+  },
+  "record_after": {
+    "run_status": 1,
+    "dt": "20261028",
+    "run_time": "10-28 11:27",
+    "run_time_float": 1793158022.506971,
+    "bounty_commission_complete": true,
+    "daily_run_times": 1,
+    "weekly_run_times": 2
+  },
+  "earlier_failures_retained": true,
+  "shutdown_cancelled_error": true
+}
