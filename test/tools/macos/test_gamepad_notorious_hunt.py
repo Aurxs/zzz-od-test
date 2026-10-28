@@ -137,6 +137,33 @@ def test_offscreen_boss_scroll_checks_feedback_and_never_confirms_another_target
     assert 'dpad_up' in keys and 'dpad_down' in keys and 'south' not in keys
 
 
+@pytest.mark.parametrize('target', ['库萨里库', '冥宁芙·双子', '未知复合侵蚀体'])
+def test_plan_allows_freely_selected_boss(target: str) -> None:
+    from zzz_od.operation.gamepad.notorious_hunt import validate_macos_hunt_plan
+
+    plan = SimpleNamespace(category_name='恶名狩猎', mission_type_name=target, predefined_team_idx=0, plan_times=1, run_times=0)
+    assert validate_macos_hunt_plan([plan]) is None
+
+
+@pytest.mark.parametrize('category,target', [('实战模拟室', '库萨里库'), ('恶名狩猎', None)])
+def test_plan_still_rejects_wrong_category_or_missing_boss(category: str, target: str | None) -> None:
+    from zzz_od.operation.gamepad.notorious_hunt import validate_macos_hunt_plan
+
+    plan = SimpleNamespace(category_name=category, mission_type_name=target)
+    assert validate_macos_hunt_plan([plan]) is not None
+
+
+def test_unknown_boss_is_rejected_by_original_data_before_any_input() -> None:
+    from zzz_od.operation.gamepad.notorious_hunt import GamepadHuntTransport
+
+    ctx = SimpleNamespace(run_context=Mock(), controller=Mock(), compendium_service=Mock())
+    ctx.compendium_service.get_category_data.return_value = SimpleNamespace(mission_type_list=[SimpleNamespace(mission_type_name='库萨里库', alias_list=[])])
+    op = GamepadHuntTransport(ctx, '不存在的Boss')
+    op._after_round_wait = Mock()
+    assert op.open_list().is_fail
+    ctx.controller.btn_tap.assert_not_called()
+
+
 def test_period_rewards_gray_returns_without_claiming() -> None:
     """全领按钮明确置灰两帧后只按 B，避免重复消费领奖动作。"""
     from zzz_od.operation.gamepad.notorious_hunt_rewards import GamepadHuntRewards
