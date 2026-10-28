@@ -13,7 +13,7 @@ from zzz_od.operation.gamepad.lost_void import GamepadLostVoidBackToWorld, Gamep
 
 
 @pytest.mark.parametrize('highlighted', [True, False])
-@pytest.mark.parametrize('filename', ['ios_purge_focus_gap.webp', 'ios_purge_focus_notification.webp'])
+@pytest.mark.parametrize('filename', ['ios_purge_focus_gap.webp', 'ios_purge_focus_notification.webp', 'ios_purge_focus_animated_gap.webp'])
 def test_purge_card_with_arrow_gap_requires_real_border(highlighted: bool, filename: str) -> None:
     image = cv2_utils.read_image(str(Path(__file__).resolve().parents[3] / 'screens' / '迷失之地-入口-常规' / filename))
     operation = GamepadLostVoidChooseMission(SimpleNamespace(controller=Mock()), '战线肃清')
@@ -30,6 +30,19 @@ def test_purge_card_with_arrow_gap_requires_real_border(highlighted: bool, filen
         operation.ctx.controller.btn_tap.assert_called_once_with('south')
     else:
         operation.ctx.controller.btn_tap.assert_not_called()
+
+
+@pytest.mark.parametrize('edge', ['left', 'top'])
+def test_mission_focus_requires_both_horizontal_and_vertical_edges(edge: str) -> None:
+    """局部遮挡可以保留焦点，整条边缺失不能靠装饰金条补成卡片。"""
+    image = cv2_utils.read_image(str(Path(__file__).resolve().parents[3] / 'screens'
+                                    / '迷失之地-入口-常规/ios_purge_focus_animated_gap.webp'))
+    crop = image[200:880, 100:1810].copy()
+    if edge == 'left':
+        crop[95:325, 605:635] = 0
+    else:
+        crop[95:125, 605:1150] = 0
+    assert GamepadLostVoidChooseMission._find_mission_frames(crop) == []
 
 
 def test_back_from_mission_detail_returns_once_before_next_frame() -> None:
