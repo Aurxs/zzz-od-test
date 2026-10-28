@@ -136,3 +136,42 @@ def test_card_quantity_is_not_dialog_option(monkeypatch: pytest.MonkeyPatch, is_
     assert (result is not None) == is_dialog
     assert factory.call_count == int(is_dialog)
     operation.ctx.controller.btn_tap.assert_not_called()
+
+
+@pytest.mark.parametrize('variant', ['valid', 'no_text', 'no_prompt', 'not_black'])
+def test_event_narration_requires_text_prompt_and_black_background(variant: str) -> None:
+    """中央旁白只在文字、A和黑底同时存在时推进，普通加载不按键。"""
+    operation, _ = _short_dialog_operation('')
+    frame = cv2_utils.read_image(str(Path(__file__).resolve().parents[3] / 'screens'
+                                    / '迷失之地-大世界/ios_narration_continue.webp'))
+    if variant == 'no_prompt':
+        frame[547:607, 931:991] = 0
+    elif variant == 'not_black':
+        frame[:400] = 255
+    text_rect = Rect(320, 450, 1600, 550)
+    operation.ctx.screen_loader.get_area = lambda screen, name: (
+        SimpleNamespace(rect=text_rect) if name == '手柄-事件文字' else None
+    )
+    matches = MatchResultList()
+    matches.append(MatchResult(1, 296, 37, 688, 46))
+    operation.ctx.ocr.crop_and_run_ocr = lambda image, area: (
+        {} if variant == 'no_text' else {'不依赖事件原文': matches}
+    )
+    matcher = TemplateMatcher(TemplateLoader())
+    operation.round_by_find_area = lambda image, screen, name: SimpleNamespace(
+        is_success=name == '手柄-事件继续' and matcher.match_template(
+            image[547:607, 931:991], 'ios_gamepad', 'lost_void_narration_a', threshold=0.9,
+        ).max is not None,
+    )
+    result = operation.try_talk(frame)
+    if variant == 'valid':
+        assert result == '推进局内对话：事件文字'
+        assert operation.try_talk(frame) == '等待对话推进后的新帧'
+        operation.last_screenshot = frame
+        operation._try_challenge_dialog = Mock(return_value=None)
+        operation.round_retry = Mock(return_value='误当加载')
+        assert operation.wait_loading() == '等待对话推进后的新帧'
+        operation.ctx.controller.btn_tap.assert_called_once_with('south')
+    else:
+        assert result is None
+        operation.ctx.controller.btn_tap.assert_not_called()
