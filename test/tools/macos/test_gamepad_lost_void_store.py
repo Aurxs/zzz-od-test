@@ -21,7 +21,7 @@ from zzz_od.operation.gamepad.lost_void_store import (
 )
 
 
-def currency_operation() -> GamepadLostVoidBangbooStore:
+def currency_operation(filename: str = 'ios_gold_refresh_exhausted.webp') -> GamepadLostVoidBangbooStore:
     from one_dragon.base.matcher.template_matcher import TemplateMatcher
     from one_dragon.base.screen.profile_screen_context import ProfileScreenContext
     from one_dragon.base.screen.template_loader import TemplateLoader
@@ -33,13 +33,14 @@ def currency_operation() -> GamepadLostVoidBangbooStore:
     ctx.tm = TemplateMatcher(TemplateLoader())
     op = GamepadLostVoidBangbooStore(ctx)
     op._after_round_wait = Mock()
-    path = Path(__file__).resolve().parents[3] / 'screens' / '迷失之地-邦布商店' / 'ios_gold_refresh_exhausted.webp'
+    path = Path(__file__).resolve().parents[3] / 'screens' / '迷失之地-邦布商店' / filename
     op.last_screenshot = cv2_utils.read_image(str(path))
     return op
 
 
-def test_currency_after_refresh_exhausted_uses_goods_gold() -> None:
-    op = currency_operation()
+@pytest.mark.parametrize('filename', ['ios_gold_refresh_exhausted.webp', 'ios_gold_discount.webp'])
+def test_currency_after_refresh_exhausted_uses_goods_gold(filename: str) -> None:
+    op = currency_operation(filename)
     assert not op.round_by_find_area(op.last_screenshot, '迷失之地-邦布商店', '标识-金币').is_success
     assert op._currency_flags() == (True, False)
 
@@ -63,6 +64,37 @@ def test_currency_does_not_override_an_existing_blood_marker() -> None:
     op.round_by_find_area = Mock(side_effect=[SimpleNamespace(is_success=False), SimpleNamespace(is_success=True)])
     assert op._currency_flags() == (False, True)
     assert op.round_by_find_area.call_count == 2
+
+
+@pytest.mark.parametrize('buy_button_present', [False, True])
+def test_missing_prices_only_leave_after_two_empty_new_frames(buy_button_present: bool) -> None:
+    ctx = make_ctx()
+    ctx.lost_void.in_normal_world = Mock(return_value=False)
+    ctx.lost_void.challenge_config = SimpleNamespace(store_gold=True, store_blood=False)
+    op = GamepadLostVoidBangbooStore(ctx)
+    op.last_screenshot = object()
+    op.last_screenshot_time = 1
+    op._after_round_wait = Mock()
+    op.save_screenshot = Mock()
+    op.check_and_update_current_screen = Mock(return_value='迷失之地-邦布商店')
+    op._currency_flags = Mock(return_value=(False, False))
+    goods = [SimpleNamespace(store_buy_rect=None, store_price=None) for _ in range(4)]
+    if buy_button_present:
+        goods[0].store_buy_rect = Rect(100, 780, 300, 840)
+    op._goods = Mock(return_value=(goods, []))
+    op._leave = Mock(return_value=op.round_success('无可购项返回'))
+    first = op.buy()
+    if buy_button_present:
+        assert first.is_fail
+        op._leave.assert_not_called()
+    else:
+        assert not first.is_fail
+        op.buy()
+        op._leave.assert_not_called()
+        op.last_screenshot_time = 2
+        assert op.buy().is_success
+        op._leave.assert_called_once()
+    ctx.controller.btn_tap.assert_not_called()
 
 
 def make_ctx() -> SimpleNamespace:
