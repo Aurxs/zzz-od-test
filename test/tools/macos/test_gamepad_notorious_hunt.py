@@ -3,6 +3,8 @@
 from types import SimpleNamespace
 from unittest.mock import Mock
 
+import pytest
+
 from zzz_od.operation.gamepad.notorious_hunt import (
     GamepadHuntPrepare,
     read_hunt_result,
@@ -80,6 +82,59 @@ def test_failed_result_never_updates_plan(monkeypatch) -> None:
     monkeypatch.setattr(notorious_hunt, 'GamepadHuntResultExit', Mock(return_value=exit_op))
     assert op.finish().is_fail
     ctx.run_context.get_config.assert_not_called()
+
+
+def test_unrewarded_prepare_keeps_zero_times_as_a_real_challenge(monkeypatch: pytest.MonkeyPatch) -> None:
+    from one_dragon.base.operation.operation_base import OperationResult
+    from zzz_od.operation.gamepad import notorious_hunt
+
+    ctx = SimpleNamespace(run_context=Mock(), lost_void=Mock())
+    plan = Mock()
+    op = notorious_hunt.GamepadNotoriousHunt(ctx, plan, unrewarded=True)
+    op._after_round_wait = Mock()
+    prepared = SimpleNamespace(left_times=0, execute=Mock(return_value=OperationResult(True, status='恶名狩猎当前编队准备就绪')))
+    factory = Mock(return_value=prepared)
+    monkeypatch.setattr(notorious_hunt, 'GamepadHuntPrepare', factory)
+    result = op.prepare()
+    assert result.is_success and result.status == '恶名狩猎当前编队准备就绪'
+    factory.assert_called_once_with(ctx, plan, unrewarded=True)
+    ctx.run_context.get_run_record.assert_not_called()
+
+
+@pytest.mark.parametrize('before,left,success', [(0, 0, True), (0, 1, False), (1, 0, False)])
+def test_unrewarded_result_never_updates_reward_record_or_plan(monkeypatch: pytest.MonkeyPatch, before: int, left: int, success: bool) -> None:
+    from zzz_od.operation.gamepad import notorious_hunt
+
+    ctx = SimpleNamespace(run_context=Mock())
+    plan = SimpleNamespace(run_times=4)
+    op = notorious_hunt.GamepadNotoriousHunt(ctx, plan, unrewarded=True)
+    op._after_round_wait = Mock()
+    op._before = before
+    op._won = True
+    result_exit = Mock()
+    result_exit.execute.return_value = SimpleNamespace(success=True, data={'won': True, 'left_times': left})
+    monkeypatch.setattr(notorious_hunt, 'GamepadHuntResultExit', Mock(return_value=result_exit))
+    assert op.finish().is_success is success
+    assert plan.run_times == 4
+    ctx.run_context.get_config.assert_not_called()
+    ctx.run_context.get_run_record.assert_not_called()
+
+
+def test_offscreen_boss_scroll_checks_feedback_and_never_confirms_another_target() -> None:
+    from zzz_od.operation.gamepad.notorious_hunt import GamepadHuntTransport
+
+    ctx = SimpleNamespace(run_context=Mock(), controller=Mock())
+    op = GamepadHuntTransport(ctx, '冥宁芙·双子')
+    op._after_round_wait = Mock()
+    op.save_screenshot = Mock()
+    for _ in range(5):
+        result = op._scroll_missing_target(200, ('库萨里库',))
+    assert not result.is_fail and op._scan_direction == 'down'
+    for _ in range(4):
+        result = op._scroll_missing_target(200, ('库萨里库',))
+    assert result.is_fail
+    keys = [call.args[0] for call in ctx.controller.btn_tap.call_args_list]
+    assert 'dpad_up' in keys and 'dpad_down' in keys and 'south' not in keys
 
 
 def test_period_rewards_gray_returns_without_claiming() -> None:

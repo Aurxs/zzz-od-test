@@ -1,0 +1,39 @@
+{
+  "protected_hashes_match": {
+    "config/02/one_dragon/notorious_hunt.yml": true,
+    "config/02/app_run_record/notorious_hunt.yml": true,
+    "config/02/team.yml": true,
+    "config/02/one_dragon/_group.yml": true,
+    "config/model.yml": true
+  },
+  "plan_and_reward_record_unchanged": true,
+  "team_idx": 0,
+  "buff_num": 3,
+  "level": "最高可用等级",
+  "energy_spent": 0,
+  "free_rewards_claimed": false,
+  "before_mode": "OFF",
+  "after_mode": "OFF",
+  "cases": [
+    {
+      "boss": "冥宁芙·双子",
+      "operation_start": "09:08:18",
+      "operation_end": "09:10:24",
+      "won": true,
+      "rank": "S",
+      "battle_seconds": 46,
+      "left_times_before": 0,
+      "left_times_after": 0
+    },
+    {
+      "boss": "未知复合侵蚀体",
+      "operation_start": "09:16:40",
+      "operation_end": "09:19:10",
+      "won": true,
+      "rank": "S",
+      "battle_seconds": 74,
+      "left_times_before": 0,
+      "left_times_after": 0
+    }
+  ]
+}
