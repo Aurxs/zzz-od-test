@@ -19,6 +19,38 @@ from one_dragon.utils import cv2_utils
 from zzz_od.operation.gamepad.dialog import GamepadChooseDialogOption
 
 
+@pytest.mark.parametrize('target,observed,use_local,accepted', [
+    ('我是独立调查员.', '我是独立调查员…', True, True),
+    ('我是独立调查员…', '我是独立调查员..', True, True),
+    ('我是独立调查员.', '我是独立调查员…', False, False),
+    ('我是独立调查员.', '我不是独立调查员…', True, False),
+])
+def test_local_dialog_tolerates_only_trailing_dots(
+    target: str, observed: str, use_local: bool, accepted: bool,
+) -> None:
+    """末尾句点漂移可确认同一正文，其他任务和不同正文不放宽。"""
+    from zzz_od.operation.gamepad.lost_void_run_level import GamepadLostVoidChooseDialogOption
+
+    frame = cv2_utils.read_image(str(Path(__file__).resolve().parents[3] / 'screens'
+                                    / '迷失之地-大世界/ios_dialog_ellipsis.webp'))
+    matches = MatchResultList()
+    matches.append(MatchResult(1, 142, 165, 179, 24))
+    ctx = SimpleNamespace(
+        controller=Mock(), tm=TemplateMatcher(TemplateLoader()),
+        screen_loader=SimpleNamespace(get_area=Mock(return_value=SimpleNamespace(rect=Rect(1340, 490, 1920, 815)))),
+        ocr=SimpleNamespace(crop_and_run_ocr=Mock(return_value={observed: matches})),
+    )
+    cls = GamepadLostVoidChooseDialogOption if use_local else GamepadChooseDialogOption
+    operation = cls(ctx, target, prompt_threshold=0.8)
+    operation.last_screenshot = frame
+    operation.screenshot = Mock()
+    operation._save = Mock(return_value=True)
+    operation._after_round_wait = Mock()
+    result = operation.choose_option()
+    assert result.is_fail != accepted
+    assert ctx.controller.btn_tap.call_count == int(accepted)
+
+
 @pytest.mark.parametrize('option', ['我没有遇见过师父', '好'])
 def test_local_prompt_threshold_keeps_highlight_and_same_row_required(option: str) -> None:
     path = Path(__file__).resolve().parents[3] / 'screens' / '迷失之地-大世界' / 'ios_talk_option_a.webp'
@@ -109,7 +141,7 @@ def test_dialogue_needs_panel_and_prompt_and_stops_unchanged_page(monkeypatch: p
 @pytest.mark.parametrize('is_dialog', [False, True])
 def test_card_quantity_is_not_dialog_option(monkeypatch: pytest.MonkeyPatch, is_dialog: bool) -> None:
     """实拍黄色数量不能抢占鸣徽流程，带同行A的真实对话仍能进入选择。"""
-    from zzz_od.operation.gamepad import dialog
+    from zzz_od.operation.gamepad import lost_void_run_level
 
     operation, _ = _short_dialog_operation('')
     screens = Path(__file__).resolve().parents[3] / 'screens'
@@ -131,7 +163,7 @@ def test_card_quantity_is_not_dialog_option(monkeypatch: pytest.MonkeyPatch, is_
     component = Mock()
     component.execute.return_value = SimpleNamespace(success=True)
     factory = Mock(return_value=component)
-    monkeypatch.setattr(dialog, 'GamepadChooseDialogOption', factory)
+    monkeypatch.setattr(lost_void_run_level, 'GamepadLostVoidChooseDialogOption', factory)
     result = operation.try_talk(frame)
     assert (result is not None) == is_dialog
     assert factory.call_count == int(is_dialog)

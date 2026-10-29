@@ -317,8 +317,72 @@ def test_colored_gate_transition_keeps_next_region_after_fast_load() -> None:
     operation.round_success = Mock(return_value='next')
     assert operation.handle_interact() == 'next'
     operation.round_success.assert_called_with(operation.STATUS_NEXT_LEVEL,data='偶遇事件')
+
     operation._previous_node = None
     operation._previous_round_result = SimpleNamespace(status=operation.STATUS_NEXT_LEVEL,data='偶遇事件')
     operation.ctx.lost_void.in_normal_world.return_value = True
     assert operation.after_interact() == 'next'
     operation.round_success.assert_called_with(operation.STATUS_NEXT_LEVEL,data='偶遇事件')
+
+
+def idle_battle_operation() -> GamepadLostVoidRunLevel:
+    """仅构造空闲恢复所需状态，不启动线程或输入。"""
+    operation = object.__new__(GamepadLostVoidRunLevel)
+    operation._battle_active = True
+    operation._battle_idle_since = 100
+    operation._battle_idle_action_time = 90
+    operation.last_screenshot_time = 109
+    operation.last_screenshot = object()
+    operation.ctx = SimpleNamespace(
+        controller=SimpleNamespace(battle_input_blocked=False, turn_by_distance=Mock()),
+        run_context=SimpleNamespace(is_context_running=True),
+        macos_config=SimpleNamespace(turn_distance_per_second=771.9),
+        auto_battle_context=SimpleNamespace(
+            is_normal_attack_btn_available=Mock(return_value=True),
+            auto_op=SimpleNamespace(is_running=True, auto_turn_interval=0,
+                                    running_executor=None, last_trigger_time={1: 90}),
+        ),
+    )
+    return operation
+
+
+def test_idle_battle_turns_only_after_quiet_interval_and_resets_on_action(monkeypatch: pytest.MonkeyPatch) -> None:
+    from zzz_od.operation.gamepad import lost_void_run_level as module
+
+    operation = idle_battle_operation()
+    now = [107.0]
+    monkeypatch.setattr(module.time, 'time', lambda: now[0])
+    operation.last_screenshot_time = 107
+    operation._recover_idle_battle()
+    operation.ctx.controller.turn_by_distance.assert_not_called()
+    now[0] = operation.last_screenshot_time = 109
+    operation._recover_idle_battle()
+    operation._recover_idle_battle()
+    operation.ctx.controller.turn_by_distance.assert_called_once_with(300)
+    now[0] = operation.last_screenshot_time = 117
+    operation.ctx.auto_battle_context.auto_op.last_trigger_time[1] = 116
+    operation._recover_idle_battle()
+    assert operation._battle_idle_since == 117
+    operation.ctx.controller.turn_by_distance.assert_called_once()
+
+
+@pytest.mark.parametrize('guard', ['executor', 'paused', 'blocked', 'stale', 'menu', 'periodic'])
+def test_idle_battle_respects_active_action_and_input_guards(monkeypatch: pytest.MonkeyPatch, guard: str) -> None:
+    from zzz_od.operation.gamepad import lost_void_run_level as module
+
+    operation = idle_battle_operation()
+    monkeypatch.setattr(module.time, 'time', lambda: 109)
+    if guard == 'executor':
+        operation.ctx.auto_battle_context.auto_op.running_executor = SimpleNamespace(running=True)
+    elif guard == 'paused':
+        operation.ctx.run_context.is_context_running = False
+    elif guard == 'blocked':
+        operation.ctx.controller.battle_input_blocked = True
+    elif guard == 'stale':
+        operation.last_screenshot_time = 100
+    elif guard == 'menu':
+        operation.ctx.auto_battle_context.is_normal_attack_btn_available.return_value = False
+    else:
+        operation.ctx.auto_battle_context.auto_op.auto_turn_interval = 2
+    operation._recover_idle_battle()
+    operation.ctx.controller.turn_by_distance.assert_not_called()
