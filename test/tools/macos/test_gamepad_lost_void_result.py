@@ -1,15 +1,17 @@
 """道中核对完成关卡，最终核对胜利标识与真实结晶增量。"""
 
-from types import SimpleNamespace
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import Mock
 
 import numpy as np
 import pytest
 
-from one_dragon.base.matcher.match_result import MatchResult,MatchResultList
+from one_dragon.base.matcher.match_result import MatchResult, MatchResultList
+from zzz_od.application.hollow_zero.lost_void.operation.lost_void_run_level import (
+    LostVoidRunLevel,
+)
 from zzz_od.operation.gamepad.lost_void_result import GamepadLostVoidBattleResult
-from zzz_od.application.hollow_zero.lost_void.operation.lost_void_run_level import LostVoidRunLevel
 
 
 def words(*texts: str) -> dict[str,MatchResultList]:
@@ -22,7 +24,9 @@ def words(*texts: str) -> dict[str,MatchResultList]:
 
 
 def make_operation(objective: dict,actions: dict) -> GamepadLostVoidBattleResult:
-    op=GamepadLostVoidBattleResult(SimpleNamespace(controller=Mock()))
+    ocr=Mock()
+    ocr.run_ocr.return_value={}
+    op=GamepadLostVoidBattleResult(SimpleNamespace(controller=Mock(),ocr=ocr))
     op.last_screenshot=np.zeros((1080,1920,3),dtype=np.uint8)
     op.round_by_find_area=Mock(return_value=SimpleNamespace(is_success=True))
     op.navigation._read_area=lambda screen,name:(op.last_screenshot,objective if name=='手柄-完成关卡' else actions)
@@ -49,6 +53,33 @@ def test_missing_completion_objective_does_not_confirm_or_count() -> None:
     op=make_operation(words('完成关卡','0/1'),words('B','完成'))
     assert not op.confirm().is_success
     op.ctx.controller.btn_tap.assert_not_called()
+
+
+@pytest.mark.parametrize(('icon','label','key'), [('A','确定','south'),('B','完成','east')])
+@pytest.mark.parametrize('correct_icon', [True,False])
+def test_small_result_icon_is_rechecked_next_to_label(
+    icon: str,label: str,key: str,correct_icon: bool,
+) -> None:
+    """底栏首次漏字母时放大复查；图标不符仍不能确认或计数。"""
+    actions=words('占位',label)
+    del actions['占位']
+    op=make_operation(words('完成关卡','1/1'),actions)
+    op.ctx.ocr.run_ocr.return_value=words(icon if correct_icon else 'X')
+    assert not op.confirm().is_success
+    op.ctx.ocr.run_ocr.assert_called_once()
+    if correct_icon:
+        op.ctx.controller.btn_tap.assert_called_once_with(key)
+    else:
+        op.ctx.controller.btn_tap.assert_not_called()
+
+
+@pytest.mark.parametrize(('text','key'), [('A确定','south'),('B完成','east')])
+def test_result_accepts_merged_button_and_label(text: str,key: str) -> None:
+    """字母和说明被OCR合并到同一个框时仍能确认。"""
+    op=make_operation(words('完成关卡','1/1'),words(text))
+    assert not op.confirm().is_success
+    op.ctx.controller.btn_tap.assert_called_once_with(key)
+    op.ctx.ocr.run_ocr.assert_not_called()
 
 
 @pytest.mark.parametrize(('completion_banner','s_grade','gain','accepted'),[
