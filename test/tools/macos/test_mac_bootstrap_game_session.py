@@ -456,3 +456,42 @@ def test_real_touch_compendium_close_template() -> None:
         part = cv2_utils.crop_image_only(screen, Rect(1775, 210, 1855, 290))
         matches = matcher.match_template(part, 'ios_gamepad', 'bootstrap_touch_compendium_close', threshold=0.9)
         assert (matches.max is not None) is expected
+
+
+def test_interrupted_challenge_selects_cancel_before_confirming(
+    session: SimpleNamespace, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """旧挑战提示只在取消项实际高亮后确认，不能继续默认确认项。"""
+    op = session.operation
+    cancel, confirm = Rect(100, 610, 180, 640), Rect(250, 610, 330, 640)
+    focus = [confirm]
+    monkeypatch.setattr(op, '_text_rect', lambda area, text: {'取消': cancel, '确认': confirm}.get(text))
+    monkeypatch.setattr(op, '_area_found', lambda name: name == '登录后-未完成挑战选择')
+    monkeypatch.setattr(op, 'save_screenshot', Mock())
+    monkeypatch.setattr('zzz_od.operation.enter_game.mac_bootstrap_game_session.has_filled_highlight',
+                        lambda image, rect, color: rect == focus[0])
+    session.texts = {'登录后-未完成挑战说明': '当前正在处理：战线肃清',
+                     '登录后-未完成挑战按钮': '取消 确认 选择'}
+    op.last_screenshot = np.zeros((1080, 1920, 3), dtype=np.uint8)
+    assert not op._prepare_interrupted_challenge().is_fail
+    session.controller.btn_tap.assert_called_once_with('dpad_left')
+    focus[0] = cancel
+    session.now += 1
+    op._prepare_interrupted_challenge()
+    op._prepare_interrupted_challenge()
+    assert session.controller.btn_tap.call_args_list == [call('dpad_left'), call('south')]
+    session.pointer.click.assert_not_called()
+
+
+@pytest.mark.parametrize('body, prompt', [(False, True), (True, False)])
+def test_interrupted_challenge_needs_body_and_selection_prompt(
+    session: SimpleNamespace, monkeypatch: pytest.MonkeyPatch, body: bool, prompt: bool,
+) -> None:
+    """缺少旧挑战说明或手柄A图标时，保留未知弹窗而不发输入。"""
+    op = session.operation
+    monkeypatch.setattr(op, '_text_rect', lambda area, text: Rect(100, 600, 200, 650))
+    monkeypatch.setattr(op, '_area_found', lambda name: prompt)
+    session.texts = {'登录后-未完成挑战说明': '当前正在处理' if body else '',
+                     '登录后-未完成挑战按钮': '取消 确认 选择'}
+    assert op._prepare_interrupted_challenge() is None
+    session.controller.btn_tap.assert_not_called()
