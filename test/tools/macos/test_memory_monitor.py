@@ -44,13 +44,17 @@ def test_details_do_not_load_models_and_deduplicate_images() -> None:
         controller=SimpleNamespace(screenshot_history=[SimpleNamespace(image=image)] * 10),
         auto_battle_context=SimpleNamespace(dodge_context=SimpleNamespace(_flash_model=None), _op_cache={}),
         ocr=SimpleNamespace(_model=None), current_instance_idx=2,
-        run_context=SimpleNamespace(current_application=None, current_app_id=None),
+        run_context=SimpleNamespace(current_application=None, current_app_id=None,
+                                    event_bus=SimpleNamespace(callbacks={'暂停': [object(), object()]})),
+        callbacks={'业务': [object()]},
     )
     result = memory.context_memory_details(ctx)
     assert result['screenshot_history_count'] == 10
     assert result['screenshot_history_bytes'] == image.nbytes
     assert result['lost_void_history_bytes'] == 0
     assert result['session_ids'] == {'lost_void': None, 'flash': None, 'ocr_det': None, 'ocr_rec': None}
+    assert result['run_event_listener_count'] == 2
+    assert result['context_event_listener_count'] == 1
     assert 'lost_void' not in ctx.__dict__
 
 
