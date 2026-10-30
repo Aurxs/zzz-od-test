@@ -181,6 +181,45 @@ def test_cold_start_connects_neutral_before_launch_and_only_resumes_after_frame(
     assert controller._input_paused
 
 
+@pytest.mark.parametrize('capture_state', ['blank_then_frame', 'blank_until_timeout', 'stopped'])
+def test_initial_capture_waits_only_while_stream_is_running(
+    controller: zzz_macos_controller.ZMacController,
+    monkeypatch: pytest.MonkeyPatch,
+    capture_state: str,
+) -> None:
+    """首帧短暂空白可恢复，持续无帧或流停止时仍不允许输入。"""
+    capture = controller.window_capture
+    frame = capture.latest_frame.return_value
+    capture.latest_frame.return_value = None
+    capture.last_error = '窗口暂时没有可用画面，采集状态: 3'
+    capture.diagnostics.return_value = SimpleNamespace(running=capture_state != 'stopped')
+    monkeypatch.setattr(controller.game_launcher, 'ensure_window', lambda: capture.window)
+    monkeypatch.setattr(controller, '_start_frame_monitor', Mock())
+    now = [0.0]
+
+    def wait_for_sample(seconds: float) -> None:
+        """推进假时钟；有效帧到达前输入始终保持暂停。"""
+        controller.gamepad.resume.assert_not_called()
+        assert controller._input_paused
+        now[0] += seconds
+        if capture_state == 'blank_then_frame':
+            capture.latest_frame.return_value = frame
+            capture.last_error = None
+
+    monkeypatch.setattr(zzz_macos_controller.time, 'monotonic', lambda: now[0])
+    monkeypatch.setattr(zzz_macos_controller.time, 'sleep', wait_for_sample)
+
+    assert controller.init_before_context_run() is (capture_state == 'blank_then_frame')
+    if capture_state == 'blank_then_frame':
+        assert now[0] > 0
+        controller.gamepad.resume.assert_called_once()
+    else:
+        controller.gamepad.resume.assert_not_called()
+        assert controller._input_paused
+        assert capture.stop.call_count == 2
+        assert now[0] >= 2 if capture_state == 'blank_until_timeout' else now[0] == 0
+
+
 def test_screenshot_preserves_capture_time_mask_and_bounded_history(
     controller: zzz_macos_controller.ZMacController,
 ) -> None:
