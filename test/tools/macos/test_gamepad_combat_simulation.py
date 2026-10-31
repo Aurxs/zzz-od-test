@@ -291,6 +291,38 @@ def test_battle_recovery_requires_explicit_mode_and_hud(operation: GamepadCombat
     operation.ctx.controller.btn_tap.assert_not_called()
 
 
+@pytest.mark.parametrize('raises', [False, True])
+def test_simulation_scopes_existing_attack_inner_variant(
+    monkeypatch: pytest.MonkeyPatch, raises: bool,
+) -> None:
+    """复用已验证的发光按钮内圈模板，正常与异常退出均恢复识别范围。"""
+    from zzz_od.operation.gamepad.gamepad_operation import GamepadOperation
+
+    operation = object.__new__(GamepadCombatSimulation)
+    previous = (('custom', 'existing'),)
+    battle = SimpleNamespace(normal_attack_template_variants=previous)
+    operation.ctx = SimpleNamespace(auto_battle_context=battle)
+    operation._stop_battle = Mock()
+    result = OperationResult(True)
+
+    def execute_original(_: GamepadOperation) -> OperationResult:
+        assert battle.normal_attack_template_variants == (
+            *previous, ('ios_gamepad', 'lost_void_attack_inner'),
+        )
+        if raises:
+            raise RuntimeError('模拟退出')
+        return result
+
+    monkeypatch.setattr(GamepadOperation, 'execute', execute_original)
+    if raises:
+        with pytest.raises(RuntimeError, match='模拟退出'):
+            operation.execute()
+    else:
+        assert operation.execute() is result
+    operation._stop_battle.assert_called_once()
+    assert battle.normal_attack_template_variants == previous
+
+
 @pytest.mark.parametrize('required', [20, 60, 100])
 def test_default_binds_actual_cost_and_rejects_changes(operation: GamepadCombatSimulation, required: int) -> None:
     """默认数量绑定当前方案，卡数未知或后续变化均不能静默通过。"""

@@ -57,6 +57,21 @@ def test_highlighted_target_confirms_once_without_claiming_destination(
     operation.screenshot.assert_called_once_with()
 
 
+@pytest.mark.parametrize('requested, observed', [
+    ('请来一杯汀曼特调!', '请来一杯汀曼特调！'),
+    ('请来一杯汀曼特调！', '请来一杯汀曼特调!'),
+])
+def test_fullwidth_punctuation_keeps_exact_dialog_meaning(
+    operation: GamepadChooseDialogOption, requested: str, observed: str,
+) -> None:
+    """OCR 全角半角标点变化不应使同一完整选项被拒绝。"""
+    results = operation.ctx.ocr.crop_and_run_ocr.return_value
+    results[observed] = results.pop('查看经营状况')
+    operation.option = requested
+    assert operation.choose_option().status == '等待对话选项关闭'
+    operation.ctx.controller.btn_tap.assert_called_once_with('south')
+
+
 def test_unselected_visible_target_moves_only_once_per_frame(
     operation: GamepadChooseDialogOption,
 ) -> None:

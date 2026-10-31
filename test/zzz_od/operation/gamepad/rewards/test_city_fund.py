@@ -130,6 +130,54 @@ def test_menu_animation_waits_without_repeating_input(
     operation.ctx.controller.btn_tap.assert_not_called()
 
 
+def test_free_intro_opens_once_and_does_not_confirm_unknown_followup(
+    operation: GamepadCityFund, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """完整介绍页三组提示才按一次 Start，后续未知弹窗不猜确认。"""
+    monkeypatch.setattr(operation, '_city_visible', lambda: False)
+    monkeypatch.setattr(operation, '_known_reward_visible', lambda: False)
+    monkeypatch.setattr(operation, '_menu_visible', lambda: False)
+    words = {'RS': None, '奖励详情': None, '开启丽都城募': None}
+    monkeypatch.setattr(operation, '_read_area', lambda *_: (None, words))
+    assert operation._intro_open_visible()
+    assert not operation.open_city().is_fail
+    assert not operation.open_city().is_fail
+    operation.ctx.controller.btn_tap.assert_called_once_with('start')
+    words.clear()
+    operation.last_screenshot = None
+    operation.node_retry_times = 16
+    assert operation.open_city().is_fail
+    operation.ctx.controller.btn_tap.assert_called_once_with('start')
+
+
+@pytest.mark.parametrize('words', [
+    ('RS', '奖励详情', '解锁丽都城募'),
+    ('RS', '奖励详情', '开启丽都城募', '¥68'),
+    ('RS', '奖励详情', '开启丽都城募', '购买'),
+    ('RS', '奖励详情', '开启丽都城募', '确认'),
+    ('奖励详情', '开启丽都城募'),
+])
+def test_intro_does_not_accept_purchase_or_partial_prompt(
+    operation: GamepadCityFund, monkeypatch: pytest.MonkeyPatch, words: tuple[str, ...],
+) -> None:
+    """价格、购买、确认或缺少提示均不作为免费介绍入口。"""
+    monkeypatch.setattr(operation, '_read_area', lambda *_: (None, dict.fromkeys(words)))
+    assert not operation._intro_open_visible()
+    operation.ctx.controller.btn_tap.assert_not_called()
+
+
+def test_intro_screenshot_failure_blocks_opening(
+    operation: GamepadCityFund, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """进入前无法保留证据时，不发送唯一开启动作。"""
+    monkeypatch.setattr(operation, '_city_visible', lambda: False)
+    monkeypatch.setattr(operation, '_known_reward_visible', lambda: False)
+    monkeypatch.setattr(operation, '_intro_open_visible', lambda: True)
+    monkeypatch.setattr(operation, '_save_evidence', lambda *_: '')
+    assert operation.open_city().is_fail
+    operation.ctx.controller.btn_tap.assert_not_called()
+
+
 def test_actual_claimed_tasks_and_level_reward(operation: GamepadCityFund) -> None:
     """本次生产领取后的实拍：四条已领、等级奖励确认后 X 消失。"""
     set_frame(operation, 'ios_tasks_today_after')

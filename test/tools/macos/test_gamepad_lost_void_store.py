@@ -4,6 +4,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
 
+import numpy as np
 import pytest
 
 from one_dragon.base.geometry.rectangle import Rect
@@ -42,6 +43,18 @@ def currency_operation(filename: str = 'ios_gold_refresh_exhausted.webp') -> Gam
 def test_currency_after_refresh_exhausted_uses_goods_gold(filename: str) -> None:
     op = currency_operation(filename)
     assert not op.round_by_find_area(op.last_screenshot, '迷失之地-邦布商店', '标识-金币').is_success
+    assert op._currency_flags() == (True, False)
+
+
+def test_focused_gold_uses_public_ui_template_without_private_screen() -> None:
+    """仅商品价格区的公共金币小图可放行，空白画面仍拒绝未知货币。"""
+    op = currency_operation()
+    op.last_screenshot = np.full((1080, 1920, 3), 17, dtype=np.uint8)
+    assert op._currency_flags() == (False, False)
+    template = op.ctx.tm.template_loader.get_template('lost_void', 'ios_store_goods_gold_focused').raw
+    rect = op.ctx.screen_loader.get_area('迷失之地-邦布商店', '手柄-商品金币-2').rect
+    height, width = template.shape[:2]
+    op.last_screenshot[rect.y1 + 2:rect.y1 + 2 + height, rect.x1 + 4:rect.x1 + 4 + width] = template
     assert op._currency_flags() == (True, False)
 
 

@@ -198,6 +198,25 @@ def test_result_can_be_confirmed_again_after_reward(
     assert operation.collect().is_success
 
 
+def test_result_animation_waits_for_enabled_confirm(operation: GamepadDailySignIn) -> None:
+    """结果动画的灰色提示不能消耗唯一确认，亮起后才发送一次。"""
+    operation._gesture_count = 12
+    set_frame(operation, 'ios_trigram_result')
+    rect = AREAS['手柄-结果确认'][0]
+    image = operation.last_screenshot
+    image[rect.y1:rect.y2, rect.x1:rect.x2] = (
+        image[rect.y1:rect.y2, rect.x1:rect.x2].astype(np.float32) * 0.3
+    ).astype(np.uint8)
+
+    assert not operation.collect().is_fail
+    assert not operation._result_confirm_sent
+    operation.ctx.controller.btn_tap.assert_not_called()
+    set_frame(operation, 'ios_trigram_result')
+    assert not operation.collect().is_fail
+    assert not operation.collect().is_fail
+    operation.ctx.controller.btn_tap.assert_called_once_with('south')
+
+
 @pytest.mark.parametrize('stop_flag', ['is_context_pause', 'is_context_stop'])
 def test_rotation_checks_pause_or_stop_between_segments(
     operation: GamepadDailySignIn, stop_flag: str,

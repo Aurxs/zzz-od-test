@@ -14,6 +14,7 @@ import yaml
 from one_dragon.base.geometry.rectangle import Rect
 from one_dragon.base.matcher.match_result import MatchResult, MatchResultList
 from one_dragon.base.matcher.template_matcher import TemplateMatcher
+from one_dragon.base.operation.operation_round_result import OperationRoundResultEnum
 from one_dragon.base.screen.screen_info import ScreenInfo
 from one_dragon.base.screen.template_loader import TemplateLoader
 from one_dragon.utils import cv2_utils
@@ -202,6 +203,44 @@ def test_cold_start_waits_at_most_sixty_seconds_without_input(session: SimpleNam
     result = session.operation.prepare_session()
     assert result.is_fail
     assert '等待60秒' in result.status
+    session.pointer.click.assert_not_called()
+    session.controller.btn_tap.assert_not_called()
+
+
+def test_cold_start_transient_capture_uses_existing_startup_deadline(session: SimpleNamespace) -> None:
+    """已绑定但暂时无帧时沿用冷启动等待，六十秒上限不重置。"""
+    session.controller.started_game_this_run = True
+    session.controller.window_capture = SimpleNamespace(
+        diagnostics=lambda: SimpleNamespace(running=True),
+    )
+    session.operation.ctx.is_game_window_ready = False
+    session.operation.handle_init()
+
+    assert session.operation.prepare_session().result == OperationRoundResultEnum.WAIT
+    session.now = 159.9
+    assert session.operation.prepare_session().result == OperationRoundResultEnum.WAIT
+    session.now = 160.0
+    assert session.operation.prepare_session().is_fail
+    session.controller.screenshot.assert_not_called()
+    session.pointer.click.assert_not_called()
+    session.controller.btn_tap.assert_not_called()
+
+
+@pytest.mark.parametrize('capture_running, connected', [(False, True), (True, False)])
+def test_cold_start_stream_stop_or_disconnect_is_not_a_transient(
+    session: SimpleNamespace, capture_running: bool, connected: bool,
+) -> None:
+    """采集终止和连接断开仍立即停止，不能借冷启动等待放行。"""
+    session.controller.started_game_this_run = True
+    session.controller.gamepad.is_connected = connected
+    session.controller.window_capture = SimpleNamespace(
+        diagnostics=lambda: SimpleNamespace(running=capture_running),
+    )
+    session.operation.ctx.is_game_window_ready = False
+    session.operation.handle_init()
+
+    assert session.operation.prepare_session().is_fail
+    session.controller.screenshot.assert_not_called()
     session.pointer.click.assert_not_called()
     session.controller.btn_tap.assert_not_called()
 
