@@ -104,3 +104,27 @@ def test_unknown_task_and_prompt_remain_pending(
     assert operation.claim_special_reward().is_success
     assert operation.claim_special_reward().is_success
     operation.ctx.controller.btn_tap.assert_called_once_with('west')
+
+
+def test_post_claim_bingo_animation_waits_without_input_and_stays_bounded(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """已确认领取后短暂缺字只观察，稳定后继续；持续未知仍停止。"""
+    operation = GamepadRiduWeekly(SimpleNamespace(
+        controller=Mock(spec=['click', 'btn_tap']), run_context=Mock(), current_instance_idx=2,
+    ))
+    monkeypatch.setattr(operation, '_after_round_wait', Mock())
+    monkeypatch.setattr(operation, 'save_screenshot', Mock(side_effect=lambda prefix: prefix))
+    monkeypatch.setattr(operation, '_weekly_visible', Mock(return_value=True))
+    state = Mock(return_value=([2, 4, 5, 6, 7, 8, 9], [3], [], [1]))
+    monkeypatch.setattr(operation, 'grid_state', state)
+    operation._claimed_tasks = [4]
+    for _ in range(6):
+        assert operation.check_score_tasks().status == '等待周纪连线标记稳定'
+    assert operation.check_score_tasks().is_fail
+    state.return_value = ([1, 2, 4, 5, 6, 7, 8, 9], [3], [], [])
+    assert operation.check_score_tasks().is_success
+    operation.handle_init()
+    state.return_value = ([2, 4, 5, 6, 7, 8, 9], [3], [], [1])
+    assert operation.check_score_tasks().is_fail
+    operation.ctx.controller.btn_tap.assert_not_called()
