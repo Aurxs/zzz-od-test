@@ -244,3 +244,31 @@ def test_macos_failed_buff_is_not_approach_success() -> None:
     GamepadNotoriousHuntMove.move_done(op)
     op.round_fail.assert_called_once()
     op.round_success.assert_not_called()
+
+
+def test_hunt_return_retries_only_on_same_known_entry(monkeypatch):
+    """入口仍在时最多补发一次 B；未知页绝不补发。"""
+    from zzz_od.operation.gamepad import notorious_hunt
+
+    now = [100.0]
+    monkeypatch.setattr(notorious_hunt.time, 'monotonic', lambda: now[0])
+    ctx = SimpleNamespace(run_context=Mock(), controller=Mock(), screen_loader=Mock(), ocr=Mock())
+    ctx.screen_loader.get_area.return_value.rect = Mock()
+    ctx.ocr.crop_and_run_ocr.return_value = {'挑战等级': [], '剩余奖励次数:2/3': []}
+    op = notorious_hunt.GamepadHuntBackToWorld(ctx)
+    op._after_round_wait = Mock()
+    op.round_by_find_area = Mock(return_value=SimpleNamespace(is_success=False))
+    op.back()
+    now[0] += 1
+    op.back()
+    assert ctx.controller.btn_tap.call_count == 1
+    now[0] += 3
+    ctx.ocr.crop_and_run_ocr.return_value = {'未知': []}
+    op.back()
+    assert ctx.controller.btn_tap.call_count == 1
+    ctx.ocr.crop_and_run_ocr.return_value = {'挑战等级': [], '剩余奖励次数:2/3': []}
+    op.back()
+    now[0] += 4
+    op.back()
+    assert ctx.controller.btn_tap.call_count == 2
+    assert all(call.args == ('east',) for call in ctx.controller.btn_tap.call_args_list)

@@ -69,6 +69,7 @@ def session(monkeypatch: pytest.MonkeyPatch) -> SimpleNamespace:
     ctx = SimpleNamespace(
         is_game_window_ready=True, controller=controller, screen_loader=loader,
         run_context=SimpleNamespace(is_context_running=True),
+        ocr=SimpleNamespace(crop_and_run_ocr=Mock(return_value={})),
     )
     operation = MacBootstrapGameSession(ctx, pointer=pointer)
     monkeypatch.setattr(operation, '_after_round_wait', Mock())
@@ -534,3 +535,68 @@ def test_interrupted_challenge_needs_body_and_selection_prompt(
                      '登录后-未完成挑战按钮': '取消 确认 选择'}
     assert op._prepare_interrupted_challenge() is None
     session.controller.btn_tap.assert_not_called()
+
+
+def test_hunt_entry_recovers_only_with_complete_handheld_evidence(session, monkeypatch):
+    """已知入口才调用原返回流程；未知页不会发游戏输入。"""
+    from zzz_od.operation.gamepad import notorious_hunt
+
+    back = Mock()
+    back.execute.return_value = SimpleNamespace(success=True, status='已返回街区', data=None)
+    factory = Mock(return_value=back)
+    monkeypatch.setattr(notorious_hunt, 'GamepadHuntBackToWorld', factory)
+    words = ['挑战等级', '剩余奖励次数:2/3', '周期剩余时间', '相关代理人', '下一步', 'LS']
+    session.operation.ctx.ocr.crop_and_run_ocr.return_value = {word: [] for word in words}
+    show(session, 'hunt', {})
+    assert session.operation.prepare_session().is_success
+    factory.assert_called_once()
+    session.operation.ctx.ocr.crop_and_run_ocr.return_value.pop('LS')
+    factory.reset_mock()
+    show(session, 'unknown', {})
+    assert not session.operation.prepare_session().is_success
+    factory.assert_not_called()
+    session.controller.btn_tap.assert_not_called()
+
+
+def test_known_function_guide_recovers_via_original_return(session, monkeypatch):
+    from zzz_od.operation.gamepad import intel_board
+
+    back = Mock()
+    back.execute.return_value = SimpleNamespace(success=True, status='已返回', data=None)
+    factory = Mock(return_value=back)
+    monkeypatch.setattr(intel_board, 'GamepadIntelBackToWorld', factory)
+    monkeypatch.setattr(session.operation, 'round_by_find_area', lambda image, screen, area: (
+        session.operation.round_success() if screen == '功能导览' and area == '标题'
+        else session.operation.round_retry()
+    ))
+    session.operation.ctx.ocr.crop_and_run_ocr.return_value = {'商城': [], '仓库': [], '情报板': []}
+    show(session, 'guide', {})
+    assert session.operation.prepare_session().is_success
+    factory.assert_called_once()
+    session.operation.ctx.ocr.crop_and_run_ocr.return_value.pop('情报板')
+    factory.reset_mock()
+    show(session, 'guide', {})
+    assert not session.operation.prepare_session().is_success
+    factory.assert_not_called()
+
+
+def test_known_intel_filter_recovers_without_unknown_input(session, monkeypatch):
+    from zzz_od.operation.gamepad import intel_board
+
+    back = Mock()
+    back.execute.return_value = SimpleNamespace(success=True, status='已返回', data=None)
+    factory = Mock(return_value=back)
+    monkeypatch.setattr(intel_board, 'GamepadIntelBackToWorld', factory)
+    monkeypatch.setattr(session.operation, 'round_by_find_area', lambda image, screen, area: (
+        session.operation.round_success() if screen == '情报板' and area == '手柄-筛选标题'
+        else session.operation.round_retry()
+    ))
+    session.operation.ctx.ocr.crop_and_run_ocr.return_value = {'恶名狩猎': [], '专业挑战室': []}
+    show(session, 'filter', {})
+    assert session.operation.prepare_session().is_success
+    factory.assert_called_once()
+    session.operation.ctx.ocr.crop_and_run_ocr.return_value.pop('专业挑战室')
+    factory.reset_mock()
+    show(session, 'unknown', {})
+    assert not session.operation.prepare_session().is_success
+    factory.assert_not_called()
