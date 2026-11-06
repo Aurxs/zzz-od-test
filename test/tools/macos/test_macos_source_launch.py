@@ -38,19 +38,24 @@ def test_macos_restart_uses_current_python_and_source_module(
     version.assert_not_called()
 
 
-def test_macos_resource_checks_skip_launcher_and_keep_models(
+def test_macos_resource_checks_skip_launcher_and_keep_models_and_plugins(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """没有 Windows 更新服务时，模型检查仍注册并调用原模型检查方法。"""
+    """没有 Windows 更新服务时，模型与插件检查仍注册并调用原检查方法。"""
     monkeypatch.setattr(resource_update_coordinator, 'sys', SimpleNamespace(platform='darwin'))
     needs_models = Mock(return_value=True)
-    ctx = SimpleNamespace(model_config=SimpleNamespace(needs_model_download=needs_models))
+    ctx = SimpleNamespace(
+        model_config=SimpleNamespace(needs_model_download=needs_models),
+        env_config=SimpleNamespace(plugin_update_notify=True),
+        factory_manager=SimpleNamespace(third_party_plugins=[]),
+    )
 
     coordinator = resource_update_coordinator.ResourceUpdateCoordinator(
         ctx=ctx, queue=Mock(), window=Mock(), show_queue_added_tip=Mock(),
     )
 
-    assert set(coordinator._resource_checks) == {'project_models'}
-    assert set(coordinator._check_runners) == {'project_models'}
+    assert set(coordinator._resource_checks) == {'project_models', 'plugins'}
+    assert set(coordinator._check_runners) == {'project_models', 'plugins'}
     assert coordinator._resource_checks['project_models'].check_update() is True
+    assert coordinator._resource_checks['plugins'].check_update() is False
     needs_models.assert_called_once_with()
