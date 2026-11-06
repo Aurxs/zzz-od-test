@@ -42,3 +42,21 @@ def test_unknown_or_missing_frames_never_retry_menu_input() -> None:
     operation.last_screenshot = None
     operation.enter_collections()
     assert operation.ctx.controller.click.call_count == 1
+
+
+def test_collection_tabs_must_close_even_when_background_hud_matches() -> None:
+    operation = priority_operation()
+    operation._closed = False
+    operation.ctx.lost_void.priority_updated = False
+    operation.navigation._read_area.return_value = (object(), {})
+    operation.navigation._text_rect = Mock(return_value=object())
+    operation.round_success = Mock(return_value='done')
+
+    assert operation.close_menu() == 'wait'
+    assert operation.close_menu() == 'wait'
+    operation.ctx.controller.btn_tap.assert_called_once_with('east')
+    assert operation.ctx.lost_void.priority_updated is False
+
+    operation.navigation._read_area.return_value = None
+    assert operation.close_menu() == 'done'
+    assert operation.ctx.lost_void.priority_updated is True
