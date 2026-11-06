@@ -44,7 +44,7 @@ def test_import_directory_rejects_factory_only_in_nested_directory(
     result = plugin_import_service.import_directory(source_dir)
 
     assert not result.success
-    assert "插件根目录缺少 *_factory.py" in result.message
+    assert "插件根目录缺少 factory.py（或旧写法 *_factory.py）文件" in result.message
 
 
 @pytest.mark.parametrize(
@@ -82,7 +82,7 @@ def test_import_directory_rejects_missing_const(
     result = plugin_import_service.import_directory(source_dir)
 
     assert not result.success
-    assert "缺少 *_const.py" in result.message
+    assert "插件根目录缺少 const.py（或旧写法 *_const.py）文件" in result.message
 
 
 def test_import_directory_returns_failure_when_validation_has_os_error(
