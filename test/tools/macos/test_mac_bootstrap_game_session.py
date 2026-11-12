@@ -600,3 +600,40 @@ def test_known_intel_filter_recovers_without_unknown_input(session, monkeypatch)
     show(session, 'unknown', {})
     assert not session.operation.prepare_session().is_success
     factory.assert_not_called()
+
+
+@pytest.mark.parametrize('missing', ['', '累计登录7天', '邦布券', '返回', 'B'])
+def test_new_login_event_only_returns_with_full_evidence(
+    session: SimpleNamespace, missing: str,
+) -> None:
+    """新活动仅在全部证据齐全时返回一次，缺少证据不发输入。"""
+    description = '累计登录7天即可获赠邦布券'.replace(missing, '') if missing else '累计登录7天即可获赠邦布券'
+    buttons = 'A 选择 B 返回'.replace(missing, '') if missing else 'A 选择 B 返回'
+    for _ in range(2):
+        show(session, 'event', {'登录后-活动说明': description, '登录后-活动按键': buttons})
+        session.operation.prepare_session()
+    if missing:
+        session.controller.btn_tap.assert_not_called()
+    else:
+        session.controller.btn_tap.assert_called_once_with('east')
+    session.pointer.click.assert_not_called()
+
+
+def test_original_login_event_keeps_claim_path_with_bangboo_tickets(
+    session: SimpleNamespace, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """旧活动即使提到邦布券，也不被新活动的返回分支截走。"""
+    monkeypatch.setattr(session.operation, 'save_screenshot', Mock())
+    match = MatchResultList()
+    match.append(MatchResult(1, 30, 40, 60, 30))
+    monkeypatch.setattr(session.operation, '_read_area', lambda name: {'领取×01': match})
+    monkeypatch.setattr('zzz_od.operation.enter_game.mac_bootstrap_game_session.has_filled_highlight', lambda *args: True)
+    session.operation.ctx.screen_loader.get_area.side_effect = lambda *args: SimpleNamespace(
+        rect=Rect(100, 200, 300, 400), x1=100, y1=200, x2=300, y2=400,
+    )
+    show(session, 'event', {
+        '登录后-活动说明': '全新放送 累计登录7天 邦布券',
+        '登录后-活动按键': 'A 选择 B 返回',
+    })
+    session.operation.prepare_session()
+    session.controller.btn_tap.assert_called_once_with('south')
