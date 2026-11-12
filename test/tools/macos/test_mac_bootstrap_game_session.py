@@ -423,6 +423,52 @@ def test_real_login_frames_use_gamepad_first_and_enter_saved_account(
     assert session.pointer.click.call_count == (0 if already_gamepad else 4)
 
 
+@pytest.mark.parametrize('icon, text, credentials, sends', [
+    (True, True, False, 1),
+    (False, True, False, 0),
+    (True, False, False, 0),
+    (True, True, True, 0),
+])
+def test_alternate_login_icon_still_requires_login_text_and_rejects_credentials(
+    session: SimpleNamespace, monkeypatch: pytest.MonkeyPatch,
+    icon: bool, text: bool, credentials: bool, sends: int,
+) -> None:
+    """备用模板仍要求登录文字，明确凭据画面保持零输入。"""
+    op = session.operation
+    monkeypatch.setattr(op, '_area_found', lambda name: False)
+    op.ctx.tm = Mock()
+    op.ctx.tm.crop_and_match_template.return_value = SimpleNamespace(max=object() if icon else None)
+    texts = {}
+    if text:
+        texts['登录-手柄主提示'] = '进入游戏'
+    if credentials:
+        texts['登录-凭据提示'] = '输入手机号注册/登录 验证码'
+    show(session, 'unknown', texts)
+    op.prepare_session()
+    assert session.controller.btn_tap.call_count == sends
+    if sends:
+        session.controller.btn_tap.assert_called_once_with('south')
+
+
+@pytest.mark.parametrize('reward, result, succeeds', [
+    (True, False, True), (False, True, True), (False, False, False),
+])
+def test_signin_reward_resume_requires_known_page(
+    session: SimpleNamespace, monkeypatch: pytest.MonkeyPatch,
+    reward: bool, result: bool, succeeds: bool,
+) -> None:
+    """显式续接只接受已建档奖励或结果页，不发送输入。"""
+    fake = SimpleNamespace(_reward_visible=lambda: reward, _result_visible=lambda: result)
+    monkeypatch.setattr('zzz_od.operation.gamepad.signin.GamepadDailySignIn', lambda *args, **kwargs: fake)
+    session.operation.ctx.macos_resume_signin_reward = True
+    show(session, 'unknown', {})
+    outcome = session.operation.prepare_session()
+    assert outcome.is_success is succeeds
+    assert outcome.is_fail is (not succeeds)
+    session.controller.btn_tap.assert_not_called()
+    session.pointer.click.assert_not_called()
+
+
 def test_login_wait_is_bounded_and_credentials_require_paired_prompts(
     session: SimpleNamespace,
 ) -> None:
