@@ -18,10 +18,11 @@ def test_dodge_audio_only_runs_on_windows(
     executor = Mock()
     monkeypatch.setattr(dodge_module, '_dodge_check_executor', executor)
     context = dodge_module.AutoBattleDodgeContext(Mock())
-    recorder = Mock(latest_audio=np.ones(8), trigger_threshold=0.1)
+    recorder = Mock(trigger_threshold=0.1)
+    recorder.get_latest_audio.return_value = np.ones(8)
     context._audio_recorder = recorder
-    context._audio_template = np.ones(8)
-    context.get_max_corr = Mock(return_value=0.2)
+    context._audio_template_fft = np.ones((3, 8))
+    context.get_max_corr = Mock(return_value=np.array([0.2, 0.05, 0.01]))
 
     context.init_battle_dodge_context()
     context.start_context_async()
@@ -32,9 +33,10 @@ def test_dodge_audio_only_runs_on_windows(
         recorder.start_running_async.assert_called_once_with()
         context.get_max_corr.assert_called_once()
         recorder.clear_audio.assert_called_once_with()
-        assert detected is True
+        assert detected is dodge_module.AudioTemplateEnum.NORMAL_DODGE
     else:
         executor.submit.assert_not_called()
         recorder.start_running_async.assert_not_called()
+        recorder.get_latest_audio.assert_not_called()
         context.get_max_corr.assert_not_called()
         assert detected is False

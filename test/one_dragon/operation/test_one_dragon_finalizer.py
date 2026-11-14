@@ -1,5 +1,7 @@
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from one_dragon.base.operation.application.application_run_context import (
     ApplicationRunResult,
     RunFinishReason,
@@ -19,23 +21,25 @@ def _run_result(finish_reason: RunFinishReason) -> ApplicationRunResult:
     )
 
 
-def test_execute_after_done_runs_both_requested_actions() -> None:
+@pytest.mark.parametrize('finish_reason', [RunFinishReason.COMPLETED, RunFinishReason.FAILED])
+def test_execute_after_done_runs_both_requested_actions(finish_reason: RunFinishReason) -> None:
     ctx = MagicMock()
     request = AfterDoneRequest(close_game=True, shutdown_seconds=60)
 
     with patch('one_dragon.base.operation.one_dragon_finalizer.cmd_utils.shutdown_sys') as shutdown_sys:
-        execute_after_done(ctx, _run_result(RunFinishReason.COMPLETED), request)
+        execute_after_done(ctx, _run_result(finish_reason), request)
 
     ctx.controller.close_game.assert_called_once_with()
     shutdown_sys.assert_called_once_with(60)
 
 
-def test_execute_after_done_skips_non_completed_run() -> None:
+@pytest.mark.parametrize('finish_reason', [RunFinishReason.STOPPED, RunFinishReason.NOT_STARTED])
+def test_execute_after_done_skips_stopped_or_not_started_run(finish_reason: RunFinishReason) -> None:
     ctx = MagicMock()
     request = AfterDoneRequest(close_game=True, shutdown_seconds=60)
 
     with patch('one_dragon.base.operation.one_dragon_finalizer.cmd_utils.shutdown_sys') as shutdown_sys:
-        execute_after_done(ctx, _run_result(RunFinishReason.FAILED), request)
+        execute_after_done(ctx, _run_result(finish_reason), request)
 
     ctx.controller.close_game.assert_not_called()
     shutdown_sys.assert_not_called()
