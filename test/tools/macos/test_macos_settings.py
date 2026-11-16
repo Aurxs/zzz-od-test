@@ -1,12 +1,11 @@
 """验证设置页面隔离 Windows 功能，且不改写用户配置。"""
 
-import sys
-from types import ModuleType, SimpleNamespace
+from types import SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
 from PySide6.QtCore import QStandardPaths
-from PySide6.QtWidgets import QApplication, QWidget
+from PySide6.QtWidgets import QApplication
 
 from one_dragon_qt.view.setting import (
     setting_custom_interface,
@@ -23,30 +22,19 @@ def qapp() -> QApplication:
 
 
 @pytest.mark.parametrize('platform', ['darwin', 'win32'])
-def test_overlay_page_is_created_only_on_windows(
+def test_settings_pages_keep_platform_specific_navigation(
     qapp: QApplication, monkeypatch: pytest.MonkeyPatch, platform: str,
 ) -> None:
-    """Mac 保留普通设置页，Windows 仍按原顺序加入悬浮窗页。"""
+    """Mac 保留手柄设置页，悬浮窗设置按上游合并到游戏设置。"""
     monkeypatch.setattr(app_setting_interface, 'sys', SimpleNamespace(platform=platform))
-    overlay_widget = QWidget()
-    overlay_widget.setObjectName('setting_overlay_interface')
-    overlay_widget.nav_text = '悬浮窗'
-    overlay_factory = Mock(return_value=overlay_widget)
-    overlay_module = ModuleType('zzz_od.gui.view.setting.setting_overlay_interface')
-    overlay_module.SettingOverlayInterface = overlay_factory
-    monkeypatch.setitem(sys.modules, overlay_module.__name__, overlay_module)
 
     interface = app_setting_interface.AppSettingInterface(SimpleNamespace())
     names = [interface.stacked_widget.widget(i).objectName()
              for i in range(interface.stacked_widget.count())]
     expected = ['setting_game_interface', 'setting_env_interface',
                 'setting_push_interface', 'setting_custom_interface']
-    if platform == 'win32':
-        expected.insert(1, 'setting_overlay_interface')
-        overlay_factory.assert_called_once()
-    else:
+    if platform == 'darwin':
         expected.insert(1, 'setting_gamepad_interface')
-        overlay_factory.assert_not_called()
     assert names == expected
     interface.close()
 

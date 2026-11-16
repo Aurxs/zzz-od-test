@@ -93,6 +93,7 @@ def test_showing_macos_settings_keeps_default_pc_configuration(
     )
     assert ctx.game_account_config.platform == GamePlatformEnum.PC.value.value
     runtime = game_settings[0].macos_runtime_settings
+    assert not hasattr(game_settings[0], 'overlay_switch')
     assert not hasattr(interface, 'platform_opt')
     assert not hasattr(interface, 'macos_menu_interval_opt')
     assert runtime.platform_opt.getValue() == GamePlatformEnum.PC.value.value
