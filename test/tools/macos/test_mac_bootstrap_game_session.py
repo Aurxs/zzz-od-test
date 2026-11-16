@@ -648,6 +648,49 @@ def test_known_intel_filter_recovers_without_unknown_input(session, monkeypatch)
     factory.assert_not_called()
 
 
+def test_explicit_lost_void_resume_only_confirms_matching_challenge(session, monkeypatch):
+    """只确认战线肃清的已识别焦点，其他挑战不发送输入。"""
+    op = session.operation
+    op.ctx.macos_resume_lost_void = True
+    cancel, confirm = Rect(100, 610, 180, 640), Rect(250, 610, 330, 640)
+    focus = [cancel]
+    monkeypatch.setattr(op, '_text_rect', lambda area, text: {'取消': cancel, '确认': confirm}.get(text))
+    monkeypatch.setattr(op, '_area_found', lambda name: name == '登录后-未完成挑战选择')
+    monkeypatch.setattr(op, 'save_screenshot', Mock())
+    monkeypatch.setattr('zzz_od.operation.enter_game.mac_bootstrap_game_session.has_filled_highlight',
+                        lambda image, rect, color: rect == focus[0])
+    op.last_screenshot = np.zeros((1080, 1920, 3), dtype=np.uint8)
+    session.texts = {'登录后-未完成挑战说明': '当前正在处理：其他挑战',
+                     '登录后-未完成挑战按钮': '取消 确认 选择'}
+    assert op._prepare_interrupted_challenge().is_fail
+    session.controller.btn_tap.assert_not_called()
+    session.texts['登录后-未完成挑战说明'] = '当前正在处理：战线肃清'
+    op._prepare_interrupted_challenge()
+    focus[0] = confirm
+    session.now += 1
+    op._prepare_interrupted_challenge()
+    op._prepare_interrupted_challenge()
+    assert session.controller.btn_tap.call_args_list == [call('dpad_right'), call('south')]
+
+
+def test_lost_void_resume_requires_confirmed_prompt_and_fresh_scene(session, monkeypatch):
+    """未确认原局不得将主界面当作续接；确认后必须看到局内画面。"""
+    op = session.operation
+    op.ctx.macos_resume_lost_void = True
+    op.ctx.lost_void = SimpleNamespace(in_normal_world=Mock(return_value=False))
+    monkeypatch.setattr(op, 'save_screenshot', Mock())
+    show(session, 'world-gamepad', {'大世界-手柄提示': 'LT'})
+    assert op.prepare_session().is_fail
+    session.controller.btn_tap.assert_not_called()
+    show(session, 'unknown', {})
+    op._sent_actions.add('继续战线肃清')
+    assert not op.prepare_session().is_success
+    op.ctx.lost_void.in_normal_world.return_value = True
+    show(session, 'unknown', {})
+    assert op.prepare_session().is_success
+    assert op.ctx.macos_lost_void_resumed is True
+
+
 @pytest.mark.parametrize('missing', ['', '累计登录7天', '邦布券', '返回', 'B'])
 def test_new_login_event_only_returns_with_full_evidence(
     session: SimpleNamespace, missing: str,

@@ -266,3 +266,51 @@ def test_store_cancels_unplanned_modal_before_reading_goods(monkeypatch: pytest.
     operation._goods.assert_not_called()
     assert operation._unplanned_cancel_count==1
     operation.ctx.controller.btn_tap.assert_not_called()
+
+
+@pytest.mark.parametrize('gold_icon', [False, True])
+def test_zero_prefix_price_requires_corresponding_gold_icon(gold_icon: bool) -> None:
+    """金币图标误读为零时，必须有同商品金币模板才接受完整金额。"""
+    ctx = make_ctx()
+    price_area = SimpleNamespace(left_top=SimpleNamespace(x=0, y=735))
+    buy_area = SimpleNamespace(left_top=SimpleNamespace(x=0, y=780))
+    ctx.screen_loader = SimpleNamespace(get_area=Mock(side_effect=lambda screen, name:
+        price_area if name == '区域-价格' else buy_area))
+    op = GamepadLostVoidBangbooStore(ctx)
+    op.last_screenshot = object()
+    items = [LostVoidArtifactPos(LostVoidArtifact('通用', f'物品{i}', 'A'),
+                                Rect(200 + i * 400, 500, 350 + i * 400, 530)) for i in range(4)]
+    op.parser.get_artifact_pos = Mock(return_value=(items, []))
+    matches = MatchResultList()
+    matches.append(MatchResult(1, 230, 7, 90, 28))
+    op.navigation._read_area = Mock(side_effect=lambda screen, name:
+        (None, {'0×1600': matches}) if name == '区域-价格' else (None, {}))
+    op.round_by_find_area = Mock(return_value=SimpleNamespace(is_success=gold_icon))
+    op._goods()
+    assert items[0].store_price == (1600 if gold_icon else None)
+    assert all(item.store_price is None for item in items[1:])
+
+
+def test_resumed_store_does_not_repeat_known_refresh() -> None:
+    """此前已核账刷新一次，续接后不再发送刷新输入。"""
+    ctx = make_ctx()
+    ctx.macos_resume_store_refreshed = True
+    ctx.lost_void.in_normal_world = Mock(return_value=False)
+    ctx.lost_void.challenge_config = SimpleNamespace(store_gold=True, store_blood=False,
+        buy_only_priority_2=2, artifact_priority_new=False)
+    ctx.lost_void.get_artifact_by_priority = Mock(return_value=[])
+    op = GamepadLostVoidBangbooStore(ctx)
+    assert op.parser.refresh_times == 1
+    op.last_screenshot = object()
+    op.check_and_update_current_screen = Mock(return_value='迷失之地-邦布商店')
+    op._currency_flags = Mock(return_value=(True, False))
+    goods = [SimpleNamespace(store_buy_rect=object(), store_price=100) for _ in range(4)]
+    op._goods = Mock(return_value=(goods, goods))
+    op._balance = Mock(return_value=5927)
+    op.parser._log_priority_rules = Mock()
+    op.navigation._read_area = Mock(return_value=(None, {'RS刷新×50': object()}))
+    op._leave = Mock(return_value='leave')
+    op._begin = Mock()
+    assert op.buy() == 'leave'
+    op._begin.assert_not_called()
+    ctx.controller.btn_tap.assert_not_called()

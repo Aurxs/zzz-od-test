@@ -28,6 +28,10 @@ def _make_auto_battle_context() -> AutoBattleContext:
     abc.dodge_context = MagicMock()
     abc.agent_context = MagicMock()
     abc.target_context = MagicMock()
+    # 当前生产入口先读取两个按键区域及禁用状态；本测试只验证普攻可用状态。
+    abc.area_btn_normal = MagicMock()
+    abc.area_btn_ultimate = MagicMock()
+    abc.check_btn_ban = MagicMock(return_value={})
     return abc
 
 
