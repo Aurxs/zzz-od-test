@@ -4,6 +4,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, call
 
+import numpy as np
 import pytest
 
 from one_dragon.base.matcher.ocr.onnx_ocr_matcher import OnnxOcrMatcher, OnnxOcrParam
@@ -12,6 +13,23 @@ from one_dragon.base.screen.profile_screen_context import ProfileScreenContext
 from one_dragon.base.screen.template_loader import TemplateLoader
 from one_dragon.utils import cv2_utils
 from zzz_od.operation.gamepad.rewards_weekly import GamepadRiduWeekly
+
+
+def test_missing_slash_requires_two_matching_unfinished_reads() -> None:
+    """漏斜杠仅在局部两次识别一致时视为未完成，不将未知格视为可领。"""
+    ocr = Mock()
+    operation = GamepadRiduWeekly(SimpleNamespace(
+        controller=Mock(), ocr=ocr, run_context=Mock(), current_instance_idx=2,
+    ))
+    cell = np.full((200, 300, 3), 180, dtype=np.uint8)
+    ocr.run_ocr_single_line.side_effect = ['2/4', '2/4']
+    assert operation._confirmed_unfinished_progress(cell, ['累计登录', '214', '100'])
+    ocr.run_ocr_single_line.side_effect = ['2/4', '2/2']
+    assert not operation._confirmed_unfinished_progress(cell, ['214'])
+    ocr.run_ocr_single_line.reset_mock(side_effect=True)
+    assert not operation._confirmed_unfinished_progress(cell, ['212'])
+    assert not operation._confirmed_unfinished_progress(cell, ['214', '315'])
+    ocr.run_ocr_single_line.assert_not_called()
 
 
 def test_actual_weekly_no_reward_and_confirmed_return(
