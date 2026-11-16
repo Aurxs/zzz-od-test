@@ -423,6 +423,52 @@ def test_real_login_frames_use_gamepad_first_and_enter_saved_account(
     assert session.pointer.click.call_count == (0 if already_gamepad else 4)
 
 
+@pytest.mark.parametrize('icon, text, credentials, sends', [
+    (True, True, False, 1),
+    (False, True, False, 0),
+    (True, False, False, 0),
+    (True, True, True, 0),
+])
+def test_alternate_login_icon_still_requires_login_text_and_rejects_credentials(
+    session: SimpleNamespace, monkeypatch: pytest.MonkeyPatch,
+    icon: bool, text: bool, credentials: bool, sends: int,
+) -> None:
+    """备用模板仍要求登录文字，明确凭据画面保持零输入。"""
+    op = session.operation
+    monkeypatch.setattr(op, '_area_found', lambda name: False)
+    op.ctx.tm = Mock()
+    op.ctx.tm.crop_and_match_template.return_value = SimpleNamespace(max=object() if icon else None)
+    texts = {}
+    if text:
+        texts['登录-手柄主提示'] = '进入游戏'
+    if credentials:
+        texts['登录-凭据提示'] = '输入手机号注册/登录 验证码'
+    show(session, 'unknown', texts)
+    op.prepare_session()
+    assert session.controller.btn_tap.call_count == sends
+    if sends:
+        session.controller.btn_tap.assert_called_once_with('south')
+
+
+@pytest.mark.parametrize('reward, result, succeeds', [
+    (True, False, True), (False, True, True), (False, False, False),
+])
+def test_signin_reward_resume_requires_known_page(
+    session: SimpleNamespace, monkeypatch: pytest.MonkeyPatch,
+    reward: bool, result: bool, succeeds: bool,
+) -> None:
+    """显式续接只接受已建档奖励或结果页，不发送输入。"""
+    fake = SimpleNamespace(_reward_visible=lambda: reward, _result_visible=lambda: result)
+    monkeypatch.setattr('zzz_od.operation.gamepad.signin.GamepadDailySignIn', lambda *args, **kwargs: fake)
+    session.operation.ctx.macos_resume_signin_reward = True
+    show(session, 'unknown', {})
+    outcome = session.operation.prepare_session()
+    assert outcome.is_success is succeeds
+    assert outcome.is_fail is (not succeeds)
+    session.controller.btn_tap.assert_not_called()
+    session.pointer.click.assert_not_called()
+
+
 def test_login_wait_is_bounded_and_credentials_require_paired_prompts(
     session: SimpleNamespace,
 ) -> None:
@@ -600,3 +646,83 @@ def test_known_intel_filter_recovers_without_unknown_input(session, monkeypatch)
     show(session, 'unknown', {})
     assert not session.operation.prepare_session().is_success
     factory.assert_not_called()
+
+
+def test_explicit_lost_void_resume_only_confirms_matching_challenge(session, monkeypatch):
+    """只确认战线肃清的已识别焦点，其他挑战不发送输入。"""
+    op = session.operation
+    op.ctx.macos_resume_lost_void = True
+    cancel, confirm = Rect(100, 610, 180, 640), Rect(250, 610, 330, 640)
+    focus = [cancel]
+    monkeypatch.setattr(op, '_text_rect', lambda area, text: {'取消': cancel, '确认': confirm}.get(text))
+    monkeypatch.setattr(op, '_area_found', lambda name: name == '登录后-未完成挑战选择')
+    monkeypatch.setattr(op, 'save_screenshot', Mock())
+    monkeypatch.setattr('zzz_od.operation.enter_game.mac_bootstrap_game_session.has_filled_highlight',
+                        lambda image, rect, color: rect == focus[0])
+    op.last_screenshot = np.zeros((1080, 1920, 3), dtype=np.uint8)
+    session.texts = {'登录后-未完成挑战说明': '当前正在处理：其他挑战',
+                     '登录后-未完成挑战按钮': '取消 确认 选择'}
+    assert op._prepare_interrupted_challenge().is_fail
+    session.controller.btn_tap.assert_not_called()
+    session.texts['登录后-未完成挑战说明'] = '当前正在处理：战线肃清'
+    op._prepare_interrupted_challenge()
+    focus[0] = confirm
+    session.now += 1
+    op._prepare_interrupted_challenge()
+    op._prepare_interrupted_challenge()
+    assert session.controller.btn_tap.call_args_list == [call('dpad_right'), call('south')]
+
+
+def test_lost_void_resume_requires_confirmed_prompt_and_fresh_scene(session, monkeypatch):
+    """未确认原局不得将主界面当作续接；确认后必须看到局内画面。"""
+    op = session.operation
+    op.ctx.macos_resume_lost_void = True
+    op.ctx.lost_void = SimpleNamespace(in_normal_world=Mock(return_value=False))
+    monkeypatch.setattr(op, 'save_screenshot', Mock())
+    show(session, 'world-gamepad', {'大世界-手柄提示': 'LT'})
+    assert op.prepare_session().is_fail
+    session.controller.btn_tap.assert_not_called()
+    show(session, 'unknown', {})
+    op._sent_actions.add('继续战线肃清')
+    assert not op.prepare_session().is_success
+    op.ctx.lost_void.in_normal_world.return_value = True
+    show(session, 'unknown', {})
+    assert op.prepare_session().is_success
+    assert op.ctx.macos_lost_void_resumed is True
+
+
+@pytest.mark.parametrize('missing', ['', '累计登录7天', '邦布券', '返回', 'B'])
+def test_new_login_event_only_returns_with_full_evidence(
+    session: SimpleNamespace, missing: str,
+) -> None:
+    """新活动仅在全部证据齐全时返回一次，缺少证据不发输入。"""
+    description = '累计登录7天即可获赠邦布券'.replace(missing, '') if missing else '累计登录7天即可获赠邦布券'
+    buttons = 'A 选择 B 返回'.replace(missing, '') if missing else 'A 选择 B 返回'
+    for _ in range(2):
+        show(session, 'event', {'登录后-活动说明': description, '登录后-活动按键': buttons})
+        session.operation.prepare_session()
+    if missing:
+        session.controller.btn_tap.assert_not_called()
+    else:
+        session.controller.btn_tap.assert_called_once_with('east')
+    session.pointer.click.assert_not_called()
+
+
+def test_original_login_event_keeps_claim_path_with_bangboo_tickets(
+    session: SimpleNamespace, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """旧活动即使提到邦布券，也不被新活动的返回分支截走。"""
+    monkeypatch.setattr(session.operation, 'save_screenshot', Mock())
+    match = MatchResultList()
+    match.append(MatchResult(1, 30, 40, 60, 30))
+    monkeypatch.setattr(session.operation, '_read_area', lambda name: {'领取×01': match})
+    monkeypatch.setattr('zzz_od.operation.enter_game.mac_bootstrap_game_session.has_filled_highlight', lambda *args: True)
+    session.operation.ctx.screen_loader.get_area.side_effect = lambda *args: SimpleNamespace(
+        rect=Rect(100, 200, 300, 400), x1=100, y1=200, x2=300, y2=400,
+    )
+    show(session, 'event', {
+        '登录后-活动说明': '全新放送 累计登录7天 邦布券',
+        '登录后-活动按键': 'A 选择 B 返回',
+    })
+    session.operation.prepare_session()
+    session.controller.btn_tap.assert_called_once_with('south')

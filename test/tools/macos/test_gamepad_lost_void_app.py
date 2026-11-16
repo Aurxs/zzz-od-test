@@ -63,16 +63,21 @@ def test_bounty_uses_fraction_from_actual_progress_area(monkeypatch: pytest.Monk
         app.ctx.screen_loader.get_area.assert_called_once_with('迷失之地-入口', '区域-悬赏委托-进度')
 
 
-def test_next_region_keeps_waiting_through_black_loading() -> None:
+@pytest.mark.parametrize(('dialog_result', 'expected'), [(None, 'loading'), ('dialog', 'dialog')])
+def test_next_region_keeps_waiting_through_black_loading(dialog_result, expected) -> None:
+    """黑屏允许已识别对话处理；无对话时只等待加载。"""
     import numpy as np
     operation = object.__new__(gamepad.GamepadLostVoidRunLevel)
     operation.last_screenshot = np.zeros((1080,1920,3),dtype=np.uint8)
     operation.ctx = SimpleNamespace(lost_void=SimpleNamespace(in_normal_world=Mock(return_value=False)))
     operation.round_retry = Mock(return_value='loading')
-    operation.try_talk = Mock()
-    assert operation.wait_loading() == 'loading'
-    operation.round_retry.assert_called_once_with('等待区域加载', wait=1)
-    operation.try_talk.assert_not_called()
+    operation.try_talk = Mock(return_value=dialog_result)
+    assert operation.wait_loading() == expected
+    operation.try_talk.assert_called_once_with(operation.last_screenshot)
+    if dialog_result is None:
+        operation.round_retry.assert_called_once_with('等待区域加载', wait=1)
+    else:
+        operation.round_retry.assert_not_called()
 
 
 def test_short_split_dialogue_requires_bottom_a_prompt() -> None:
@@ -237,3 +242,25 @@ def test_interaction_waits_for_menu_before_repeating_a(monkeypatch: pytest.Monke
     monkeypatch.setattr(gamepad.time,'monotonic',lambda:100+elapsed)
     assert operation.try_interact()==expected
     base.assert_not_called()
+
+
+def test_resume_requires_confirmed_scene_and_preserves_team(monkeypatch):
+    """仅已确认的局内新帧进入原层间操作，并恢复原配置队伍。"""
+    monkeypatch.setattr(module.sys, 'platform', 'darwin')
+    app = object.__new__(module.LostVoidApp)
+    app.lost_void_debug = False
+    app.last_screenshot = object()
+    lost = SimpleNamespace(in_normal_world=Mock(return_value=True),
+                           challenge_config=SimpleNamespace(predefined_team_idx=0))
+    app.ctx = SimpleNamespace(macos_resume_lost_void=True, macos_lost_void_resumed=False, lost_void=lost)
+    app.round_fail = Mock(return_value='blocked')
+    app.round_retry = Mock(return_value='wait')
+    app.round_success = Mock(return_value='resume')
+    assert app.check_initial_screen() == 'blocked'
+    app.ctx.macos_lost_void_resumed = True
+    lost.in_normal_world.return_value = False
+    assert app.check_initial_screen() == 'wait'
+    lost.in_normal_world.return_value = True
+    assert app.check_initial_screen() == 'resume'
+    assert lost.predefined_team_idx == 0
+    app.round_success.assert_called_once_with('迷失之地-大世界')
