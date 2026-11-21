@@ -726,3 +726,19 @@ def test_original_login_event_keeps_claim_path_with_bangboo_tickets(
     })
     session.operation.prepare_session()
     session.controller.btn_tap.assert_called_once_with('south')
+
+
+@pytest.mark.parametrize('missing', ['', '战于黎明之前', '累计签到7日', '菲林', '返回', 'B'])
+def test_dawn_login_event_only_returns_with_full_evidence(
+    session: SimpleNamespace, missing: str,
+) -> None:
+    """指定活动在标题、奖励与返回提示齐全时仅返回一次。"""
+    description = '决战于黎明之前 累计签到7日即可获赠菲林'.replace(missing, '') if missing else '决战于黎明之前 累计签到7日即可获赠菲林'
+    buttons = 'A 选择 B 返回'.replace(missing, '') if missing else 'A 选择 B 返回'
+    for _ in range(2):
+        show(session, 'event', {'登录后-活动说明': description, '登录后-活动按键': buttons})
+        session.operation.prepare_session()
+    if missing:
+        session.controller.btn_tap.assert_not_called()
+    else:
+        session.controller.btn_tap.assert_called_once_with('east')

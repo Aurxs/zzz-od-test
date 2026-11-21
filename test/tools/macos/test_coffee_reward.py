@@ -30,3 +30,14 @@ def test_energy_reward_title_in_separate_crop(monkeypatch):
     ocr.crop_and_run_ocr.side_effect = lambda image, rect: {'获得': []} if rect is title else {'电量': [], '确认': confirm}
     monkeypatch.setattr(coffee_app, 'has_filled_highlight', lambda *args: False)
     assert not op._macos_energy_reward_visible()
+
+
+def test_explicit_tinman_only_excludes_extra_coffees():
+    """显式单杯模式不能选择额外咖啡或重复选择已点的特调。"""
+    op = object.__new__(CoffeeApp)
+    op.ctx = SimpleNamespace(macos_tinman_only=True, compendium_service=Mock())
+    op.had_coffee_list = set()
+    assert op._get_coffee_to_choose() == ['汀曼特调']
+    op.had_coffee_list.add('汀曼特调')
+    assert op._get_coffee_to_choose() == []
+    op.ctx.compendium_service.get_extra_coffee_list.assert_not_called()
