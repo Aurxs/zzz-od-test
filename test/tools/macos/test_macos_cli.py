@@ -126,3 +126,19 @@ def test_cleanup_without_controller_still_stops_detection() -> None:
     AutoBattleContext.stop_context(ctx)
     ctx.dodge_context.stop_context.assert_called_once()
     ctx._release_keys.assert_not_called()
+
+
+@pytest.mark.parametrize('args', [
+    ['--tinman-only'],
+    ['--app', 'daily_signin', '--tinman-only'],
+    ['--app', 'coffee', '--tinman-only', '--dry-run'],
+    ['--app', 'coffee', '--tinman-only', '--list'],
+    ['--app', 'coffee', '--tinman-only', '--list-redeem-codes'],
+    ['--app', 'email', '--claim-all', '--tinman-only'],
+    ['--app', 'redemption_code', '--redeem-code', 'CODE123', '--tinman-only'],
+])
+def test_tinman_only_rejects_non_coffee_or_preview(args: list[str]) -> None:
+    """限定单项实际点单，不影响整组和预览。"""
+    with pytest.raises(SystemExit) as result:
+        cli.main(args)
+    assert result.value.code == 2
