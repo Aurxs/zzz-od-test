@@ -139,3 +139,23 @@ def test_same_dialog_retries_bounded_confirmation(operation: GamepadChooseDialog
         assert not operation.choose_option().is_success
     assert operation.choose_option().is_fail
     assert operation.ctx.controller.btn_tap.call_count == 3
+
+
+def test_single_confirmation_never_repeats_even_if_same_option_remains(
+    operation: GamepadChooseDialogOption,
+) -> None:
+    """单次模式只报告输入已发送；旧选项仍在或结果未知都不能重发。"""
+    operation.single_confirmation = True
+    assert operation.choose_option().status == '确认已发送，等待业务核验'
+    assert operation.choose_option().is_fail
+    operation.ctx.controller.btn_tap.assert_called_once_with('south')
+
+
+def test_single_confirmation_evidence_failure_never_repeats(
+    operation: GamepadChooseDialogOption,
+) -> None:
+    operation.single_confirmation = True
+    operation._save.side_effect = [True, False, True]
+    assert operation.choose_option().is_fail
+    assert operation.choose_option().is_fail
+    operation.ctx.controller.btn_tap.assert_called_once_with('south')

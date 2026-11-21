@@ -8,6 +8,7 @@ from unittest.mock import Mock
 
 import pytest
 
+from one_dragon.base.matcher.match_result import MatchResult, MatchResultList
 from one_dragon.base.operation.operation_base import OperationResult
 from one_dragon.base.screen.screen_area import ScreenArea
 from zzz_od.application.coffee import coffee_app
@@ -233,3 +234,72 @@ def test_random_play_unknown_promoter_entry_cannot_finish_as_success(
     result = app.close_business_page()
     assert result.is_fail and result.status == '手柄宣传员入口未建档'
     action.assert_not_called()
+
+
+def _coffee_ocr_line() -> MatchResultList:
+    matches = MatchResultList(only_best=False)
+    matches.append(MatchResult(1, 100, 50, 180, 30))
+    return matches
+
+
+@pytest.mark.parametrize('text', ['请来一杯汀曼特调！', ' 请来一杯 汀曼特调! ', '请来一杯汀曼特调'])
+@pytest.mark.parametrize('point', [CoffeeTransportPoint.POINT_2.value.value, CoffeeTransportPoint.POINT_3.value.value])
+def test_tinman_only_selects_verified_full_line_once(
+    app: CoffeeApp, monkeypatch: pytest.MonkeyPatch, text: str, point: str,
+) -> None:
+    """专用点单只交出已核整句；发送后等电量凭证，不能重复发送。"""
+    app.ctx.macos_tinman_only = True
+    app.config.transport_point = point
+    app.ctx.ocr.crop_and_run_ocr.return_value = {text: _coffee_ocr_line(), '请来一杯浓缩咖啡！': _coffee_ocr_line()}
+    app.ctx.compendium_service.name_2_coffee = {'汀曼特调': SimpleNamespace(extra=False)}
+    monkeypatch.setattr(app, 'round_by_find_area', lambda image, screen, name: app.round_retry()
+                        if name == '手柄-今日已喝' else app.round_success())
+    factory = Mock()
+    factory.return_value.execute.return_value = OperationResult(True, status='确认已发送，等待业务核验')
+    monkeypatch.setitem(sys.modules, 'zzz_od.operation.gamepad.dialog',
+                        SimpleNamespace(GamepadChooseDialogOption=factory))
+    assert app.dialog_choose_coffee().status == '已点单'
+    factory.assert_called_once_with(app.ctx, text, single_confirmation=True)
+    assert app.dialog_choose_coffee().is_fail
+    factory.assert_called_once()
+    monkeypatch.setattr(app, '_macos_energy_reward_visible', Mock(return_value=False))
+    assert not app.charge_confirm().is_success
+    app.ctx.controller.btn_tap.assert_not_called()
+
+
+@pytest.mark.parametrize('texts', [
+    {}, {'不喝汀曼特调': _coffee_ocr_line()}, {'汀曼特调套餐': _coffee_ocr_line()},
+    {'请来一杯汀曼特调套餐！': _coffee_ocr_line()}, {'请来一杯汀曼特调？': _coffee_ocr_line()},
+    {'请来一杯浓缩咖啡！': _coffee_ocr_line()},
+    {'请来一杯汀曼特调！': _coffee_ocr_line(), '请来一杯 汀曼特调!': _coffee_ocr_line()},
+])
+def test_tinman_only_rejects_unknown_or_ambiguous_options(
+    app: CoffeeApp, monkeypatch: pytest.MonkeyPatch, texts: dict,
+) -> None:
+    """不可识别、近似行和重复候选都不传入确认器，也不推进对话。"""
+    app.ctx.macos_tinman_only = True
+    app.ctx.ocr.crop_and_run_ocr.return_value = texts
+    monkeypatch.setattr(app, 'round_by_find_area', lambda image, screen, name: app.round_retry()
+                        if name == '手柄-今日已喝' else app.round_success())
+    factory = Mock()
+    monkeypatch.setitem(sys.modules, 'zzz_od.operation.gamepad.dialog',
+                        SimpleNamespace(GamepadChooseDialogOption=factory))
+    assert app.dialog_choose_coffee().is_fail
+    factory.assert_not_called()
+    app.ctx.controller.btn_tap.assert_not_called()
+
+
+def test_tinman_only_already_selected_never_reconfirms(
+    app: CoffeeApp, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    app.ctx.macos_tinman_only = True
+    app.had_coffee_list.add('汀曼特调')
+    app.ctx.ocr.crop_and_run_ocr.return_value = {'请来一杯汀曼特调！': _coffee_ocr_line()}
+    monkeypatch.setattr(app, 'round_by_find_area', lambda image, screen, name: app.round_retry()
+                        if name == '手柄-今日已喝' else app.round_success())
+    factory = Mock()
+    monkeypatch.setitem(sys.modules, 'zzz_od.operation.gamepad.dialog',
+                        SimpleNamespace(GamepadChooseDialogOption=factory))
+    assert app.dialog_choose_coffee().is_fail
+    factory.assert_not_called()
+    app.ctx.controller.btn_tap.assert_not_called()
