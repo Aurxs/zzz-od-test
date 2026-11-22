@@ -6,6 +6,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, call
 
+import numpy as np
 import pytest
 
 from one_dragon.base.config.yaml_operator import YamlOperator
@@ -43,7 +44,9 @@ def op(plan: ChargePlanItem, monkeypatch: pytest.MonkeyPatch) -> GamepadAreaPatr
 
 
 def frame(op: GamepadAreaPatrol, age: float) -> None:
-    op.last_screenshot = object()
+    number = getattr(op, "_test_frame_number", 0) + 1
+    op._test_frame_number = number
+    op.last_screenshot = np.full((2, 2, 3), number, dtype=np.uint8)
     op.last_screenshot_time = time.time() - age
 
 
@@ -130,7 +133,7 @@ def test_fresh_verified_sequence_and_once(op: GamepadAreaPatrol, monkeypatch: py
     ready(op, monkeypatch)
     frame(op, 1)
     assert op.deploy().is_success
-    assert op.deploy().is_success
+    assert op.deploy().is_fail
     assert op.ctx.controller.btn_tap.call_args_list == [call('start'), call('start')]
 
 
@@ -189,6 +192,38 @@ def test_frame_expires_during_cost_read(op: GamepadAreaPatrol, monkeypatch: pyte
     assert op.prepare_deployment().is_fail
     op.ctx.controller.btn_tap.assert_not_called()
 
+
+def test_retimestamped_identical_detail_is_rejected(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
+    set_ocr(monkeypatch, ['Lv.60'])
+    frame(op, 3)
+    assert op.prepare_cards().is_success
+    op.last_screenshot_time = time.time() - 1
+    assert op.prepare_deployment().is_fail
+    op.ctx.controller.btn_tap.assert_not_called()
+
+
+def test_retimestamped_identical_deployment_is_rejected(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
+    ready(op, monkeypatch)
+    op.last_screenshot_time = time.time() - 1
+    assert op.deploy().is_fail
+    assert op.ctx.controller.btn_tap.call_args_list == [call('start')]
+
+
+def test_older_detail_replayed_after_ready_is_rejected(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
+    set_ocr(monkeypatch, ['Lv.60'])
+    frame(op, 4)
+    first_image = op.last_screenshot.copy()
+    assert op.prepare_cards().is_success
+    frame(op, 3)
+    assert not op.prepare_deployment().is_fail
+    op._deployment_visible.return_value = True
+    frame(op, 2)
+    assert op.prepare_deployment().status == op.STATUS_DEPLOYMENT_READY
+    op.last_screenshot = first_image
+    op.last_screenshot_time = time.time() - 1
+    assert op.deploy().is_fail
+    assert op.ctx.controller.btn_tap.call_args_list == [call('start')]
+
 def test_no_direct_deployment_or_old_frame(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
     set_ocr(monkeypatch, ['Lv.60'])
     op._deployment_visible.return_value = True
@@ -217,12 +252,14 @@ def test_only_patrol_accepts_explicit_level(plan: ChargePlanItem) -> None:
     assert validate_macos_charge_plan(config) is not None
 
 
-def test_caller_stops_when_second_level_frame_changes(plan: ChargePlanItem,
-                                                      monkeypatch: pytest.MonkeyPatch) -> None:
-    """通过原计划调用真实节点图：首帧60、下一帧50，不能出战或计数。"""
+@pytest.mark.parametrize('second_frame', [50, 60])
+def test_caller_stops_on_changed_level_or_retimestamped_frame(
+    plan: ChargePlanItem, monkeypatch: pytest.MonkeyPatch, second_frame: int,
+) -> None:
+    """真实节点图中，等级变化或同图新时间戳都不能出战或计数。"""
     controller = Mock()
-    frames = iter(['check', 'load', 'Lv.60', 'Lv.50'])
-    controller.screenshot.side_effect = lambda: (time.time(), next(frames))
+    frames = iter([1, 2, 60, second_frame])
+    controller.screenshot.side_effect = lambda: (time.time(), np.full((2, 2, 3), next(frames), dtype=np.uint8))
     battle = Mock()
     battle.normal_attack_template_variants = ()
     context = SimpleNamespace(controller=controller, auto_battle_context=battle,
@@ -239,13 +276,14 @@ def test_caller_stops_when_second_level_frame_changes(plan: ChargePlanItem,
     monkeypatch.setattr(sim, '_preset_selected', lambda: True)
     monkeypatch.setattr(sim, '_charge', lambda: (180, 60))
     monkeypatch.setattr(area_patrol, 'read_preset_area',
-                        lambda _ctx, image, _area, _screen: (object(), {image: [object()]}))
+                        lambda _ctx, image, _area, _screen: (object(), {f'Lv.{image[0, 0, 0]}': [object()]}))
     runner = GamepadChargePlan(context, config, Mock())
     runner.current_plan = plan
     runner._simulation = sim
     monkeypatch.setattr(runner, '_after_round_wait', Mock())
     result = runner.run_battle()
-    assert result.is_fail and 'Lv.60' in result.status
+    assert result.is_fail
+    assert ('重复' if second_frame == 60 else 'Lv.60') in result.status
     assert plan.run_times == 0 and runner.completed_battles == 0
     controller.btn_tap.assert_not_called()
 
