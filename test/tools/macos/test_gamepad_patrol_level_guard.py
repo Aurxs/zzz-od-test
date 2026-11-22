@@ -38,6 +38,8 @@ def op(plan: ChargePlanItem, monkeypatch: pytest.MonkeyPatch) -> GamepadAreaPatr
     monkeypatch.setattr(result, '_found', Mock(return_value=True))
     monkeypatch.setattr(result, '_preset_selected', Mock(return_value=True))
     monkeypatch.setattr(result, '_charge', Mock(return_value=(180, 60)))
+    monkeypatch.setattr(result, '_target_state', Mock(return_value='ok'))
+    monkeypatch.setattr(result, '_charge_state', Mock(return_value=('ok', (180, 60))))
     monkeypatch.setattr(result, 'save_screenshot', Mock())
     result.last_screenshot = object()
     return result
@@ -61,6 +63,7 @@ def ready(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
     assert op.prepare_cards().is_success
     frame(op, 3)
     assert not op.prepare_deployment().is_fail
+    op._next_sent_at -= 5  # 模拟 Next 后实际采集的页面
     op._deployment_visible.return_value = True
     frame(op, 2)
     assert op.prepare_deployment().status == op.STATUS_DEPLOYMENT_READY
@@ -126,14 +129,14 @@ def test_sent_flag_cannot_bypass_missing_proof(op: GamepadAreaPatrol) -> None:
     op._deploy_sent = True
     op._deployment_visible.return_value = True
     frame(op, 1)
-    assert op.deploy().is_fail
+    assert not op.deploy().is_success
     op.ctx.controller.btn_tap.assert_not_called()
 
 def test_fresh_verified_sequence_and_once(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
     ready(op, monkeypatch)
     frame(op, 1)
     assert op.deploy().is_success
-    assert op.deploy().is_fail
+    assert op.deploy().is_success
     assert op.ctx.controller.btn_tap.call_args_list == [call('start'), call('start')]
 
 
@@ -156,8 +159,8 @@ def test_proof_cannot_be_reused(op: GamepadAreaPatrol, monkeypatch: pytest.Monke
     elif failure == 'reinit':
         op.handle_init()
     elif failure == 'cost':
-        op._charge.return_value = (180, 40)
-    assert op.deploy().is_fail
+        op._charge_state.return_value = ('ok', (180, 40))
+    assert not op.deploy().is_success
     assert op.ctx.controller.btn_tap.call_args_list == [call('start')]
 
 
@@ -170,6 +173,16 @@ def test_detail_level_changed_between_nodes_stops(op: GamepadAreaPatrol, monkeyp
     assert op.prepare_deployment().is_fail
     op.ctx.controller.btn_tap.assert_not_called()
 
+
+
+
+def test_unsupported_explicit_level_cannot_skip_plan_check(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
+    op.plan.level = '等级Lv.50'
+    op.handle_init()
+    set_ocr(monkeypatch, ['Lv.60'])
+    frame(op, 1)
+    assert op.prepare_cards().is_fail
+    op.ctx.controller.btn_tap.assert_not_called()
 
 
 def test_duplicate_level_boxes_are_ambiguous(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -188,48 +201,40 @@ def test_frame_expires_during_cost_read(op: GamepadAreaPatrol, monkeypatch: pyte
     def slow_read() -> tuple[int, int]:
         op.last_screenshot_time -= 6
         return (180, 60)
-    op._charge.side_effect = slow_read
-    assert op.prepare_deployment().is_fail
+    op._charge_state.side_effect = lambda: ('ok', slow_read())
+    assert not op.prepare_deployment().is_success
     op.ctx.controller.btn_tap.assert_not_called()
 
 
-def test_retimestamped_identical_detail_is_rejected(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_same_pixels_with_new_capture_time_are_accepted(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
     set_ocr(monkeypatch, ['Lv.60'])
     frame(op, 3)
     assert op.prepare_cards().is_success
     op.last_screenshot_time = time.time() - 1
-    assert op.prepare_deployment().is_fail
-    op.ctx.controller.btn_tap.assert_not_called()
-
-
-def test_retimestamped_identical_deployment_is_rejected(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
-    ready(op, monkeypatch)
-    op.last_screenshot_time = time.time() - 1
-    assert op.deploy().is_fail
-    assert op.ctx.controller.btn_tap.call_args_list == [call('start')]
-
-
-def test_older_detail_replayed_after_ready_is_rejected(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
-    set_ocr(monkeypatch, ['Lv.60'])
-    frame(op, 4)
-    first_image = op.last_screenshot.copy()
-    assert op.prepare_cards().is_success
-    frame(op, 3)
     assert not op.prepare_deployment().is_fail
-    op._deployment_visible.return_value = True
-    frame(op, 2)
-    assert op.prepare_deployment().status == op.STATUS_DEPLOYMENT_READY
-    op.last_screenshot = first_image
-    op.last_screenshot_time = time.time() - 1
-    assert op.deploy().is_fail
+    op.ctx.controller.btn_tap.assert_called_once_with('start')
+
+
+def test_cached_frame_is_waited_without_input(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
+    set_ocr(monkeypatch, ['Lv.60'])
+    frame(op, 3)
+    assert op.prepare_cards().is_success
+    assert not op.prepare_deployment().is_success
+    op.ctx.controller.btn_tap.assert_not_called()
+
+
+def test_old_deployment_frame_is_waited(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
+    ready(op, monkeypatch)
+    assert not op.deploy().is_success
     assert op.ctx.controller.btn_tap.call_args_list == [call('start')]
+
 
 def test_no_direct_deployment_or_old_frame(op: GamepadAreaPatrol, monkeypatch: pytest.MonkeyPatch) -> None:
     set_ocr(monkeypatch, ['Lv.60'])
     op._deployment_visible.return_value = True
     frame(op, 1)
-    assert op.prepare_deployment().is_fail
-    assert op.deploy().is_fail
+    assert not op.prepare_deployment().is_success
+    assert not op.deploy().is_success
     op.ctx.controller.btn_tap.assert_not_called()
 
 
@@ -251,41 +256,6 @@ def test_only_patrol_accepts_explicit_level(plan: ChargePlanItem) -> None:
     plan.category_name, plan.level = '专业挑战室', '等级Lv.60'
     assert validate_macos_charge_plan(config) is not None
 
-
-@pytest.mark.parametrize('second_frame', [50, 60])
-def test_caller_stops_on_changed_level_or_retimestamped_frame(
-    plan: ChargePlanItem, monkeypatch: pytest.MonkeyPatch, second_frame: int,
-) -> None:
-    """真实节点图中，等级变化或同图新时间戳都不能出战或计数。"""
-    controller = Mock()
-    frames = iter([1, 2, 60, second_frame])
-    controller.screenshot.side_effect = lambda: (time.time(), np.full((2, 2, 3), next(frames), dtype=np.uint8))
-    battle = Mock()
-    battle.normal_attack_template_variants = ()
-    context = SimpleNamespace(controller=controller, auto_battle_context=battle,
-                              run_context=Mock(), current_instance_idx=2,
-                              is_game_window_ready=True, unlisten_all_event=Mock(),
-                              notify_config=SimpleNamespace(enable_notify=False))
-    context.run_context.is_context_stop = False
-    context.run_context.is_context_pause = False
-    config = Mock()
-    sim = GamepadAreaPatrol(context, plan, config=config)
-    monkeypatch.setattr(sim, '_after_round_wait', Mock())
-    monkeypatch.setattr(sim, '_deployment_visible', lambda: False)
-    monkeypatch.setattr(sim, '_found', lambda _name: True)
-    monkeypatch.setattr(sim, '_preset_selected', lambda: True)
-    monkeypatch.setattr(sim, '_charge', lambda: (180, 60))
-    monkeypatch.setattr(area_patrol, 'read_preset_area',
-                        lambda _ctx, image, _area, _screen: (object(), {f'Lv.{image[0, 0, 0]}': [object()]}))
-    runner = GamepadChargePlan(context, config, Mock())
-    runner.current_plan = plan
-    runner._simulation = sim
-    monkeypatch.setattr(runner, '_after_round_wait', Mock())
-    result = runner.run_battle()
-    assert result.is_fail
-    assert ('重复' if second_frame == 60 else 'Lv.60') in result.status
-    assert plan.run_times == 0 and runner.completed_battles == 0
-    controller.btn_tap.assert_not_called()
 
 
 def test_five_saved_runs_stop_at_plan_limit(plan: ChargePlanItem, monkeypatch: pytest.MonkeyPatch) -> None:

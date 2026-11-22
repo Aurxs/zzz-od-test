@@ -475,3 +475,18 @@ def test_reload_releases_old_instance_and_refreshes_macos_config(
     context.init_controller.assert_called_once_with()
     assert context.template_loader.template == {}
     context.auto_battle_context.init_screen_area.assert_called_once_with()
+
+
+def test_screenshot_preserves_capture_identity_for_cache_and_identical_new_frames(
+    controller: zzz_macos_controller.ZMacController,
+) -> None:
+    """同一缓存保留原时间，独立采集即使像素相同也保留新的采集时间。"""
+    first = controller.window_capture.latest_frame.return_value
+    first_time, first_image = controller.screenshot()
+    cached_time, cached_image = controller.screenshot()
+    second = replace(first, sequence=first.sequence + 1, capture_time=first.capture_time + 1)
+    controller.window_capture.latest_frame.return_value = second
+    next_time, next_image = controller.screenshot()
+    assert first_time == cached_time == first.capture_time
+    assert next_time == second.capture_time > cached_time
+    assert np.array_equal(first_image, cached_image) and np.array_equal(first_image, next_image)
