@@ -189,7 +189,8 @@ def test_duplicate_level_boxes_are_ambiguous(op: GamepadAreaPatrol, monkeypatch:
     monkeypatch.setattr(area_patrol, 'read_preset_area',
                         lambda *_args: (object(), {'Lv.60': [object(), object()]}))
     frame(op, 1)
-    assert op.prepare_cards().is_fail
+    assert op.prepare_cards().status_display == '重试'
+    assert not op._level_confirmed
     op.ctx.controller.btn_tap.assert_not_called()
 
 
