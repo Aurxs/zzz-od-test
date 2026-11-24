@@ -29,7 +29,10 @@ class Replay:
         self.mode = mode
         self.stage = 'detail'
         self.starts = 0
+        self.title_reads = 0
+        self.title_reads_at_next = 0
         self.level_reads = 0
+        self.level_reads_at_next = 0
         self.cached = time.time()
         self.transition_seen = 0
         self.settlement_confirmed = False
@@ -54,6 +57,8 @@ class Replay:
         if key == 'start':
             self.starts += 1
             if self.stage == 'detail':
+                self.title_reads_at_next = self.title_reads
+                self.level_reads_at_next = self.level_reads
                 self.stage = 'transition'
             elif self.stage == 'deployment':
                 self.stage = 'battle'
@@ -101,20 +106,38 @@ def make_chain(monkeypatch: pytest.MonkeyPatch, mode: str) -> tuple[GamepadCharg
         if mode == 'shortage':
             config.data['restore_charge'] = '使用储蓄电量'  # 模拟预检后配置发生变化
             return (30, 60)
-        return (180, 60)
+        return (81 if mode.startswith('transient_') else 180, 60)
     monkeypatch.setattr(GamepadAreaPatrol, 'read_charge', outer_charge)
-    monkeypatch.setattr(area_patrol, 'read_focused_choice', lambda *_a, **_kw: ('游侠与守卫', {'游侠与守卫'}))
+    monkeypatch.setattr(
+        area_patrol, 'read_focused_choice',
+        lambda *_a, **_kw: (None, {'游侠与守卫', '怪兽二重奏'})
+        if mode == 'ambiguous_card' else ('游侠与守卫', {'游侠与守卫'}),
+    )
     def ocr(_ctx: object, image: np.ndarray, area: str, *_args: object) -> tuple[object, dict]:
         if area == '手柄-副本标题':
+            replay.title_reads += 1
+            if mode == 'wrong_target':
+                return object(), {'怪兽二重奏': [object()]}
+            noisy_title_frame = {'transient_title': 1, 'transient_title_detail': 2}.get(mode)
+            if mode == 'persistent_ambiguity' or replay.title_reads == noisy_title_frame:
+                return object(), {'游侠与守卫': [object()], 'NEW!': [object()]}
             return object(), {'游侠与守卫': [object()]}
         if area == '手柄-挑战等级数值':
             replay.level_reads += 1
             if mode == 'no_level':
                 return object(), {}
+            if mode == 'transient_level' and replay.level_reads == 2:
+                return object(), {'Lv.60': [object(), object()]}
+            if mode == 'conflicting_levels':
+                return object(), {'Lv.60': [object()], 'Lv.40': [object()]}
+            if mode == 'wrong_level':
+                return object(), {'Lv.40': [object()]}
             value = 'Lv.50' if mode == 'changed_level' and replay.level_reads > 1 else 'Lv.60'
             return object(), {value: [object()]}
         if area == '手柄-电量':
-            return object(), {'180/60': [object()]}
+            current = 81 if mode.startswith('transient_') else 180
+            required = 40 if mode == 'wrong_cost' else 60
+            return object(), {f'{current}/{required}': [object()]}
         raise AssertionError(area)
     monkeypatch.setattr(area_patrol, 'read_preset_area', ocr)
     transport = Mock()
@@ -156,6 +179,36 @@ def test_real_chain_stops_without_unconfirmed_count(monkeypatch: pytest.MonkeyPa
     assert replay.starts == (2 if mode == 'no_settlement' else 1 if mode == 'old_deployment' else 0)
 
 
+@pytest.mark.parametrize('mode', ['transient_title', 'transient_title_detail', 'transient_level'])
+def test_transient_ocr_recovers_only_after_unique_fresh_proof(monkeypatch: pytest.MonkeyPatch, mode: str) -> None:
+    """正确目标、电量足够，但一帧出现额外文字或重复识别框。"""
+    runner, replay, plan, _controller = make_chain(monkeypatch, mode)
+    result = runner.execute()
+    assert result.success and result.data['completed_battles'] == 1
+    assert replay.title_reads_at_next == 4  # 含一轮未放行；另有预检和两帧正向证明。
+    assert replay.level_reads_at_next == (2 if mode == 'transient_title' else 3)
+    assert replay.events.count('detail:start') == replay.events.count('deployment:start') == 1
+    assert replay.settlement_confirmed and plan.run_times == 1
+
+
+@pytest.mark.parametrize(('mode', 'retries'), [
+    ('wrong_target', False), ('wrong_level', False), ('conflicting_levels', False),
+    ('wrong_cost', False), ('ambiguous_card', True), ('persistent_ambiguity', True),
+])
+def test_unverified_or_wrong_patrol_never_spends(
+    monkeypatch: pytest.MonkeyPatch, mode: str, retries: bool,
+) -> None:
+    runner, replay, plan, controller = make_chain(monkeypatch, mode)
+    result = runner.execute()
+    assert not result.success
+    assert plan.run_times == replay.starts == 0 and not replay.settlement_confirmed
+    controller.btn_tap.assert_not_called()
+    if retries:
+        assert 2 < replay.title_reads <= 13 and replay.level_reads == 0
+    else:
+        assert 1 <= replay.title_reads <= 3 and 0 <= replay.level_reads <= 2
+
+
 def test_explicit_level_forbids_backup_preflight_and_runtime(monkeypatch: pytest.MonkeyPatch) -> None:
     runner, replay, plan, controller = make_chain(monkeypatch, 'ok')
     runner.config.data['restore_charge'] = '使用储蓄电量'
@@ -164,6 +217,7 @@ def test_explicit_level_forbids_backup_preflight_and_runtime(monkeypatch: pytest
     runner._create_simulation(plan)
     runner._simulation.read_charge = Mock(return_value=(30, 60))
     runner.last_screenshot = np.zeros((2, 2, 3), dtype=np.uint8)
+    runner.last_screenshot_time = time.time()
     assert runner.check_charge().status == runner.STATUS_CHARGE_NOT_ENOUGH
     assert runner.restore_minimum_reserve().is_fail
     assert plan.run_times == 0 and runner.completed_battles == 0 and replay.starts == 0
