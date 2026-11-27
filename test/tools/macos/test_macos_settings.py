@@ -12,6 +12,8 @@ from one_dragon_qt.view.setting import (
     setting_env_interface,
     setting_push_interface,
 )
+from zzz_od.application.world_patrol.world_patrol_app_setting import WorldPatrolAppSetting
+from zzz_od.gui.app_setting import world_patrol_combined_setting_interface
 from zzz_od.gui.view.setting import app_setting_interface
 
 
@@ -36,6 +38,20 @@ def test_settings_pages_keep_platform_specific_navigation(
     if platform == 'darwin':
         expected.insert(1, 'setting_gamepad_interface')
     assert names == expected
+    interface.close()
+
+
+def test_macos_world_patrol_settings_only_offer_configuration(
+    qapp: QApplication, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """从正式设置入口打开，Mac 可管理配置，无法从录制页操作游戏。"""
+    monkeypatch.setattr(
+        world_patrol_combined_setting_interface, 'sys', SimpleNamespace(platform='darwin'),
+    )
+    interface = WorldPatrolAppSetting.get_setting_cls()(Mock())
+    assert [page.objectName() for page in interface.sub_interfaces] == [
+        'world_patrol_setting_interface', 'world_patrol_route_list_interface',
+    ]
     interface.close()
 
 
