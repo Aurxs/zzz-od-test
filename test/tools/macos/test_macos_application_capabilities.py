@@ -79,6 +79,7 @@ def test_application_checks_capability_and_prepares_even_with_ready_window(
     app = zzz_application.ZApplication.__new__(zzz_application.ZApplication)
     app.ctx = context
     app.app_id = app_id
+    app.need_check_game_win = True
 
     result = app.execute()
 
@@ -118,6 +119,7 @@ def test_failed_preparation_never_runs_application(
     app = zzz_application.ZApplication.__new__(zzz_application.ZApplication)
     app.ctx = context
     app.app_id = 'charge_plan'
+    app.need_check_game_win = True
     assert app.execute().status == '未确认模式'
     framework.assert_not_called()
 

@@ -37,7 +37,7 @@ def test_original_task_list_keeps_order_and_settings_with_disabled_mac_run(
     run_context = SimpleNamespace(
         is_context_stop=True, is_context_running=False, is_context_pause=False,
         run_status_text='空闲', get_run_record=Mock(return_value=None),
-        default_group_apps=['charge_plan', 'email'],
+        default_group_apps=['charge_plan', 'hollow_zero'],
     )
     context = SimpleNamespace(
         run_context=run_context, current_instance_idx=2,
@@ -45,8 +45,8 @@ def test_original_task_list_keeps_order_and_settings_with_disabled_mac_run(
         notify_config=SimpleNamespace(app_map={}),
         get_application_unavailable_reason=get_macos_app_unavailable_reason,
     )
-    tasks = [ApplicationGroupConfigItem('email', True), ApplicationGroupConfigItem('charge_plan', True)]
-    tasks[0].app_name = '邮件'
+    tasks = [ApplicationGroupConfigItem('hollow_zero', True), ApplicationGroupConfigItem('charge_plan', True)]
+    tasks[0].app_name = '旧都列车'
     tasks[1].app_name = '体力计划'
     page = ZOneDragonRunInterface(context)
     page._init_layout()
@@ -55,7 +55,7 @@ def test_original_task_list_keeps_order_and_settings_with_disabled_mac_run(
     page.on_context_state_changed()
 
     unsupported, supported = page.app_run_list._app_cards
-    assert [card.app.app_id for card in page.app_run_list._app_cards] == ['email', 'charge_plan']
+    assert [card.app.app_id for card in page.app_run_list._app_cards] == ['hollow_zero', 'charge_plan']
     assert not unsupported.run_btn.isEnabled()
     assert 'Mac暂未适配' in unsupported.content_widget.titleLabel.text()
     assert unsupported.setting_btn.isEnabled()
@@ -66,7 +66,7 @@ def test_original_task_list_keeps_order_and_settings_with_disabled_mac_run(
     assert page.macos_prepare_btn.isEnabled()
     assert '短暂置前游戏并使用鼠标' in page.macos_prepare_btn.toolTip()
     assert all(task.enabled for task in tasks)
-    page.app_id = 'email'
+    page.app_id = 'hollow_zero'
     page.on_context_state_changed()
     assert not page.start_btn.isEnabled()
     assert page.start_btn.text() == 'Mac暂未适配'
