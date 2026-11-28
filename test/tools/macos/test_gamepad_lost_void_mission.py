@@ -9,7 +9,11 @@ import pytest
 
 from one_dragon.base.matcher.match_result import MatchResult, MatchResultList
 from one_dragon.utils import cv2_utils
-from zzz_od.operation.gamepad.lost_void import GamepadLostVoidBackToWorld, GamepadLostVoidChooseMission
+from zzz_od.operation.gamepad.lost_void import (
+    GamepadLostVoidBackToWorld,
+    GamepadLostVoidChooseMission,
+    GamepadLostVoidTransport,
+)
 
 
 @pytest.mark.parametrize('highlighted', [True, False])
@@ -92,3 +96,31 @@ def test_unknown_return_frame_wait_is_bounded_and_sends_no_more_input() -> None:
         assert not operation.back().is_fail
     assert operation.back().is_fail
     operation.ctx.controller.btn_tap.assert_not_called()
+
+
+@pytest.mark.parametrize(('stop_at_hollow', 'focus'), [(True, '迷失之地'), (True, '枯萎之都'), (False, '迷失之地')])
+def test_hollow_transport_stops_at_hub_only_when_requested(stop_at_hollow: bool, focus: str) -> None:
+    """公共入口由两张玩法卡共同确认，普通迷失之地仍走原确认。"""
+    operation = GamepadLostVoidTransport(SimpleNamespace(controller=Mock()), stop_at_hollow=stop_at_hollow)
+    operation.last_screenshot = object()
+    operation._after_round_wait = Mock()
+    operation._update_notice = Mock(return_value=False)
+    operation._entry_name = Mock(return_value=None)
+    operation.save_screenshot = Mock(return_value='入口截图')
+    labels = {
+        '手柄-调查标签': ('深层调查',),
+        '手柄-迷失之地入口': ('迷失之地', 'A') if focus == '迷失之地' else ('迷失之地',),
+        '手柄-枯萎之都入口': ('枯萎之都', 'A') if focus == '枯萎之都' else ('枯萎之都',),
+    }
+    match = SimpleNamespace(max=SimpleNamespace(rect=object()))
+    operation.navigation._read_area = Mock(side_effect=lambda _, area: (
+        None, dict.fromkeys(labels[area], match),
+    ))
+    result = operation.wait_entry()
+    if stop_at_hollow:
+        assert result.is_success
+        assert result.data == {'screenshot': '入口截图'}
+        operation.ctx.controller.btn_tap.assert_not_called()
+    else:
+        assert not result.is_success
+        operation.ctx.controller.btn_tap.assert_called_once_with('south')
