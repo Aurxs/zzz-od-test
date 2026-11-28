@@ -60,6 +60,30 @@ def test_visible_but_unfocused_clerk_does_not_interact(monkeypatch: pytest.Monke
     assert operation.approach().is_success
 
 
+def test_howl_small_label_fallback_projects_back_to_raw_frame() -> None:
+    rects = {
+        '手柄-附近互动目标': Rect(140, 120, 1100, 700),
+        '手柄-嗷呜名牌': Rect(570, 120, 1000, 500),
+    }
+    loader = Mock()
+    loader.get_area.side_effect = lambda _, name: SimpleNamespace(rect=rects[name])
+    ocr = Mock()
+    ocr.crop_and_run_ocr.return_value = {}
+    matches = MatchResultList()
+    matches.append(MatchResult(1, 690, 390, 90, 48))
+    ocr.run_ocr.return_value = {'嗷鸣': matches}
+    operation = shop_approach.GamepadApproachShop(
+        SimpleNamespace(controller=Mock(), screen_loader=loader, run_context=Mock(), ocr=ocr),
+        '嗷呜', aliases=('嗷鸣',), fallback_label_area='手柄-嗷呜名牌',
+    )
+    operation.last_screenshot = np.zeros((1080, 1920, 3), dtype=np.uint8)
+
+    target = operation._target()
+    assert target is not None
+    assert target[1] == Rect(775, 195, 820, 219)
+    assert ocr.run_ocr.call_args.args[0].shape == (760, 860, 3)
+
+
 @pytest.mark.parametrize(('state', 'label'), [
     ('outlined', Rect(793, 258, 880, 283)),
     ('before', Rect(798, 190, 861, 212)),
