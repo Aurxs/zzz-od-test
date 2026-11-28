@@ -16,7 +16,10 @@ from zzz_od.application.coffee.coffee_app import CoffeeApp
 from zzz_od.application.coffee.coffee_config import CoffeeTransportPoint
 from zzz_od.application.random_play import random_play_app
 from zzz_od.application.random_play.random_play_app import RandomPlayApp
-from zzz_od.operation.gamepad import shop
+from zzz_od.operation.enter_game.mac_bootstrap_game_session import (
+    MacBootstrapGameSession,
+)
+from zzz_od.operation.gamepad import coffee_menu, shop
 
 
 @pytest.fixture(autouse=True)
@@ -114,25 +117,64 @@ def test_missing_before_frame_stops_before_daily_input(
     app.ctx.controller.btn_tap.assert_not_called()
 
 
-@pytest.mark.parametrize('supported', [True, False])
+@pytest.mark.parametrize(('point', 'expected', 'transport_ok'), [
+    (CoffeeTransportPoint.POINT_2, ('澄辉坪', '汀曼咖啡'), True),
+    (CoffeeTransportPoint.POINT_1, ('六分街', '咖啡店'), True),
+    (CoffeeTransportPoint.POINT_1, ('六分街', '咖啡店'), False),
+])
 def test_coffee_transport_keeps_saved_destination(
-    app: CoffeeApp, monkeypatch: pytest.MonkeyPatch, supported: bool,
+    app: CoffeeApp, monkeypatch: pytest.MonkeyPatch, point: CoffeeTransportPoint,
+    expected: tuple[str, str], transport_ok: bool,
 ) -> None:
-    """支持点调公共手柄传送；需转向的六分街不会被换成澄辉坪。"""
+    """公共手柄传送成功或失败时都保留原目的地。"""
     factory = Mock()
-    factory.return_value.execute.return_value = OperationResult(True)
+    factory.return_value.execute.return_value = OperationResult(transport_ok)
     monkeypatch.setitem(sys.modules, 'zzz_od.operation.gamepad.transport',
                         SimpleNamespace(GamepadTransport=factory))
-    if not supported:
-        app.config.transport_point = CoffeeTransportPoint.POINT_1.value.value
+    monkeypatch.setattr(coffee_app, 'read_coffee_selection', lambda _: None)
+    monkeypatch.setattr(coffee_app, 'coffee_already_drunk_prompt', lambda _: False)
+    app.config.transport_point = point.value.value
     saved = app.config.transport_point
     result = app.transport()
-    assert result.is_success == supported
+    assert result.is_success == transport_ok
     assert app.config.transport_point == saved
-    if supported:
-        factory.assert_called_once_with(app.ctx, '澄辉坪', '汀曼咖啡')
-    else:
-        factory.assert_not_called()
+    factory.assert_called_once_with(app.ctx, *expected)
+
+
+def test_coffee_counter_sends_only_one_confirmed_free_order(app: CoffeeApp, monkeypatch: pytest.MonkeyPatch) -> None:
+    app.chosen_coffee = SimpleNamespace(coffee_name='汀曼特调')
+    current = Mock(return_value=('浓缩咖啡', {}))
+    free_order = Mock(return_value=False)
+    monkeypatch.setattr(coffee_app, 'read_coffee_selection', current)
+    monkeypatch.setattr(coffee_app, 'can_order_free_coffee', free_order)
+    monkeypatch.setattr(coffee_app, 'fail_shop_state', lambda _, __, reason: app.round_fail(reason))
+    assert app.order_coffee().is_fail
+    current.return_value = ('汀曼特调', {})
+    assert app.order_coffee().is_fail
+    app.ctx.controller.btn_tap.assert_not_called()
+
+    free_order.return_value = True
+    assert app.order_coffee().status == app.STATUS_MACOS_LIST_ORDERED
+    assert app.order_coffee().is_fail
+    app.ctx.controller.btn_tap.assert_called_once_with('south')
+
+
+def test_coffee_already_drunk_resumes_without_order(
+    app: CoffeeApp, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """咖啡单项从已喝提示启动，后续只派发既有退出操作。"""
+    app.config.transport_point = CoffeeTransportPoint.POINT_1.value.value
+    app.ctx.current_instance_idx = 2
+    app.ctx.run_context = Mock(current_app_id='coffee')
+    app.ctx.run_context.get_config.return_value = app.config
+    monkeypatch.setattr(coffee_menu, 'coffee_already_drunk_prompt', lambda _: True)
+    monkeypatch.setattr(coffee_app, 'coffee_already_drunk_prompt', lambda _: True)
+    bootstrap = MacBootstrapGameSession(app.ctx)
+    monkeypatch.setattr(bootstrap, '_after_round_wait', Mock())
+    assert bootstrap._prepare_from_screen().is_success
+    assert app.transport().status == app.STATUS_MACOS_LIST_DRUNK
+    assert app.confirm_macos_list_order().status == app.STATUS_MACOS_LIST_DRUNK
+    app.ctx.controller.btn_tap.assert_not_called()
 
 
 def test_new_macos_run_rechecks_coffee_instead_of_reusing_yesterday(
