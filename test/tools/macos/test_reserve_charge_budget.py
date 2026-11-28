@@ -36,6 +36,15 @@ def test_ordered_plan_budget_counts_real_completed_runs_without_skipping() -> No
     assert remaining_plan_energy(plans) == 60
 
 
+def test_observed_simulation_and_expert_cost_are_checked_against_the_plan() -> None:
+    simulation = ChargePlanItem(card_num='默认数量')
+    expert = ChargePlanItem(category_name='专业挑战室', mission_type_name='恶名·杜拉罕')
+    assert remaining_plan_energy((simulation,), observed_cost=100) == 100
+    assert remaining_plan_energy((expert,), observed_cost=40) == 40
+    with pytest.raises(ValueError):
+        remaining_plan_energy((expert,), observed_cost=80)
+
+
 @pytest.mark.parametrize('setting', ['不使用', '使用以太电池', '同时使用储蓄电量和以太电池', '菲林', ''])
 def test_other_sources_cannot_create_reserve_budget(setting: str) -> None:
     with pytest.raises(ValueError, match='仅允许'):

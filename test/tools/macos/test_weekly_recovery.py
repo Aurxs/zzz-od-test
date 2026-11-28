@@ -51,9 +51,10 @@ def test_missing_frame_requires_checked_recovery(
     ctx.auto_battle_context.resume_auto_battle.assert_called_once()
 
 
-def test_themed_intel_requires_unique_focus_aligned_with_label() -> None:
+@pytest.mark.parametrize('name', ['情报板', '仓库'])
+def test_themed_function_requires_unique_focus_aligned_with_label(name: str) -> None:
     ctx = SimpleNamespace(controller=Mock(), run_context=Mock(), ocr=Mock())
-    operation = GamepadOpenFunction(ctx, '情报板')
+    operation = GamepadOpenFunction(ctx, name)
     operation._after_round_wait = Mock()
     operation.round_by_find_area = Mock(return_value=SimpleNamespace(is_success=False))
     operation._save_evidence = Mock()
@@ -62,10 +63,14 @@ def test_themed_intel_requires_unique_focus_aligned_with_label() -> None:
     class SingleMatch(list):
         max = SimpleNamespace(rect=target)
 
-    cards = {'COMMUNITY': [], '仓库': [], '个人主页': [], '情报板': SingleMatch([target])}
+    cards = {'COMMUNITY': [], '仓库': [], '个人主页': [], '情报板': []}
+    cards[name] = SingleMatch([target])
     hints = {'导览套件': [], '选择': [], '返回': []}
     ctx.ocr.crop_and_run_ocr.side_effect = lambda _, rect: cards if rect.x1 == 1225 else hints
     operation._read_area = Mock(return_value=None)
+    assert not operation.is_guide_visible(None)
+    if name == '仓库':
+        assert operation.is_guide_visible(operation.last_screenshot)
 
     operation.select_function()
     ctx.controller.btn_tap.assert_not_called()

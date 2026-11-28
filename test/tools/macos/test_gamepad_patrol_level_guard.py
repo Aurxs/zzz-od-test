@@ -6,6 +6,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, call
 
+import cv2
 import numpy as np
 import pytest
 
@@ -15,7 +16,7 @@ from zzz_od.application.charge_plan.charge_plan_config import (
     ChargePlanConfig,
     ChargePlanItem,
 )
-from zzz_od.operation.gamepad import area_patrol, charge_plan
+from zzz_od.operation.gamepad import area_patrol, charge_plan, simulation_preset
 from zzz_od.operation.gamepad.area_patrol import GamepadAreaPatrol
 from zzz_od.operation.gamepad.charge_plan import (
     GamepadChargePlan,
@@ -94,6 +95,28 @@ def test_ambiguous_target_rejected(plan: ChargePlanItem, monkeypatch: pytest.Mon
     monkeypatch.setattr(area_patrol, 'read_focused_choice', lambda *_args, **_kw: ('游侠与守卫', set()))
     assert not op._preset_selected()
     ctx.controller.btn_tap.assert_not_called()
+
+
+def test_patrol_split_label_is_reread_only_inside_a_unique_complete_card(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    image = np.zeros((200, 900, 3), dtype=np.uint8)
+    cv2.rectangle(image, (12, 2), (392, 196), (255, 240, 0), 4)
+    ctx = SimpleNamespace(ocr=Mock())
+    ctx.ocr.run_ocr_single_line.return_value = '怪兽二重奏'
+    split = {word: SimpleNamespace(max=None) for word in ('怪', '重奏')}
+    monkeypatch.setattr(simulation_preset, 'read_preset_area', lambda *_: (image, split))
+    assert simulation_preset.read_focused_choice(
+        ctx, image, '手柄-副本列表', ('怪兽二重奏', '游侠与守卫'), reread_card_name=True,
+    ) == ('怪兽二重奏', {'怪兽二重奏'})
+    assert ctx.ocr.run_ocr_single_line.call_args.args[0].shape[0] == 52
+    cv2.rectangle(image, (490, 2), (870, 196), (255, 240, 0), 4)
+    ctx.ocr.run_ocr_single_line.reset_mock()
+    focus, _ = simulation_preset.read_focused_choice(
+        ctx, image, '手柄-副本列表', ('怪兽二重奏', '游侠与守卫'), reread_card_name=True,
+    )
+    assert focus is None
+    ctx.ocr.run_ocr_single_line.assert_not_called()
 
 
 @pytest.mark.parametrize(('texts', 'expected'), [
